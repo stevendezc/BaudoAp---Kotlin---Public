@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Baudo App</string>
+    <string name="password">contraseña</string>
+    <string name="login">Acceder</string>
+    <string name="sign_up">Registrar</string>
+    <string name="email">Email</string>
+    <string name="greeting">Hola!</string>
+    <string name="sign_out">Cerrar Sesion</string>
 </resources>
