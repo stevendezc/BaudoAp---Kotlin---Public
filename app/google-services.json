@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "158006020896",
+    "project_id": "pereira-71536",
+    "storage_bucket": "pereira-71536.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158006020896:android:60027efd00e4f2ba7fe545",
+        "android_client_info": {
+          "package_name": "com.abstractcoder.baudoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158006020896-4e9md2l06u1tnh258n8v9v63932gkf1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5i2YghAaD91-Yt0eLIOt7RqIFXZD4fFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158006020896-4e9md2l06u1tnh258n8v9v63932gkf1g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
