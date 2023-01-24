@@ -6,18 +6,18 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.android.synthetic.main.activity_log_in.*
 
-class AuthActivity : AppCompatActivity() {
+class LogInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+        setContentView(R.layout.activity_log_in)
 
         // Analytics event
-        val analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val bundle = Bundle()
         bundle.putString("message", "Integracion de Firebase Completa")
-        analytics.logEvent("InitScreen", bundle)
+        analytics.logEvent("LogInScreen", bundle)
 
         // Setup
         setup()
@@ -25,18 +25,6 @@ class AuthActivity : AppCompatActivity() {
 
     private fun setup() {
         title = "Autenticacion"
-        signUpButton.setOnClickListener {
-            if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailEditText.text.toString(),
-                    passwordEditText.text.toString()).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            showHome(it.result?.user?.email ?: "", ProviderType.BASIC,)
-                        } else {
-                            showAlert()
-                        }
-                }
-            }
-        }
 
         logInButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
@@ -50,13 +38,17 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
         }
+
+        registerButton.setOnClickListener {
+            showRegister()
+        }
     }
 
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage("Se ha producido un error autenticando al usuario")
-        val dialog:AlertDialog = builder.create()
+        val dialog: AlertDialog = builder.create()
         dialog.show()
     }
 
@@ -66,5 +58,10 @@ class AuthActivity : AppCompatActivity() {
             putExtra("provider", provider.name)
         }
         startActivity(homeIntent)
+    }
+
+    private fun showRegister() {
+        val registerIntent = Intent(this, SignUpActivity::class.java)
+        startActivity(registerIntent)
     }
 }
