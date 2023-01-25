@@ -43,7 +43,8 @@ class SignUpActivity : AppCompatActivity() {
                         registerUser(id, user)
                         showHome(name, it.result?.user?.email ?: "", ProviderType.BASIC,)
                     } else {
-                        showAlert()
+                        val exception = it.exception
+                        showAlert(exception)
                     }
                 }
             }
@@ -67,10 +68,10 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAlert() {
+    private fun showAlert(exception: Exception?) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
-        builder.setMessage("Se ha producido un error autenticando al usuario")
+        builder.setMessage(exception?.message ?: "")
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

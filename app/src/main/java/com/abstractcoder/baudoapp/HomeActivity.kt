@@ -9,6 +9,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -60,11 +61,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(logInIntent)
     }
 
-    private fun getUser(email: String) {
-        val database = Firebase.database
-        val myRef = database.getReference("DB")
-        val users = myRef.child("Users")
-
+    private fun retrieveUserFromProvider(incomingEmail: String, users: DatabaseReference) {
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -73,8 +70,8 @@ class HomeActivity : AppCompatActivity() {
                     val userEmail: String = i.child("email").value.toString()
                     val userName: String = i.child("name").value.toString()
                     Log.e(TAG, "userEmail: $userEmail")
-                    Log.e(TAG, "incoming : $email")
-                    if (userEmail == email) {
+                    Log.e(TAG, "incoming : $incomingEmail")
+                    if (userEmail == incomingEmail) {
                         Log.e(TAG, "USUARIO: $userName")
                         sb.append(userName)
                     }
@@ -89,5 +86,16 @@ class HomeActivity : AppCompatActivity() {
         }
         users.addValueEventListener(postListener)
         users.addListenerForSingleValueEvent(postListener)
+    }
+
+    private fun getUser(email: String) {
+        val database = Firebase.database
+        val myRef = database.getReference("DB")
+        val bundle = intent.extras
+
+        when (bundle?.getString("provider").toString()) {
+            ProviderType.BASIC.toString() -> retrieveUserFromProvider(email, myRef.child("Users"))
+            ProviderType.GOOGLE.toString() -> retrieveUserFromProvider(email, myRef.child("GoogleUsers"))
+        }
     }
 }
