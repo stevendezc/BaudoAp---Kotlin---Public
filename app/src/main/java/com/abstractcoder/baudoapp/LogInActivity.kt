@@ -1,8 +1,10 @@
 package com.abstractcoder.baudoapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +23,24 @@ class LogInActivity : AppCompatActivity() {
 
         // Setup
         setup()
+        session()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        authLayout.visibility = View.VISIBLE
+    }
+
+    // Session data retrieval
+    private fun session() {
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+        val provider = prefs.getString("provider", null)
+
+        if (email != null && provider != null) {
+            authLayout.visibility = View.INVISIBLE
+            showHome(email, ProviderType.valueOf(provider))
+        }
     }
 
     private fun setup() {

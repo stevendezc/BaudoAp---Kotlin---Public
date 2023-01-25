@@ -12,5 +12,5 @@
     <string name="name">Nombre</string>
     <string name="greeting">Hola!</string>
     <string name="sign_out">Cerrar Sesion</string>
-
+    <string name="prefs_file">pereira-71536.appspot.com.PREFERENCE_FILE_KEY</string>
 </resources>

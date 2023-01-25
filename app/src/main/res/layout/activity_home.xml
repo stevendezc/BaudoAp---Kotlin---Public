@@ -55,7 +55,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/signOutbutton"
+                android:id="@+id/logOutbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#FD642F"
