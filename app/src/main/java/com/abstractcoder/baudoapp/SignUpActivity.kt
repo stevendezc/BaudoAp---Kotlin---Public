@@ -8,10 +8,13 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
+
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +42,12 @@ class SignUpActivity : AppCompatActivity() {
                 authInstance.createUserWithEmailAndPassword(registerEmailEditText.text.toString(),
                     registerPasswordEditText.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val id: String = it.result?.user?.uid ?: ""
-                        registerUser(id, user)
-                        showHome(name, it.result?.user?.email ?: "", ProviderType.BASIC,)
+                        val fireUser = authInstance.currentUser
+                        fireUser?.sendEmailVerification()
+                        registerUser(user, ProviderType.BASIC)
+                        Toast.makeText(this, "Correo de verificacion enviado", Toast.LENGTH_SHORT).show()
+                        showLogIn()
+                        //showHome(name, it.result?.user?.email ?: "", ProviderType.BASIC)
                     } else {
                         val exception = it.exception
                         showAlert(exception)
@@ -55,17 +61,16 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerUser(id: String, user: User) {
-        val database = Firebase.database
-        val myRef = database.getReference("DB")
-
-        myRef.child("Users").child(id).setValue(user).addOnSuccessListener {
-            registerNameEditText.text.clear()
-            registerEmailEditText.text.clear()
-            registerPasswordEditText.text.clear()
-
-            Toast.makeText(this, "Usuario creado", Toast.LENGTH_SHORT).show()
-        }
+    private fun registerUser(user: User, provider: ProviderType) {
+        db.collection("users").document(user.email).set(
+            mapOf("provider" to provider,
+                "verified" to false,
+                "name" to user.name,
+                "password" to user.password,
+                "user_pic" to "",
+                "saved_posts" to emptyArray<String>()
+            )
+        )
     }
 
     private fun showAlert(exception: Exception?) {
