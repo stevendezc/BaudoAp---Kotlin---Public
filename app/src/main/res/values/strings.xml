@@ -10,7 +10,36 @@
     <string name="email">Correo</string>
     <string name="email_hint">Dirección de correo electrónico</string>
     <string name="name">Nombre</string>
-    <string name="greeting">Hola!</string>
+    <string name="greeting">Hola,</string>
     <string name="sign_out">Cerrar Sesion</string>
     <string name="prefs_file">pereira-71536.appspot.com.PREFERENCE_FILE_KEY</string>
+    <string name="facebook_app_id">1234</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">56789</string>
+    <!-- MENU Strings -->
+    <string name="menu_home">Inicio</string>
+    <string name="menu_store">Tienda</string>
+    <string name="menu_community">Comunidad</string>
+    <string name="menu_events">Eventos</string>
+    <string name="menu_navegantes">Navegantes</string>
+    <!-- HOME FRAGMENT Strings -->
+    <string name="home_image">Imagen</string>
+    <string name="home_video">Video</string>
+    <string name="home_podcast">Podcast</string>
+    <!-- USER UI Strings -->
+    <string name="user_interests">Lo que te interesa</string>
+    <string name="user_saved_content">Guardados</string>
+    <string name="user_weekly_image">Imagen de la semana</string>
+    <string name="user_recommended_videos">Videos Recomendados</string>
+    <string name="user_suggested_content">Contenido Sugerido</string>
+    <!-- SETTINGS POPUP Strings -->
+    <string name="settings_popup_baudo">¿Qué es Baudó?</string>
+    <string name="settings_popup_payment">Informaciones de pago</string>
+    <string name="settings_popup_team">El equipo</string>
+    <string name="settings_popup_support">Soporte</string>
+    <string name="settings_popup_faq">Preguntas frecuentes</string>
+    <string name="settings_popup_invite">invita a tus amigos</string>
+    <string name="settings_popup_privacy">Acuerdo de privacidad</string>
+    <string name="settings_popup_disconnect">Desconectar</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
