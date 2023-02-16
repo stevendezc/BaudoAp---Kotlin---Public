@@ -6,24 +6,35 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import com.abstractcoder.baudoapp.fragments.*
+import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_log_in.*
 
 enum class ProviderType {
     BASIC,
-    GOOGLE
+    GOOGLE,
+    FACEBOOK
 }
 
 class HomeActivity : AppCompatActivity() {
+    lateinit var topMenu: LinearLayout
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        topMenu = findViewById(R.id.topMenu)
 
         // Recover data with bundle
         val bundle = intent.extras
@@ -31,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
         val provider: String = bundle?.getString("provider").toString()
         getUser(email)
         // Setup incoming data
-        setup()
+        setup(email, provider)
 
         // Data saving for sessions (session Data)
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
@@ -39,10 +50,17 @@ class HomeActivity : AppCompatActivity() {
         prefs.putString("provider", provider)
         prefs.apply()
 
+        // Setup fragments
+        fragmentSetup()
+
     }
 
-    private fun setup() {
+    private fun setup(email: String, provider: String) {
         title = "Inicio"
+
+        userImageView.setOnClickListener {
+            showUserActivity(email)
+        }
 
         logOutbutton.setOnClickListener {
             // saved prefs removal (session Data)
@@ -50,9 +68,33 @@ class HomeActivity : AppCompatActivity() {
             prefs.clear()
             prefs.apply()
 
+            if (provider == ProviderType.FACEBOOK.name) {
+                LoginManager.getInstance().logOut()
+            }
             FirebaseAuth.getInstance().signOut()
             //onBackPressed()
             showLogIn()
+        }
+    }
+
+    private fun fragmentSetup() {
+        val homeFragment = HomeFragment()
+        val storeFragment = StoreFragment()
+        val communityFragment = CommunityFragment()
+        val eventsFragment = EventsFragment()
+        val navegantesFragment = NavegantesFragment()
+        makeCurrentFragment(homeFragment)
+
+        // Fragment Navigation
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.ic_home -> makeCurrentFragment(homeFragment)
+                R.id.ic_store -> makeCurrentFragment(storeFragment)
+                R.id.ic_community -> makeCurrentFragment(communityFragment)
+                R.id.ic_events -> makeCurrentFragment(eventsFragment)
+                R.id.ic_navegantes -> makeCurrentFragment(navegantesFragment)
+            }
+            true
         }
     }
 
@@ -61,41 +103,25 @@ class HomeActivity : AppCompatActivity() {
         startActivity(logInIntent)
     }
 
-    private fun retrieveUserFromProvider(incomingEmail: String, users: DatabaseReference) {
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                val sb = StringBuilder()
-                for (i in dataSnapshot.children) {
-                    val userEmail: String = i.child("email").value.toString()
-                    val userName: String = i.child("name").value.toString()
-                    Log.e(TAG, "userEmail: $userEmail")
-                    Log.e(TAG, "incoming : $incomingEmail")
-                    if (userEmail == incomingEmail) {
-                        Log.e(TAG, "USUARIO: $userName")
-                        sb.append(userName)
-                    }
-                }
-                nameTextView.text = sb
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
+    private fun showUserActivity(email: String) {
+        val userIntent = Intent(this, UserActivity::class.java).apply {
+            putExtra("email", email)
+            putExtra("name", nameTextView.text.toString())
         }
-        users.addValueEventListener(postListener)
-        users.addListenerForSingleValueEvent(postListener)
+        startActivity(userIntent)
     }
 
     private fun getUser(email: String) {
-        val database = Firebase.database
-        val myRef = database.getReference("DB")
-        val bundle = intent.extras
+        db.collection("users").document(email).get().addOnSuccessListener {
+            val user_name = it.get("name").toString()
+            nameTextView.text = user_name
+        }
+    }
 
-        when (bundle?.getString("provider").toString()) {
-            ProviderType.BASIC.toString() -> retrieveUserFromProvider(email, myRef.child("Users"))
-            ProviderType.GOOGLE.toString() -> retrieveUserFromProvider(email, myRef.child("GoogleUsers"))
+    private fun makeCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.homeFragmentWrapper, fragment)
+            commit()
         }
     }
 }
