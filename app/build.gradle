@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    viewBinding{
+        enabled true
+    }
 }
 
 dependencies {
@@ -45,8 +48,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    // Firebase
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.3'
+    // Auth
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    // Circular imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
