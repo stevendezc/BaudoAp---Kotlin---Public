@@ -4,21 +4,31 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_log_in.*
 
 class LogInActivity : AppCompatActivity() {
     private val GOOGLE_SIGN_IN = 100
+    private val callbackManager = CallbackManager.Factory.create()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +64,7 @@ class LogInActivity : AppCompatActivity() {
 
     private fun setup() {
         title = "Autenticacion"
+        val authInstance = FirebaseAuth.getInstance()
 
         googleButton.setOnClickListener {
             // Config
@@ -67,12 +78,65 @@ class LogInActivity : AppCompatActivity() {
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
+        facebookButton.setOnClickListener {
+            // Config
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
+            LoginManager.getInstance().registerCallback(callbackManager,
+            object: FacebookCallback<LoginResult>{
+                override fun onSuccess(result: LoginResult?) {
+                    result?.let {
+                        val token = it.accessToken
+                        val credential = FacebookAuthProvider.getCredential(token.token)
+                        authInstance.signInWithCredential(credential).addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                val id: String = it.result?.user?.uid ?: ""
+                                val name: String = it.result?.user?.displayName ?: ""
+                                val email: String = it.result?.user?.email ?: ""
+                                val user = GoogleUser(name, email)
+                                registerUser(id, user)
+                                showHome(email, ProviderType.FACEBOOK)
+                            } else {
+                                showAlert()
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancel() {
+                }
+
+                override fun onError(error: FacebookException?) {
+                    showAlert()
+                }
+            })
+        }
+
         logInButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(),
+                authInstance.signInWithEmailAndPassword(emailEditText.text.toString(),
                     passwordEditText.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        showHome(it.result?.user?.email ?: "", ProviderType.BASIC,)
+                        val user = authInstance.currentUser
+                        if (user != null) {
+                            Log.d("Email Verified", user.isEmailVerified.toString())
+                            if (!user.isEmailVerified) {
+                                Toast.makeText(this, "Correo electronico no verificado", Toast.LENGTH_SHORT).show()
+                            } else {
+                                val email = it.result?.user?.email ?: ""
+                                db.collection("users").document(emailEditText.text.toString()).get().addOnSuccessListener {
+                                    val savedVerifiedState = it.get("verified").toString().toBoolean()
+                                    Log.d("savedVerified", savedVerifiedState.toString())
+                                    if (!savedVerifiedState) {
+                                        db.collection("users").document(emailEditText.text.toString()).update(
+                                            mapOf("verified" to true)
+                                        )
+                                        showHome(email, ProviderType.BASIC)
+                                    } else {
+                                        showHome(email, ProviderType.BASIC)
+                                    }
+                                }
+                            }
+                        }
                     } else {
                         showAlert()
                     }
@@ -116,6 +180,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
         // Get Google credential from task
