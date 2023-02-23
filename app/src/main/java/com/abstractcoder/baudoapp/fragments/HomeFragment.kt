@@ -1,28 +1,24 @@
 package com.abstractcoder.baudoapp.fragments
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.FragmentHomeBinding
-import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
-import com.abstractcoder.baudoapp.recyclers.ImagePostMain
-import kotlinx.android.synthetic.main.activity_home.*
+import androidx.fragment.app.FragmentActivity
+import com.abstractcoder.baudoapp.*
+import com.abstractcoder.baudoapp.fragments.home_fragments.HomeImageFragment
+import com.abstractcoder.baudoapp.fragments.home_fragments.HomePodcastFragment
+import com.abstractcoder.baudoapp.fragments.home_fragments.HomeVideoFragment
+import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.MyCallback
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
-
-    private lateinit var imageAdapter: ImagePostAdapter
-    private lateinit var imageRecyclerView: RecyclerView
-    private lateinit var imagePostMainList: ArrayList<ImagePostMain>
-
-    lateinit var imageId: Array<Int>
-    lateinit var heading: Array<String>
-    lateinit var postMain: Array<String>
+    private var firestore = Firestore()
+    private val bundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,44 +34,48 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initData()
-        val layoutManager = LinearLayoutManager(context)
-        imageRecyclerView = view.findViewById(R.id.image_list_recycler)
-        imageRecyclerView.layoutManager = layoutManager
-        imageRecyclerView.setHasFixedSize(true)
-        imageAdapter = ImagePostAdapter(imagePostMainList)
-        imageRecyclerView.adapter = imageAdapter
+
+        // Load Posts
+        val posts = firestore.retrieveDocuments(object : MyCallback {
+            override fun onSuccess(result: ArrayList<PostData>) {
+                Log.d(ContentValues.TAG, "posts on HomeFragment: $result")
+                // Setup subfragments
+                fragmentSetup(result)
+            }
+        })
     }
 
-    private fun initData() {
-        imagePostMainList = arrayListOf<ImagePostMain>()
-        imageId = arrayOf(
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-        )
-        heading = arrayOf(
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-        )
-        postMain = arrayOf(
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-        )
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bundle.clear()
+    }
 
-        for (i in imageId.indices) {
-            val imagePost = ImagePostMain(imageId[i], heading[i], postMain[i])
-            imagePostMainList.add(imagePost)
+    private fun fragmentSetup(posts: ArrayList<PostData>) {
+        bundle.putSerializable("posts", posts)
+        val imageSubFragment = HomeImageFragment()
+        imageSubFragment.arguments = bundle
+        val videoSubFragment = HomeVideoFragment()
+        val podcastSubFragment = HomePodcastFragment()
+        makeCurrentFragment(imageSubFragment)
+
+        // Fragment Navigation
+        contentNavigationView.itemBackgroundResource = R.color.content_items_background_color
+        contentNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.ic_image -> makeCurrentFragment(imageSubFragment)
+                R.id.ic_video -> makeCurrentFragment(videoSubFragment)
+                R.id.ic_podcast -> makeCurrentFragment(podcastSubFragment)
+            }
+            true
         }
+    }
 
+    private fun makeCurrentFragment(fragment: Fragment) {
+        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.contentSubFragmentWrapper, fragment)
+            commit()
+        }
     }
 
 }

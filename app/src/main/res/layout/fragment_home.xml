@@ -25,42 +25,28 @@
             android:src="@drawable/info" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/home_media_buttons"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/contentNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="50dp"
+        android:paddingBottom="10dp"
+        android:background="@color/fui_transparent"
+        app:layout_constraintTop_toBottomOf="@id/home_info_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_info_layout">
+        app:menu="@menu/content_nav"
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/content_items_text_color"
+        app:itemTextAppearanceActive="@style/bold_menu_item"
+        app:itemTextAppearanceInactive="@style/bold_menu_item"
+        />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/home_image" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/home_video" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/home_podcast" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/image_list_recycler"
+    <FrameLayout
+        android:id="@+id/contentSubFragmentWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="580dp"
+        android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_media_buttons"
-        tools:listitem="@layout/image_list_item" />
+        app:layout_constraintTop_toBottomOf="@+id/contentNavigationView">
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
