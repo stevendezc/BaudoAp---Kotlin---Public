@@ -22,6 +22,10 @@
     <string name="menu_community">Comunidad</string>
     <string name="menu_events">Eventos</string>
     <string name="menu_navegantes">Navegantes</string>
+    <!-- CONTENT MENU Strings -->
+    <string name="menu_image">Imagen</string>
+    <string name="menu_video">Video</string>
+    <string name="menu_podcast">Podcast</string>
     <!-- HOME FRAGMENT Strings -->
     <string name="home_image">Imagen</string>
     <string name="home_video">Video</string>
