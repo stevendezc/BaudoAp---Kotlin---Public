@@ -6,4 +6,14 @@
         <item name="cornerSizeTopRight">30dp</item>
     </style>
 
+    <style name="topPointCornerRoundImage">
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+    </style>
+
+    <style name="bold_menu_item">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
