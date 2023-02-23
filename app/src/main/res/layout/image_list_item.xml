@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:scaleType="fitXY"
+            app:strokeColor="@null"
             app:shapeAppearanceOverlay="@style/topRoundImage"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
