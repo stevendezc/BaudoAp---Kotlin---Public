@@ -12,13 +12,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.FragmentHomeImageBinding
 import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
 import com.abstractcoder.baudoapp.recyclers.ImagePostMain
-import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.MyCallback
 
 class HomeImageFragment : Fragment() {
+
+    private var _binding: FragmentHomeImageBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var imageAdapter: ImagePostAdapter
     private lateinit var imageRecyclerView: RecyclerView
@@ -33,7 +35,8 @@ class HomeImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_image, container, false)
+        _binding = FragmentHomeImageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +65,7 @@ class HomeImageFragment : Fragment() {
             }
         }
 
-        imageRecyclerView = view.findViewById(R.id.image_list_recycler)
+        imageRecyclerView = binding.imageListRecycler
         imageRecyclerView.layoutManager = layoutManager
         imageRecyclerView.setHasFixedSize(true)
         imageAdapter = ImagePostAdapter(imagePostMainList)

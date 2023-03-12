@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.FragmentHomeVideoBinding
 import com.abstractcoder.baudoapp.recyclers.*
-import com.google.firebase.Timestamp
 
 class HomeVideoFragment : Fragment() {
+
+    private var _binding: FragmentHomeVideoBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var videoAdapter: VideoPostAdapter
@@ -30,7 +32,8 @@ class HomeVideoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_video, container, false)
+        _binding = FragmentHomeVideoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +42,7 @@ class HomeVideoFragment : Fragment() {
         layoutManager = GridLayoutManager(context, 3)
         initVideoDummyData()
 
-        videoRecyclerView = view.findViewById(R.id.video_list_recycler)
+        videoRecyclerView = binding.videoListRecycler
         videoRecyclerView.layoutManager = layoutManager
         videoRecyclerView.setHasFixedSize(true)
         videoAdapter = VideoPostAdapter(videoPostMainList)

@@ -9,14 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.*
+import com.abstractcoder.baudoapp.databinding.FragmentHomeBinding
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomeImageFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomePodcastFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomeVideoFragment
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.MyCallback
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private var firestore = Firestore()
     private val bundle = Bundle()
 
@@ -29,7 +33,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,8 +65,8 @@ class HomeFragment : Fragment() {
         makeCurrentFragment(imageSubFragment)
 
         // Fragment Navigation
-        contentNavigationView.itemBackgroundResource = R.color.content_items_background_color
-        contentNavigationView.setOnNavigationItemSelectedListener {
+        binding.contentNavigationView.itemBackgroundResource = R.color.content_items_background_color
+        binding.contentNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_image -> makeCurrentFragment(imageSubFragment)
                 R.id.ic_video -> makeCurrentFragment(videoSubFragment)

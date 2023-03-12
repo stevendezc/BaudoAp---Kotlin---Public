@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.abstractcoder.baudoapp.R
-import kotlinx.android.synthetic.main.activity_home.*
+import com.abstractcoder.baudoapp.databinding.FragmentNavegantesBinding
 
 class NavegantesFragment : Fragment() {
+
+    private var _binding: FragmentNavegantesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,8 @@ class NavegantesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_navegantes, container, false)
+        _binding = FragmentNavegantesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 }

@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.abstractcoder.baudoapp.R
-import kotlinx.android.synthetic.main.activity_home.*
+import com.abstractcoder.baudoapp.databinding.FragmentEventsBinding
 
 class EventsFragment : Fragment() {
+
+    private var _binding: FragmentEventsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,8 @@ class EventsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false)
+        _binding = FragmentEventsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 }

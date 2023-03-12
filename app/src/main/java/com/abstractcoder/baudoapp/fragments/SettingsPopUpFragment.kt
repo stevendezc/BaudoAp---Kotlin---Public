@@ -1,21 +1,25 @@
 package com.abstractcoder.baudoapp.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.FragmentSettingsPopUpBinding
 
 class SettingsPopUpFragment : DialogFragment() {
+
+    private var _binding: FragmentSettingsPopUpBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings_pop_up, container, false)
+        _binding = FragmentSettingsPopUpBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 }

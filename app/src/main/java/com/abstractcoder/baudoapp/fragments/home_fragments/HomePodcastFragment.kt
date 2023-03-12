@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
-import com.google.firebase.Timestamp
 
 class HomePodcastFragment : Fragment() {
+
+    private var _binding: FragmentHomePodcastBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var podcastAdapter: PodcastPostAdapter
@@ -32,7 +34,8 @@ class HomePodcastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_podcast, container, false)
+        _binding = FragmentHomePodcastBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +66,7 @@ class HomePodcastFragment : Fragment() {
             }
         }
 
-        podcastRecyclerView = view.findViewById(R.id.podcast_list_recycler)
+        podcastRecyclerView = binding.podcastListRecycler
         podcastRecyclerView.layoutManager = layoutManager
         podcastRecyclerView.setHasFixedSize(true)
         podcastAdapter = context?.let { PodcastPostAdapter(it, podcastPostMainList) }!!
