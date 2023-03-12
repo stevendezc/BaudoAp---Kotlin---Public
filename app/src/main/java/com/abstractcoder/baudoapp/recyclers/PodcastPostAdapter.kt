@@ -1,10 +1,17 @@
 package com.abstractcoder.baudoapp.recyclers
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
+import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
@@ -14,7 +21,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PodcastPostAdapter(private val podcastPostList: ArrayList<PodcastPostMain>) : RecyclerView.Adapter<PodcastPostAdapter.PodcastPostHolder>() {
+class PodcastPostAdapter(private val context: Context, private val podcastPostList: ArrayList<PodcastPostMain>) : RecyclerView.Adapter<PodcastPostAdapter.PodcastPostHolder>() {
+
+    lateinit var runnable: Runnable
+    private var handler = Handler()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastPostHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -32,13 +42,62 @@ class PodcastPostAdapter(private val podcastPostList: ArrayList<PodcastPostMain>
                 .load(imageUrl)
                 .into(holder.podcastThumbnail)
         }
-        //holder.imageThumbnail.setImageURI(currentItem.thumbnail)
-        holder.podcastThumbnail.setImageResource(currentItem.thumbnail)
+        holder.podcastThumbnail.setImageURI(currentItem.thumbnail)
+        //holder.podcastThumbnail.setImageResource(currentItem.thumbnail)
         holder.podcastTitle.text = currentItem.title
         val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
         val dateString = dateFormat.format(currentItem.timestamp.toDate())
         holder.podcastTimestamp.text = dateString
         holder.podcastDescription.text = currentItem.description
+
+        val podcastMedia = MediaPlayer.create(context, currentItem.media)
+
+        // Play button Event
+        holder.podcastPlay.setOnClickListener {
+            if (!podcastMedia.isPlaying) {
+                podcastMedia.start()
+                holder.podcastPlay.setImageResource(R.drawable.pause)
+            } else {
+                podcastMedia.pause()
+                holder.podcastPlay.setImageResource(R.drawable.play)
+            }
+        }
+        // Seekbar functionalities
+        holder.podcastSeekbar.progress = 0
+        holder.podcastSeekbar.max = podcastMedia.duration
+        holder.podcastSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekbar: SeekBar?, position: Int, changed: Boolean) {
+                if (changed) {
+                    podcastMedia.seekTo(position)
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
+        Thread(Runnable {
+            while (podcastMedia != null) {
+                try {
+                    var msg = Message()
+                    msg.what = podcastMedia.currentPosition
+                    handler.sendMessage(msg)
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                }
+            }
+        })
+
+        @SuppressLint("HandlerLeak")
+        var handler = object: Handler() {
+            override fun handleMessage(msg: Message) {
+                var currentPosition = msg.what
+                holder.podcastSeekbar.progress = currentPosition
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -51,6 +110,8 @@ class PodcastPostAdapter(private val podcastPostList: ArrayList<PodcastPostMain>
         val podcastTitle: TextView = itemView.findViewById(R.id.podcast_list_item_title)
         val podcastTimestamp: TextView = itemView.findViewById(R.id.podcast_list_item_timestamp)
         val podcastDescription: TextView = itemView.findViewById(R.id.podcast_list_item_description)
+        val podcastPlay: ImageView = itemView.findViewById(R.id.podcast_list_item_play)
+        val podcastSeekbar: SeekBar = itemView.findViewById(R.id.podcast_list_item_seekbar)
 
     }
 

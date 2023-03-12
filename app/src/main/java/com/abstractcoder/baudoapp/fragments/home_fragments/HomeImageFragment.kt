@@ -24,8 +24,6 @@ class HomeImageFragment : Fragment() {
     private lateinit var imageRecyclerView: RecyclerView
     private var imagePostMainList: ArrayList<ImagePostMain> = arrayListOf<ImagePostMain>()
 
-    private var firestore = Firestore()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -55,11 +53,13 @@ class HomeImageFragment : Fragment() {
         val nonDuplicates = incomingPosts.distinct()
         imagePostMainList = arrayListOf<ImagePostMain>()
         for (post in nonDuplicates) {
-            val uri = Uri.parse(post.thumbnail)
-            val author = post.author
-            val description = post.description
-            val imagePost = ImagePostMain(uri, author, description)
-            imagePostMainList.add(imagePost)
+            if (post.type == "image") {
+                val uri = Uri.parse(post.thumbnail)
+                val author = post.author
+                val description = post.description
+                val imagePost = ImagePostMain(uri, author, description)
+                imagePostMainList.add(imagePost)
+            }
         }
 
         imageRecyclerView = view.findViewById(R.id.image_list_recycler)

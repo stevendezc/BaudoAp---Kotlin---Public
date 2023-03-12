@@ -75,7 +75,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/imageView20"
+                        android:id="@+id/podcast_list_item_play"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -146,11 +146,17 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/view2"
+        <SeekBar
+            android:id="@+id/podcast_list_item_seekbar"
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginTop="10dp"
-            android:background="#FCCA2E" />
+            android:progress="30"
+            android:thumbTint="#FCCA2E"
+            android:progressTint="#FCCA2E"
+            android:progressBackgroundTint="@color/white"
+            android:progressDrawable="@drawable/custom_seekbar"
+            />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

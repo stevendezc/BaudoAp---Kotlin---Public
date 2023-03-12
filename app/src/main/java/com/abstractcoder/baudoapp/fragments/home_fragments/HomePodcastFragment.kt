@@ -1,12 +1,16 @@
 package com.abstractcoder.baudoapp.fragments.home_fragments
 
+import android.content.ContentValues
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abstractcoder.baudoapp.PostData
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
@@ -18,10 +22,6 @@ class HomePodcastFragment : Fragment() {
     private lateinit var podcastAdapter: PodcastPostAdapter
     private lateinit var podcastRecyclerView: RecyclerView
     private var podcastPostMainList: ArrayList<PodcastPostMain> = arrayListOf<PodcastPostMain>()
-    lateinit var podcastId: Array<Int>
-    lateinit var podcastHeading: Array<String>
-    lateinit var podcastDate: Array<Timestamp>
-    lateinit var podcastPostMain: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,51 +38,36 @@ class HomePodcastFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layoutManager = LinearLayoutManager(context)
-        initPodcastDummyData()
+
+        val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
+        Log.d(ContentValues.TAG, "incomingPostList on PodcastFragment: ${incomingPostList.size}")
+        // Load Posts
+        initData(view,incomingPostList)
+    }
+
+    private fun initData(view: View, incomingPosts: ArrayList<PostData>) {
+
+        Log.d(ContentValues.TAG, "Init data")
+        Log.d(ContentValues.TAG, "incomingPosts: ${incomingPosts.size}")
+        val nonDuplicates = incomingPosts.distinct()
+        podcastPostMainList = arrayListOf<PodcastPostMain>()
+        for (post in nonDuplicates) {
+            if (post.type == "podcast") {
+                val thumbnail = Uri.parse(post.thumbnail)
+                val title = post.title
+                val timestamp = post.timestamp
+                val description = post.description
+                val media = Uri.parse(post.main_media)
+                val podcastPost = PodcastPostMain(thumbnail, title, timestamp, description, media)
+                podcastPostMainList.add(podcastPost)
+            }
+        }
 
         podcastRecyclerView = view.findViewById(R.id.podcast_list_recycler)
         podcastRecyclerView.layoutManager = layoutManager
         podcastRecyclerView.setHasFixedSize(true)
-        podcastAdapter = PodcastPostAdapter(podcastPostMainList)
+        podcastAdapter = context?.let { PodcastPostAdapter(it, podcastPostMainList) }!!
         podcastRecyclerView.adapter = podcastAdapter
-    }
-
-    private fun initPodcastDummyData() {
-        podcastPostMainList = arrayListOf<PodcastPostMain>()
-        podcastId = arrayOf(
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-        )
-        podcastHeading = arrayOf(
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-            getString(R.string.home_image),
-        )
-        val currentDatetime = Timestamp.now()
-        podcastDate = arrayOf(
-            currentDatetime,
-            currentDatetime,
-            currentDatetime,
-            currentDatetime,
-            currentDatetime,
-        )
-        podcastPostMain = arrayOf(
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-            getString(R.string.app_name),
-        )
-
-        for (i in podcastId.indices) {
-            val podcastPost = PodcastPostMain(podcastId[i], podcastHeading[i], podcastDate[i], podcastPostMain[i])
-            podcastPostMainList.add(podcastPost)
-        }
     }
 
 }
