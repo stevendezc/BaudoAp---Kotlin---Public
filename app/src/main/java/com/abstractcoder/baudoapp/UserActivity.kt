@@ -3,18 +3,21 @@ package com.abstractcoder.baudoapp
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_user.*
 
 class UserActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
     private val db = FirebaseFirestore.getInstance()
 
+    private lateinit var binding: ActivityUserBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Recover data with bundle
         val bundle = intent.extras
@@ -37,7 +40,7 @@ class UserActivity : AppCompatActivity() {
         }
 
         val mDialog = Dialog(this)
-        settingsButton.setOnClickListener {
+        binding.settingsButton.setOnClickListener {
             mDialog.setContentView(R.layout.fragment_settings_pop_up)
         }
     }
@@ -45,6 +48,6 @@ class UserActivity : AppCompatActivity() {
     private fun setup(email: String, name: String) {
         title = "Pagina de Usuario"
 
-        userNameTextView.text = name
+        binding.userNameTextView.text = name
     }
 }

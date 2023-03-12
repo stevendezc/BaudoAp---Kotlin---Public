@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.abstractcoder.baudoapp.databinding.ActivityLogInBinding
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -23,16 +24,17 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_log_in.*
 
 class LogInActivity : AppCompatActivity() {
     private val GOOGLE_SIGN_IN = 100
     private val callbackManager = CallbackManager.Factory.create()
     private val db = FirebaseFirestore.getInstance()
+    private lateinit var binding: ActivityLogInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_log_in)
+        binding = ActivityLogInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Analytics event
         val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -47,7 +49,7 @@ class LogInActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        authLayout.visibility = View.VISIBLE
+        binding.authLayout.visibility = View.VISIBLE
     }
 
     // Session data retrieval
@@ -57,7 +59,7 @@ class LogInActivity : AppCompatActivity() {
         val provider = prefs.getString("provider", null)
 
         if (email != null && provider != null) {
-            authLayout.visibility = View.INVISIBLE
+            binding.authLayout.visibility = View.INVISIBLE
             showHome(email, ProviderType.valueOf(provider))
         }
     }
@@ -66,7 +68,7 @@ class LogInActivity : AppCompatActivity() {
         title = "Autenticacion"
         val authInstance = FirebaseAuth.getInstance()
 
-        googleButton.setOnClickListener {
+        binding.googleButton.setOnClickListener {
             // Config
             val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -78,7 +80,7 @@ class LogInActivity : AppCompatActivity() {
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
-        facebookButton.setOnClickListener {
+        binding.facebookButton.setOnClickListener {
             // Config
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
             LoginManager.getInstance().registerCallback(callbackManager,
@@ -111,10 +113,10 @@ class LogInActivity : AppCompatActivity() {
             })
         }
 
-        logInButton.setOnClickListener {
-            if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                authInstance.signInWithEmailAndPassword(emailEditText.text.toString(),
-                    passwordEditText.text.toString()).addOnCompleteListener {
+        binding.logInButton.setOnClickListener {
+            if (binding.emailEditText.text.isNotEmpty() && binding.passwordEditText.text.isNotEmpty()) {
+                authInstance.signInWithEmailAndPassword(binding.emailEditText.text.toString(),
+                    binding.passwordEditText.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val user = authInstance.currentUser
                         if (user != null) {
@@ -123,11 +125,11 @@ class LogInActivity : AppCompatActivity() {
                                 Toast.makeText(this, "Correo electronico no verificado", Toast.LENGTH_SHORT).show()
                             } else {
                                 val email = it.result?.user?.email ?: ""
-                                db.collection("users").document(emailEditText.text.toString()).get().addOnSuccessListener {
+                                db.collection("users").document(binding.emailEditText.text.toString()).get().addOnSuccessListener {
                                     val savedVerifiedState = it.get("verified").toString().toBoolean()
                                     Log.d("savedVerified", savedVerifiedState.toString())
                                     if (!savedVerifiedState) {
-                                        db.collection("users").document(emailEditText.text.toString()).update(
+                                        db.collection("users").document(binding.emailEditText.text.toString()).update(
                                             mapOf("verified" to true)
                                         )
                                         showHome(email, ProviderType.BASIC)
@@ -144,7 +146,7 @@ class LogInActivity : AppCompatActivity() {
             }
         }
 
-        registerButton.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             showRegister()
         }
     }

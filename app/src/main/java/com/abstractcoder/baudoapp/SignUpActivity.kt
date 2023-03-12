@@ -5,20 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.abstractcoder.baudoapp.databinding.ActivitySignUpBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
+    private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Analytics event
         val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -33,14 +33,14 @@ class SignUpActivity : AppCompatActivity() {
     private fun setup() {
         title = "Registro"
         val authInstance = FirebaseAuth.getInstance()
-        signUpButton.setOnClickListener {
-            val name: String = registerNameEditText.text.toString()
-            val email: String = registerEmailEditText.text.toString()
-            val password: String = registerPasswordEditText.text.toString()
+        binding.signUpButton.setOnClickListener {
+            val name: String = binding.registerNameEditText.text.toString()
+            val email: String = binding.registerEmailEditText.text.toString()
+            val password: String = binding.registerPasswordEditText.text.toString()
             val user = User(name, email, password)
-            if (registerNameEditText.text.isNotEmpty() && registerEmailEditText.text.isNotEmpty() && registerPasswordEditText.text.isNotEmpty()) {
-                authInstance.createUserWithEmailAndPassword(registerEmailEditText.text.toString(),
-                    registerPasswordEditText.text.toString()).addOnCompleteListener {
+            if (binding.registerNameEditText.text.isNotEmpty() && binding.registerEmailEditText.text.isNotEmpty() && binding.registerPasswordEditText.text.isNotEmpty()) {
+                authInstance.createUserWithEmailAndPassword(binding.registerEmailEditText.text.toString(),
+                    binding.registerPasswordEditText.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val fireUser = authInstance.currentUser
                         fireUser?.sendEmailVerification()
@@ -56,7 +56,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        registerUpperLogo.setOnClickListener {
+        binding.registerUpperLogo.setOnClickListener {
             showLogIn()
         }
     }

@@ -3,13 +3,16 @@ package com.abstractcoder.baudoapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.abstractcoder.baudoapp.databinding.ActivitySplashBinding
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Analytics event
         val analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -23,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun setup() {
         title = "Splash"
-        splashButton.setOnClickListener {
+        binding.splashButton.setOnClickListener {
             showLogIn()
         }
     }
