@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="topRoundImage">
-        <item name="cornerSizeTopLeft">30dp</item>
-        <item name="cornerSizeTopRight">30dp</item>
+    <style name="roundImage">
+        <item name="cornerSize">20dp</item>
     </style>
 
     <style name="topPointCornerRoundImage">
