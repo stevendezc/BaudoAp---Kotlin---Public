@@ -10,13 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SeekBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.PodcastListItemBinding
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,8 +40,6 @@ class PodcastPostAdapter(private val context: Context, private val podcastPostLi
                 .load(imageUrl)
                 .into(holder.podcastThumbnail)
         }
-        holder.podcastThumbnail.setImageURI(currentItem.thumbnail)
-        //holder.podcastThumbnail.setImageResource(currentItem.thumbnail)
         holder.podcastTitle.text = currentItem.title
         val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
         val dateString = dateFormat.format(currentItem.timestamp.toDate())
@@ -106,12 +102,14 @@ class PodcastPostAdapter(private val context: Context, private val podcastPostLi
 
     class PodcastPostHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val podcastThumbnail: ShapeableImageView = itemView.findViewById(R.id.podcast_list_item_media)
-        val podcastTitle: TextView = itemView.findViewById(R.id.podcast_list_item_title)
-        val podcastTimestamp: TextView = itemView.findViewById(R.id.podcast_list_item_timestamp)
-        val podcastDescription: TextView = itemView.findViewById(R.id.podcast_list_item_description)
-        val podcastPlay: ImageView = itemView.findViewById(R.id.podcast_list_item_play)
-        val podcastSeekbar: SeekBar = itemView.findViewById(R.id.podcast_list_item_seekbar)
+        val binding = PodcastListItemBinding.bind(itemView)
+
+        val podcastThumbnail = binding.podcastListItemMedia
+        val podcastTitle = binding.podcastListItemTitle
+        val podcastTimestamp = binding.podcastListItemTimestamp
+        val podcastDescription = binding.podcastListItemDescription
+        val podcastPlay = binding.podcastListItemPlay
+        val podcastSeekbar = binding.podcastListItemSeekbar
 
     }
 

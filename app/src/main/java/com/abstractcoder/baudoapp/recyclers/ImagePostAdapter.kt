@@ -5,11 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.ImageListItemBinding
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 
 class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : RecyclerView.Adapter<ImagePostAdapter.ImagePostHolder>() {
 
@@ -29,8 +28,6 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
                 .load(imageUrl)
                 .into(holder.imageThumbnail)
         }
-        holder.imageThumbnail.setImageURI(currentItem.thumbnail)
-        //holder.imageThumbnail.setImageResource(currentItem.thumbnail)
         holder.imageAuthor.text = currentItem.author
         holder.imageDescription.text = currentItem.description
     }
@@ -41,9 +38,11 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
 
     class ImagePostHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imageThumbnail: ShapeableImageView = itemView.findViewById(R.id.image_list_item_media)
-        val imageAuthor: TextView = itemView.findViewById(R.id.image_list_item_author)
-        val imageDescription: TextView = itemView.findViewById(R.id.image_list_item_description)
+        val binding = ImageListItemBinding.bind(itemView)
+
+        val imageThumbnail = binding.imageListItemMedia
+        val imageAuthor = binding.imageListItemAuthor
+        val imageDescription = binding.imageListItemDescription
 
     }
 

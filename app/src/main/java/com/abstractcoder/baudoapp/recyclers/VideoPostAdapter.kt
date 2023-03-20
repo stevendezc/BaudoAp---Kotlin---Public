@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.databinding.VideoListItemBinding
 import com.bumptech.glide.Glide
 
 class VideoPostAdapter(private val videoPostList: ArrayList<VideoPostMain>) : RecyclerView.Adapter<VideoPostAdapter.VideoPostHolder>() {
@@ -27,8 +27,6 @@ class VideoPostAdapter(private val videoPostList: ArrayList<VideoPostMain>) : Re
                 .load(imageUrl)
                 .into(holder.imageThumbnail)
         }
-        //holder.imageThumbnail.setImageURI(currentItem.thumbnail)
-        holder.imageThumbnail.setImageResource(currentItem.thumbnail)
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +35,9 @@ class VideoPostAdapter(private val videoPostList: ArrayList<VideoPostMain>) : Re
 
     class VideoPostHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imageThumbnail: ImageView = itemView.findViewById(R.id.video_list_item_media)
+        val binding = VideoListItemBinding.bind(itemView)
+
+        val imageThumbnail = binding.videoListItemMedia
 
     }
 }
