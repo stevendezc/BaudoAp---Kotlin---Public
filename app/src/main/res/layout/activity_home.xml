@@ -57,7 +57,7 @@
             android:text="@string/sign_out" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/fixedVideo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -81,8 +81,7 @@
         android:background="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view">
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/view"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

@@ -56,6 +56,10 @@ class HomeActivity : AppCompatActivity() {
             showUserActivity(email)
         }
 
+        binding.fixedVideo.setOnClickListener {
+            showFixedVideo()
+        }
+
         binding.logOutbutton.setOnClickListener {
             // saved prefs removal (session Data)
             val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
@@ -95,6 +99,11 @@ class HomeActivity : AppCompatActivity() {
     private fun showLogIn() {
         val logInIntent = Intent(this, LogInActivity::class.java)
         startActivity(logInIntent)
+    }
+
+    private fun showFixedVideo() {
+        val fixedVideoIntent = Intent(this, FixedVideoActivity::class.java)
+        startActivity(fixedVideoIntent)
     }
 
     private fun showUserActivity(email: String) {
