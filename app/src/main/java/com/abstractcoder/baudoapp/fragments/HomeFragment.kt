@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
         val imageSubFragment = HomeImageFragment()
         imageSubFragment.arguments = bundle
         val videoSubFragment = HomeVideoFragment()
+        videoSubFragment.arguments = bundle
         val podcastSubFragment = HomePodcastFragment()
         podcastSubFragment.arguments = bundle
         makeCurrentFragment(imageSubFragment)

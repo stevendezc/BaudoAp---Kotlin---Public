@@ -11,6 +11,9 @@ import com.abstractcoder.baudoapp.databinding.VideoListItemBinding
 import com.bumptech.glide.Glide
 
 class VideoPostAdapter(private val videoPostList: ArrayList<VideoPostMain>) : RecyclerView.Adapter<VideoPostAdapter.VideoPostHolder>() {
+
+    var onItemClick : ((VideoPostMain) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoPostHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.video_list_item,
@@ -26,6 +29,10 @@ class VideoPostAdapter(private val videoPostList: ArrayList<VideoPostMain>) : Re
             Glide.with(holder.imageThumbnail)
                 .load(imageUrl)
                 .into(holder.imageThumbnail)
+        }
+
+        holder.imageThumbnail.setOnClickListener {
+            onItemClick?.invoke(currentItem)
         }
     }
 

@@ -1,5 +1,7 @@
 package com.abstractcoder.baudoapp.fragments.home_fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
@@ -8,7 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.FullSizeVideoActivity
+import com.abstractcoder.baudoapp.PostData
 import com.abstractcoder.baudoapp.databinding.FragmentHomeVideoBinding
 import com.abstractcoder.baudoapp.recyclers.*
 
@@ -40,32 +43,40 @@ class HomeVideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         layoutManager = GridLayoutManager(context, 3)
-        initVideoDummyData()
 
-        videoRecyclerView = binding.videoListRecycler
-        videoRecyclerView.layoutManager = layoutManager
-        videoRecyclerView.setHasFixedSize(true)
-        videoAdapter = VideoPostAdapter(videoPostMainList)
-        videoRecyclerView.adapter = videoAdapter
+        val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
+        initVideoData(incomingPostList)
     }
 
     private fun getSpanCount() {
         val metrics: DisplayMetrics = DisplayMetrics()
     }
 
-    private fun initVideoDummyData() {
+    private fun initVideoData(incomingPosts: ArrayList<PostData>) {
+        val nonDuplicates = incomingPosts.distinct()
         videoPostMainList = arrayListOf<VideoPostMain>()
-        videoId = arrayOf(
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-            R.drawable.background,
-        )
+        for (post in nonDuplicates) {
+            if (post.type == "video") {
+                val video = Uri.parse(post.main_media)
+                val thumbnail = Uri.parse(post.thumbnail)
+                val title = post.title
+                val description = post.description
+                val category = post.category
+                val imagePost = VideoPostMain(video, thumbnail, title, description, category)
+                videoPostMainList.add(imagePost)
+            }
+        }
 
-        for (i in videoId.indices) {
-            val imagePost = VideoPostMain(videoId[i])
-            videoPostMainList.add(imagePost)
+        videoRecyclerView = binding.videoListRecycler
+        videoRecyclerView.layoutManager = layoutManager
+        videoRecyclerView.setHasFixedSize(true)
+        videoAdapter = VideoPostAdapter(videoPostMainList)
+        videoRecyclerView.adapter = videoAdapter
+
+        videoAdapter.onItemClick = {
+            val intent = Intent(this.context, FullSizeVideoActivity::class.java)
+            intent.putExtra("video", it)
+            startActivity(intent)
         }
     }
 

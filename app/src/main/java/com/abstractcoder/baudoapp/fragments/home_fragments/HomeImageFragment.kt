@@ -2,6 +2,7 @@ package com.abstractcoder.baudoapp.fragments.home_fragments
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.PostData
 import com.abstractcoder.baudoapp.databinding.FragmentHomeImageBinding
+import com.abstractcoder.baudoapp.innerImageContentActivity
 import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
 import com.abstractcoder.baudoapp.recyclers.ImagePostMain
 
@@ -58,9 +60,10 @@ class HomeImageFragment : Fragment() {
         for (post in nonDuplicates) {
             if (post.type == "image") {
                 val uri = Uri.parse(post.thumbnail)
+                val title = post.title
                 val author = post.author
                 val description = post.description
-                val imagePost = ImagePostMain(uri, author, description)
+                val imagePost = ImagePostMain(uri, title, author, description)
                 imagePostMainList.add(imagePost)
             }
         }
@@ -70,6 +73,12 @@ class HomeImageFragment : Fragment() {
         imageRecyclerView.setHasFixedSize(true)
         imageAdapter = ImagePostAdapter(imagePostMainList)
         imageRecyclerView.adapter = imageAdapter
+
+        imageAdapter.onItemClick = {
+            val intent = Intent(this.context, innerImageContentActivity::class.java)
+            intent.putExtra("image", it)
+            startActivity(intent)
+        }
     }
 
 }

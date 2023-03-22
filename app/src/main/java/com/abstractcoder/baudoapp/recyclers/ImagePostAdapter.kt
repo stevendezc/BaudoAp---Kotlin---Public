@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 
 class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : RecyclerView.Adapter<ImagePostAdapter.ImagePostHolder>() {
 
+    var onItemClick : ((ImagePostMain) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePostHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.image_list_item,
@@ -30,6 +32,10 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
         }
         holder.imageAuthor.text = currentItem.author
         holder.imageDescription.text = currentItem.description
+
+        holder.imageContainer.setOnClickListener {
+            onItemClick?.invoke(currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -40,6 +46,7 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
 
         val binding = ImageListItemBinding.bind(itemView)
 
+        val imageContainer = binding.imageListItemMediaContainer
         val imageThumbnail = binding.imageListItemMedia
         val imageAuthor = binding.imageListItemAuthor
         val imageDescription = binding.imageListItemDescription

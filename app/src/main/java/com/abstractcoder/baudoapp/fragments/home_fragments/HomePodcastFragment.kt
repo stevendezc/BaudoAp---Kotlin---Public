@@ -1,6 +1,7 @@
 package com.abstractcoder.baudoapp.fragments.home_fragments
 
 import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abstractcoder.baudoapp.InnerPodcastContentActivity
 import com.abstractcoder.baudoapp.PostData
 import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
@@ -71,6 +73,12 @@ class HomePodcastFragment : Fragment() {
         podcastRecyclerView.setHasFixedSize(true)
         podcastAdapter = context?.let { PodcastPostAdapter(it, podcastPostMainList) }!!
         podcastRecyclerView.adapter = podcastAdapter
+
+        podcastAdapter.onItemClick = {
+            val intent = Intent(this.context, InnerPodcastContentActivity::class.java)
+            intent.putExtra("podcast", it)
+            startActivity(intent)
+        }
     }
 
 }
