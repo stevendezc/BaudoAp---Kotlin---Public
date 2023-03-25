@@ -8,4 +8,7 @@
     <color name="orange_yellow">#FFAA00</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="productivos">#00FF6D</color>
+    <color name="cultura">#00CFFF</color>
+    <color name="turismo">#FF7A00</color>
 </resources>
