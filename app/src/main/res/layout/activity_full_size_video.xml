@@ -22,14 +22,6 @@
         app:srcCompat="@drawable/back" />
 
     <ImageView
-        android:id="@+id/fullSizeVideoCommentaries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
-        app:srcCompat="@drawable/commentaries" />
-
-    <ImageView
         android:id="@+id/fullSizeVideoVideoBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

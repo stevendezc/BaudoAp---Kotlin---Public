@@ -28,6 +28,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
 
             binding.innerVideoBack.setOnClickListener {
                 finish()
+                overridePendingTransition(com.facebook.R.anim.abc_slide_in_top, com.facebook.R.anim.abc_slide_out_bottom)
             }
 
             val imageUrl = videoContent.thumbnail
