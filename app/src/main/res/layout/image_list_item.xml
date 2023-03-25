@@ -114,6 +114,8 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_list_item_media_container" />
 
@@ -125,6 +127,8 @@
                 android:text="TextView"
                 android:textSize="12sp"
                 android:textColor="@color/white"
+                android:maxLines="4"
+                android:ellipsize="end"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_list_item_author" />
         </LinearLayout>
