@@ -15,4 +15,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Splash screen Theme -->
+    <style name="SplashTheme" parent="Theme.BaudoApp">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+
 </resources>
