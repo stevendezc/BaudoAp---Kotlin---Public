@@ -14,7 +14,7 @@ import com.abstractcoder.baudoapp.fragments.home_fragments.HomeImageFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomePodcastFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomeVideoFragment
 import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.MyCallback
+import com.abstractcoder.baudoapp.utils.PostsCallback
 
 class HomeFragment : Fragment() {
 
@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Load Posts
-        val posts = firestore.retrieveDocuments(object : MyCallback {
+        val posts = firestore.retrieveDocuments(object : PostsCallback {
             override fun onSuccess(result: ArrayList<PostData>) {
                 Log.d(ContentValues.TAG, "posts on HomeFragment: $result")
                 // Setup subfragments
