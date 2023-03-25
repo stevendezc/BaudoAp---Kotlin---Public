@@ -71,19 +71,21 @@
 
                     <TextView
                         android:id="@+id/inner_podcast_title"
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        android:ellipsize="end"/>
 
                     <ImageView
                         android:id="@+id/inner_podcast_play"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0"
                         app:srcCompat="@drawable/play" />
 
                 </LinearLayout>
@@ -96,7 +98,9 @@
                     android:text="TextView"
                     android:textColor="@color/white"
                     android:textSize="10dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:id="@+id/inner_podcast_description"
@@ -104,7 +108,9 @@
                     android:layout_height="63dp"
                     android:text="TextView"
                     android:textColor="@color/white"
-                    android:textSize="10dp" />
+                    android:textSize="10dp"
+                    android:maxLines="4"
+                    android:ellipsize="end"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
