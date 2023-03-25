@@ -34,6 +34,7 @@
             android:layout_height="50dp" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/facebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
