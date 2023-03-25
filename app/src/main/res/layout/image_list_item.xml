@@ -25,7 +25,7 @@
                 android:id="@+id/image_list_item_media"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/roundImage"
                 app:strokeColor="@null"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
