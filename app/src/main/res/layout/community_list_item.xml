@@ -32,7 +32,7 @@
                     android:id="@+id/community_thumbnail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/roundImage"
                     app:strokeColor="#00CFFF"
                     app:strokeWidth="1dp"
