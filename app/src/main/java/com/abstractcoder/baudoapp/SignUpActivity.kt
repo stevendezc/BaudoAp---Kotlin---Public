@@ -68,7 +68,7 @@ class SignUpActivity : AppCompatActivity() {
                 "name" to user.name,
                 "password" to user.password,
                 "user_pic" to "",
-                "saved_posts" to emptyArray<String>()
+                "saved_posts" to emptyList<String>()
             )
         )
     }
