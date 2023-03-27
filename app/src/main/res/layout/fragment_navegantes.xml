@@ -17,30 +17,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/navegantesBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/back" />
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/navegantesLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center|top"
-                app:srcCompat="@drawable/navegantes_logo" />
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/navegantesFixed"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="right"
-                app:srcCompat="@drawable/logo_baudo_small" />
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:id="@+id/navegantesInfo"
@@ -52,8 +29,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="190dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/white_round_border"
             android:orientation="vertical"
             android:paddingStart="30dp"
@@ -64,41 +41,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Navega con fuerza"
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_fuerza_title"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:paddingStart="15dp"
                 android:paddingBottom="10dp"
-                android:text="$50.000 o 20USD"
+                android:text="@string/navegantes_fuerza_price"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Recibes los beneficios de Navegantes."
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_fuerza_description"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- No incluye la pieza editorial"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- Aporte único para Fábricas de Agua parte II"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="11dp" />
 
             <Button
                 android:id="@+id/fuerzaContribute"
@@ -107,16 +73,19 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_round_border"
+                android:fontFamily="@font/sofia"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
-                android:text="APORTAR"
-                android:textColor="@color/white" />
+                android:text="@string/navegantes_button_text"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="190dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/white_round_border"
             android:orientation="vertical"
             android:paddingStart="30dp"
@@ -127,48 +96,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Navega con pasión"
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_pasion_title"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:paddingStart="15dp"
                 android:paddingBottom="10dp"
-                android:text="$100.000 o 40USD"
+                android:text="@string/navegantes_pasion_price"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Recibes los beneficios de Navegantes."
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_pasion_description"
                 android:textColor="@color/white"
-                android:textSize="9dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- Incluye pieza editorial y envío"
-                android:textColor="@color/white"
-                android:textSize="9dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- No incluye envío fuera de Colombia"
-                android:textColor="@color/white"
-                android:textSize="9dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- Aporte único para Fábricas de Agua parte II."
-                android:textColor="@color/white"
-                android:textSize="9dp" />
+                android:textSize="10dp" />
 
             <Button
                 android:id="@+id/pasionContribute"
@@ -177,15 +128,19 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_round_border"
+                android:fontFamily="@font/sofia"
+                android:minHeight="48dp"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
-                android:text="APORTAR"
-                android:textColor="@color/white" />
+                android:text="@string/navegantes_button_text"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="190dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/white_round_border"
             android:orientation="vertical"
@@ -197,27 +152,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Navega a tu ritmo"
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_ritmo_title"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:paddingStart="15dp"
                 android:paddingBottom="10dp"
-                android:text="$150.000 o Libre"
+                android:text="@string/navegantes_ritmo_price"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Dona esta cantidad o más y recibirás los beneficios de Navegantes + Certificado de donación de nuestra fundación"
+                android:fontFamily="@font/sofia"
+                android:text="@string/navegantes_ritmo_description"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="11dp" />
 
             <Button
                 android:id="@+id/ritmoContribute"
@@ -226,10 +184,13 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_round_border"
+                android:fontFamily="@font/sofia"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
-                android:text="APORTAR"
-                android:textColor="@color/white" />
+                android:text="@string/navegantes_button_text"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

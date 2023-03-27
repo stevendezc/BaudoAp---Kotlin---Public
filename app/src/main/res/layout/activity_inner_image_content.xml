@@ -59,18 +59,21 @@
                 android:id="@+id/image_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:paddingBottom="5dp"
                 android:text="TextView"
                 android:textColor="#444444"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/image_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="TextView"
-                android:textColor="#444444" />
+                android:textColor="#444444"
+                android:textSize="11dp" />
 
             <View
                 android:layout_width="40dp"
@@ -89,10 +92,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:includeFontPadding="false"
                 android:text="Comentarios"
                 android:textColor="@color/black"
-                android:textSize="25dp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
         </LinearLayout>
 

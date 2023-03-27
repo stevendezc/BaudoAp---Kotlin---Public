@@ -42,26 +42,29 @@
                 android:id="@+id/innerVideoTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18dp"
+                android:fontFamily="@font/sofia"
+                android:text="TextView"
                 android:textColor="@color/black"
-                android:text="TextView" />
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/innerVideoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:fontFamily="@font/sofia"
+                android:text="TextView"
                 android:textColor="@color/black"
-                android:text="TextView" />
+                android:textSize="11dp" />
 
             <TextView
                 android:id="@+id/innerVideoCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:fontFamily="@font/sofia"
+                android:text="TextView"
                 android:textColor="@color/black"
-                android:text="TextView" />
+                android:textSize="11dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -78,10 +81,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sofia"
             android:includeFontPadding="false"
             android:text="Comentarios"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="24dp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView

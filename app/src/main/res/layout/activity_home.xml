@@ -39,15 +39,19 @@
                 android:id="@+id/greetingsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="@string/greeting"
                 android:textColor="@color/white"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/nameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white" />
+                android:fontFamily="@font/sofia"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <Button

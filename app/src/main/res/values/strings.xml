@@ -5,8 +5,8 @@
     <string name="login">Acceder</string>
     <string name="facebook_login">Acceder con Facebook</string>
     <string name="google_login">Acceder con Google</string>
-    <string name="sign_up">Registrarme</string>
-    <string name="sign_up1">Registrar</string>
+    <string name="sign_up">Crear usuario</string>
+    <string name="sign_up1">Crear cuenta</string>
     <string name="email">Correo</string>
     <string name="email_hint">Dirección de correo electrónico</string>
     <string name="name">Nombre</string>
@@ -46,4 +46,15 @@
     <string name="settings_popup_privacy">Acuerdo de privacidad</string>
     <string name="settings_popup_disconnect">Desconectar</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- NAVEGANTES FRAGMENT Strings -->
+    <string name="navegantes_button_text">APORTAR</string>
+    <string name="navegantes_fuerza_title">Navega con fuerza</string>
+    <string name="navegantes_fuerza_price">$50.000 o 20USD</string>
+    <string name="navegantes_fuerza_description">• Recibes los beneficios de Navegantes.\n• No incluye la pieza editorial\n• Aporte único para Fábricas de Agua parte II</string>
+    <string name="navegantes_pasion_title">Navega con pasión</string>
+    <string name="navegantes_pasion_price">$100.000 o 40USD</string>
+    <string name="navegantes_pasion_description">• Recibes los beneficios de Navegantes.\n• Incluye pieza editorial y envío\n• No incluye envío fuera de Colombia\n• Aporte único para Fábricas de Agua parte II.</string>
+    <string name="navegantes_ritmo_title">Navega a tu ritmo</string>
+    <string name="navegantes_ritmo_price">$150.000 o Libre</string>
+    <string name="navegantes_ritmo_description">• Dona esta cantidad o más y recibirás los beneficios de Navegantes + Certificado de donación de nuestra fundación</string>
 </resources>

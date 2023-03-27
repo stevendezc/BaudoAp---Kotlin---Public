@@ -58,10 +58,11 @@
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/sofia"
                     android:paddingStart="15dp"
                     android:text="@string/greeting"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,8 +81,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/sofia"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="24dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -126,9 +128,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/sofia"
                 android:text="@string/user_interests"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -171,9 +174,10 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="@string/user_saved_content"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -188,9 +192,10 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="@string/user_weekly_image"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -205,9 +210,10 @@
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="@string/user_recommended_videos"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -222,9 +228,10 @@
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/sofia"
                 android:text="@string/user_suggested_content"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
         </LinearLayout>
 

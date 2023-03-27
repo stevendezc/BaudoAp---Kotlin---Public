@@ -55,11 +55,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/textview_border2"
             android:drawableLeft="@drawable/google"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/sofia"
             android:paddingStart="30dp"
             android:text="@string/google_login"
             android:textAllCaps="false"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="18dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -106,9 +107,10 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sofia"
             android:text="@string/email"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <EditText
@@ -117,8 +119,10 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
             android:ems="10"
+            android:fontFamily="@font/sofia"
             android:hint="@string/email_hint"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textSize="14dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -128,9 +132,10 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sofia"
             android:text="@string/password"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <EditText
@@ -139,8 +144,10 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
             android:ems="10"
+            android:fontFamily="@font/sofia"
             android:hint="@string/password_hint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="14dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -157,9 +164,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/textview_border"
+                android:fontFamily="@font/sofia"
                 android:text="@string/login"
                 android:textAllCaps="false"
-                android:textSize="16sp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <Space
@@ -173,9 +181,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/textview_border"
+                android:fontFamily="@font/sofia"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
-                android:textSize="16sp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
