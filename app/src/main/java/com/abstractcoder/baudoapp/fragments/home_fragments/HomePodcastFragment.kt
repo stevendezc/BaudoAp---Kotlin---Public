@@ -58,12 +58,13 @@ class HomePodcastFragment : Fragment() {
         podcastPostMainList = arrayListOf<PodcastPostMain>()
         for (post in nonDuplicates) {
             if (post.type == "podcast") {
+                val id = post.id
                 val thumbnail = Uri.parse(post.thumbnail)
                 val title = post.title
                 val timestamp = post.timestamp
                 val description = post.description
                 val media = Uri.parse(post.main_media)
-                val podcastPost = PodcastPostMain(thumbnail, title, timestamp, description, media)
+                val podcastPost = PodcastPostMain(id, thumbnail, title, timestamp, description, media)
                 podcastPostMainList.add(podcastPost)
             }
         }
