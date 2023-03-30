@@ -17,6 +17,10 @@ interface CommunitiesCallback {
     fun onSuccess(result: ArrayList<CommunityData>)
 }
 
+interface CommentsCallback {
+    fun onSuccess(result: ArrayList<Commentary>)
+}
+
 class Firestore {
 
     private val db = FirebaseFirestore.getInstance()
@@ -27,14 +31,14 @@ class Firestore {
     fun retrieveDocuments(callback: PostsCallback) {
         // Recover DB documents
         db.collection("posts").get().addOnSuccessListener { posts ->
-            for (community in posts) {
-                var data = community.data
-                Log.d(ContentValues.TAG, "community id: ${community.id}")
+            for (post in posts) {
+                var data = post.data
+                Log.d(ContentValues.TAG, "community id: ${post.id}")
                 var postData = PostData(
-                    community.id,
+                    post.id,
                     data["author"] as String,
                     data["category"] as String,
-                    data["commentaries"] as List<Commentary>,
+                    data["commentaries"] as List<String>,
                     data["description"] as String,
                     data["main_media"] as String,
                     data["reactions"] as List<Reaction>,
@@ -74,6 +78,36 @@ class Firestore {
             callback.onSuccess(communityMainList)
         }.addOnFailureListener { exception ->
             Log.w(ContentValues.TAG, "Error cargando posts.", exception)
+        }
+    }
+
+    fun retrievePostComments(callback: CommentsCallback, postId: String) {
+        // Recover DB documents
+        db.collection("commentaries")
+            .whereEqualTo("post", postId)
+            .get().addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val documentSnapshot = querySnapshot.documents
+                    val commentariesList = arrayListOf<Commentary>()
+                    for (commentary in documentSnapshot) {
+                        val commentaryId = commentary.id
+                        val commentaryData = commentary.data
+                        val incomingCommentary = Commentary(
+                            id = commentaryId,
+                            post = commentaryData?.get("post").toString(),
+                            author = commentaryData?.get("author").toString(),
+                            text = commentaryData?.get("text").toString(),
+                            timestamp = commentaryData?.get("timestamp") as Timestamp,
+                            replies = listOf<Commentary>()
+                        )
+                        commentariesList.add(incomingCommentary)
+                    }
+                    callback.onSuccess(commentariesList)
+                } else {
+                    Log.d("Firestore", "No matching Commentary(ies) found")
+                }
+        }.addOnFailureListener { exception ->
+            Log.w(ContentValues.TAG, "Error cargando comentarios.", exception)
         }
     }
 }

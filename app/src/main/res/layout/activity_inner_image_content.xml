@@ -40,73 +40,116 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/image_comments_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingTop="15dp"
-        android:paddingRight="30dp"
+        android:padding="20dp"
+        android:paddingStart="60dp"
+        android:paddingEnd="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_main_media">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/image_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:fontFamily="@font/sofia"
+            android:paddingBottom="5dp"
+            android:text="TextView"
+            android:textColor="#444444"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/image_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sofia"
-                android:paddingBottom="5dp"
-                android:text="TextView"
-                android:textColor="#444444"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/image_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sofia"
-                android:text="TextView"
-                android:textColor="#444444"
-                android:textSize="11dp" />
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="5dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:background="#444444" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
-                android:background="#444444" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sofia"
-                android:includeFontPadding="false"
-                android:text="Comentarios"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/image_comment_list_recycler"
+        <TextView
+            android:id="@+id/image_description"
             android:layout_width="match_parent"
-            android:layout_height="580dp"
-            android:paddingStart="6dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/comment_list_item" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sofia"
+            android:text="TextView"
+            android:textColor="#444444"
+            android:textSize="11dp" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="5dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="#444444" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="#444444" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sofia"
+            android:includeFontPadding="false"
+            android:text="Comentarios"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/image_comment_list_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/comment_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_comments_header"
+        tools:listitem="@layout/comment_list_item" />
+
+    <LinearLayout
+        android:id="@+id/comment_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/transparent_w_bg"
+        android:backgroundTint="#D9D9D9"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_comment_list_recycler">
+
+        <EditText
+            android:id="@+id/image_commentary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:ems="18"
+            android:hint="Escribir comentario"
+            android:inputType="text" />
+
+        <FrameLayout
+            android:id="@+id/send_image_commentary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10">
+
+            <ImageView
+                android:id="@+id/imageView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+        </FrameLayout>
+
     </LinearLayout>
 
 

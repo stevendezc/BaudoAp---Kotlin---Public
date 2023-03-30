@@ -59,11 +59,13 @@ class HomeImageFragment : Fragment() {
         imagePostMainList = arrayListOf<ImagePostMain>()
         for (post in nonDuplicates) {
             if (post.type == "image") {
+                val id = post.id
                 val uri = Uri.parse(post.thumbnail)
                 val title = post.title
                 val author = post.author
                 val description = post.description
-                val imagePost = ImagePostMain(uri, title, author, description)
+                val comments = post.commentaries
+                val imagePost = ImagePostMain(id, uri, title, author, description, comments)
                 imagePostMainList.add(imagePost)
             }
         }

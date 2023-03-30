@@ -6,6 +6,7 @@ import com.google.firebase.Timestamp
 
 data class Commentary(
     val id: String,
+    val post: String,
     val author: String,
     val text: String,
     val timestamp: Timestamp,
@@ -23,7 +24,7 @@ data class PostData(
     val id: String,
     val author: String,
     val category: String,
-    val commentaries: List<Commentary>,
+    val commentaries: List<String>,
     val description: String,
     val main_media: String,
     val reactions: List<Reaction>,
