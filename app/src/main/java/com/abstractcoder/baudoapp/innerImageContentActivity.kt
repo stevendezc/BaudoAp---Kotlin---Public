@@ -72,7 +72,7 @@ class innerImageContentActivity : AppCompatActivity() {
         }, postId!!)
     }
 
-    private fun addComment(imageContent: ImagePostMain, userName: String) {
+    private fun addComment(userName: String) {
         val commentText = binding.imageCommentary.text
         val timestamp = Timestamp.now()
 
@@ -135,7 +135,7 @@ class innerImageContentActivity : AppCompatActivity() {
             }
 
             binding.sendImageCommentary.setOnClickListener {
-                addComment(imageContent, userName)
+                addComment(userName)
             }
 
             getComments()

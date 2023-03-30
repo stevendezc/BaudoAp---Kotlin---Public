@@ -57,12 +57,13 @@ class HomeVideoFragment : Fragment() {
         videoPostMainList = arrayListOf<VideoPostMain>()
         for (post in nonDuplicates) {
             if (post.type == "video") {
+                val id = post.id
                 val video = Uri.parse(post.main_media)
                 val thumbnail = Uri.parse(post.thumbnail)
                 val title = post.title
                 val description = post.description
                 val category = post.category
-                val imagePost = VideoPostMain(video, thumbnail, title, description, category)
+                val imagePost = VideoPostMain(id, video, thumbnail, title, description, category)
                 videoPostMainList.add(imagePost)
             }
         }

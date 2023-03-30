@@ -4,8 +4,9 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
-data class VideoPostMain(var video: Uri, var thumbnail: Uri, var title: String, var description: String, var category: String): Parcelable {
+data class VideoPostMain(var id: String?, var video: Uri, var thumbnail: Uri, var title: String, var description: String, var category: String): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readParcelable(Uri::class.java.classLoader)!!,
         parcel.readParcelable(Uri::class.java.classLoader)!!,
         parcel.readString()!!,
@@ -15,6 +16,7 @@ data class VideoPostMain(var video: Uri, var thumbnail: Uri, var title: String, 
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeParcelable(video, flags)
         parcel.writeParcelable(thumbnail, flags)
         parcel.writeString(title)
