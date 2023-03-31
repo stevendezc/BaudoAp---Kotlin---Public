@@ -1,14 +1,18 @@
 package com.abstractcoder.baudoapp
 
-import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.fragments.*
+import com.abstractcoder.baudoapp.utils.SettingsDialog
+import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class UserActivity : AppCompatActivity() {
+class UserActivity : FragmentActivity() {
     private lateinit var bottomNav: BottomNavigationView
     private val db = FirebaseFirestore.getInstance()
 
@@ -22,10 +26,16 @@ class UserActivity : AppCompatActivity() {
         // Recover data with bundle
         val bundle = intent.extras
         val email: String = bundle?.getString("email").toString()
+        val provider: String = bundle?.getString("provider").toString()
         val name: String = bundle?.getString("name").toString()
         // Setup incoming data
-        setup(email, name)
+        setup(email, name, provider)
+    }
 
+    private fun setup(email: String, name: String, provider: String) {
+        title = "Pagina de Usuario"
+
+        binding.userNameTextView.text = name
         bottomNav = findViewById(R.id.bottomNavigationView)
         bottomNav.setOnNavigationItemSelectedListener { item ->
             val fragment = when (item.itemId) {
@@ -39,15 +49,27 @@ class UserActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener false
         }
 
-        val mDialog = Dialog(this)
         binding.settingsButton.setOnClickListener {
-            mDialog.setContentView(R.layout.fragment_settings_pop_up)
+            SettingsDialog(
+                onSubmitClickListener = {
+                    // saved prefs removal (session Data)
+                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                    prefs.clear()
+                    prefs.apply()
+
+                    if (provider == ProviderType.FACEBOOK.name) {
+                        LoginManager.getInstance().logOut()
+                    }
+                    FirebaseAuth.getInstance().signOut()
+                    //onBackPressed()
+                    showLogIn()
+                }
+            ).show(supportFragmentManager, "dialog")
         }
     }
 
-    private fun setup(email: String, name: String) {
-        title = "Pagina de Usuario"
-
-        binding.userNameTextView.text = name
+    private fun showLogIn() {
+        val logInIntent = Intent(this, LogInActivity::class.java)
+        startActivity(logInIntent)
     }
 }

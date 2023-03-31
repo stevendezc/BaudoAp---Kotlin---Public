@@ -53,25 +53,11 @@ class HomeActivity : AppCompatActivity() {
         title = "Inicio"
 
         binding.userImageView.setOnClickListener {
-            showUserActivity(email)
+            showUserActivity(email, provider)
         }
 
         binding.fixedVideo.setOnClickListener {
             showFixedVideo()
-        }
-
-        binding.logOutbutton.setOnClickListener {
-            // saved prefs removal (session Data)
-            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-            prefs.clear()
-            prefs.apply()
-
-            if (provider == ProviderType.FACEBOOK.name) {
-                LoginManager.getInstance().logOut()
-            }
-            FirebaseAuth.getInstance().signOut()
-            //onBackPressed()
-            showLogIn()
         }
     }
 
@@ -106,12 +92,14 @@ class HomeActivity : AppCompatActivity() {
         startActivity(fixedVideoIntent)
     }
 
-    private fun showUserActivity(email: String) {
+    private fun showUserActivity(email: String, provider: String) {
         val userIntent = Intent(this, UserActivity::class.java).apply {
             putExtra("email", email)
+            putExtra("provider", provider)
             putExtra("name", binding.nameTextView.text.toString())
         }
         startActivity(userIntent)
+        overridePendingTransition(com.facebook.R.anim.abc_slide_in_top, com.facebook.R.anim.abc_slide_out_bottom)
     }
 
     private fun getUser(email: String) {

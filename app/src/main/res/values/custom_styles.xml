@@ -20,4 +20,10 @@
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
+    <!-- Dialog animation -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fui_slide_in_right</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
 </resources>
