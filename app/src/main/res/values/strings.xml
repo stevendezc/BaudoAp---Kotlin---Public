@@ -46,6 +46,15 @@
     <string name="settings_popup_privacy">Acuerdo de privacidad</string>
     <string name="settings_popup_disconnect">Desconectar</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- INFO DIALOGS Strings -->
+    <string name="info_perfil_main_text">Navega por contenidos exclusivos creados y ajustados a tu perfil e intereses junto a BaudoAP. Revisa tus reacciones y tipo de contenidos que más visitas y compartes.</string>
+    <string name="info_navegantes_main_text">Ser navegante es asumirse como transformador social, siendo parte de una comunidad digital que cree en el periodismo independiente y contribuye activamente para su desarrollo y difusión. En esta sección puedes hacerte navegante y realizar una donación que apoye nuestro trabajo.</string>
+    <string name="info_contenido_main_text">Navega por contenidos exclusivos creados por narradores comunitarios, creadores invitados y el equipo de BaudoAP. Deja tus comentarios e inicia la conversación.</string>
+    <string name="info_comunidad_title">Queremos ser puente</string>
+    <string name="info_comunidad_main_text">entre las comunidades de todos los territorios de Colombia y la comunidad baudoseña.\n</string>
+    <string name="info_comunidad_complementary_text">Aquí encontrarás emprendimientos locales y comunitarios de todo el país.\n\nSi quieres hacer parte de esta red escríbenos a comunidades.baudoap@gmail.com o el teléfono+57 321 7344601.</string>
+    <string name="info_eventos_complementary_text">Si te interesa el medio ambiente, los temas de derechos humanos, la cultura y el periodismo, esta agenda te ayudará a encontrar actividades que se desarrollan en el país.</string>
+    <string name="info_eventos_complementary_text2">¿Quieres compartir tu evento?  comunícate con nosotros a: comunidades.baudoap@gmail.com o el teléfono+57 321 7344601 </string>
     <!-- NAVEGANTES FRAGMENT Strings -->
     <string name="navegantes_button_text">APORTAR</string>
     <string name="navegantes_fuerza_title">Navega con fuerza</string>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.fragments.*
+import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.SettingsDialog
 import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -61,10 +62,13 @@ class UserActivity : FragmentActivity() {
                         LoginManager.getInstance().logOut()
                     }
                     FirebaseAuth.getInstance().signOut()
-                    //onBackPressed()
                     showLogIn()
                 }
-            ).show(supportFragmentManager, "dialog")
+            ).show(supportFragmentManager, "settings dialog")
+        }
+
+        binding.infoButton.setOnClickListener {
+            InfoDialog("perfil").show(supportFragmentManager, "info dialog")
         }
     }
 

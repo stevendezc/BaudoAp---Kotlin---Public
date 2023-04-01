@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentNavegantesBinding
+import com.abstractcoder.baudoapp.utils.InfoDialog
 
 class NavegantesFragment : Fragment() {
 
@@ -23,6 +24,11 @@ class NavegantesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentNavegantesBinding.inflate(inflater, container, false)
+
+        binding.navegantesInfo.setOnClickListener {
+            InfoDialog("navegantes").show(requireFragmentManager(), "info dialog")
+        }
+
         return binding.root
     }
 

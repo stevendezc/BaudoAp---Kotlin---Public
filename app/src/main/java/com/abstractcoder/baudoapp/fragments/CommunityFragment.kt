@@ -21,6 +21,7 @@ import com.abstractcoder.baudoapp.recyclers.CommunityAdapter
 import com.abstractcoder.baudoapp.recyclers.CommunityMain
 import com.abstractcoder.baudoapp.utils.CommunitiesCallback
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.InfoDialog
 
 class CommunityFragment : Fragment() {
 
@@ -155,6 +156,10 @@ class CommunityFragment : Fragment() {
                     R.color.turismo
                 )
             }
+        }
+
+        binding.communityInfo.setOnClickListener {
+            InfoDialog("comunidad").show(requireFragmentManager(), "info dialog")
         }
 
     }

@@ -14,6 +14,7 @@ import com.abstractcoder.baudoapp.fragments.home_fragments.HomeImageFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomePodcastFragment
 import com.abstractcoder.baudoapp.fragments.home_fragments.HomeVideoFragment
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.PostsCallback
 
 class HomeFragment : Fragment() {
@@ -74,6 +75,10 @@ class HomeFragment : Fragment() {
                 R.id.ic_podcast -> makeCurrentFragment(podcastSubFragment)
             }
             true
+        }
+
+        binding.homeInfo.setOnClickListener {
+            InfoDialog("contenido").show(requireFragmentManager(), "info dialog")
         }
     }
 
