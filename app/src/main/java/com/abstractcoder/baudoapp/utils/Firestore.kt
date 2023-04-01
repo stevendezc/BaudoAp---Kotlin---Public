@@ -14,6 +14,7 @@ class Firestore {
     val postsLiveData = MutableLiveData<List<PostData>>()
     val communitiesLiveData = MutableLiveData<List<CommunityData>>()
     val postCommentsLiveData = MutableLiveData<List<Commentary>>()
+    val singlePostLiveData = MutableLiveData<PostData>()
 
     val userCollectionRef = db.collection("users")
     val postsCollectionRef = db.collection("posts")
@@ -90,6 +91,21 @@ class Firestore {
                 }
                 println("commentariesList: $commentariesList")
                 postCommentsLiveData.value = commentariesList
+            }
+        }
+    }
+
+    fun subscribeToSinglePostUpdates(context: Context, postId: String) {
+        postsCollectionRef.document(postId).addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                var postData = it.toObject(PostData::class.java) ?: PostData()
+                postData.id = it.id
+                println("singlePostLiveData: $postData")
+                singlePostLiveData.value = postData
             }
         }
     }

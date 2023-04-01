@@ -1,13 +1,19 @@
 package com.abstractcoder.baudoapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
+import androidx.lifecycle.Observer
 import com.abstractcoder.baudoapp.databinding.ActivityFullSizeVideoBinding
 import com.abstractcoder.baudoapp.recyclers.VideoPostMain
+import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.ReactionHandler
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
@@ -17,19 +23,85 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
     // Gesture detector
     private lateinit var gestureDetector: GestureDetectorCompat
 
+    private val db = FirebaseFirestore.getInstance()
+    private var firestoreInst = Firestore()
+
+    private lateinit var postId: String
+    private lateinit var userData: FirebaseUser
+    private lateinit var postData: PostData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFullSizeVideoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         videoContent = intent.getParcelableExtra<VideoPostMain>("video")!!
+        postId = videoContent?.id.toString()
 
         gestureDetector = GestureDetectorCompat(this, this)
 
-        setup(videoContent!!)
+        val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val name = sharedPref.getString("name", "")
+        val email = sharedPref.getString("email", "")
+        firestoreInst.activateSubscribers(this, email!!)
+        firestoreInst.userLiveData.observe(this, Observer { user ->
+            // Update your UI with the new data
+            userData = user
+            setReactionIcons(userData)
+        })
+
+        firestoreInst.subscribeToSinglePostUpdates(this, postId)
+        firestoreInst.singlePostLiveData.observe(this, Observer { post ->
+            // Update your UI with the new data
+            postData = post
+        })
+        setup(videoContent!!, name!!, email!!)
     }
 
-    private fun setup(videoContent: VideoPostMain) {
+    private fun savePost(email: String) {
+        val isSaved = userData.saved_posts.contains(postId)
+        if (isSaved) {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayRemove(postId)
+            )
+            binding.videoSave.setImageResource(R.drawable.save)
+        } else {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayUnion(postId)
+            )
+            binding.videoSave.setImageResource(R.drawable.save_selected)
+        }
+    }
+
+    private fun setReactionIcons(user: FirebaseUser) {
+        val isSaved = user.saved_posts.contains(postId)
+        binding.videoSave.setImageResource(if (isSaved) R.drawable.save_selected else R.drawable.save)
+        val reaction = user.reactions.find { it.post == postId }
+        println("reaction: $reaction")
+        if (reaction == null) {
+            binding.videoLike.setImageResource(R.drawable.like)
+            binding.videoIndifferent.setImageResource(R.drawable.indifferent)
+            binding.videoDislike.setImageResource(R.drawable.dislike)
+        }
+        when (reaction?.type) {
+            "likes" -> {
+                binding.videoLike.setImageResource(R.drawable.like_selected)
+                binding.videoIndifferent.setImageResource(R.drawable.indifferent)
+                binding.videoDislike.setImageResource(R.drawable.dislike)
+            }
+            "indifferents" -> {
+                binding.videoLike.setImageResource(R.drawable.like)
+                binding.videoIndifferent.setImageResource(R.drawable.indifferent_selected)
+                binding.videoDislike.setImageResource(R.drawable.dislike)
+            }
+            "dislikes" -> {
+                binding.videoLike.setImageResource(R.drawable.like)
+                binding.videoIndifferent.setImageResource(R.drawable.indifferent)
+                binding.videoDislike.setImageResource(R.drawable.dislike_selected)
+            }
+        }
+    }
+
+    private fun setup(videoContent: VideoPostMain, userName: String, email: String) {
         if (videoContent != null) {
             val videoView = binding.fullSizeVideoView
 
@@ -44,6 +116,45 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
 
             binding.fullSizeVideoBack.setOnClickListener {
                 finish()
+            }
+
+            binding.videoSave.setOnClickListener {
+                savePost(email)
+            }
+
+            val reactionHandler = ReactionHandler()
+
+            binding.videoLike.setOnClickListener {
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "likes",
+                    userData,
+                    postData,
+                    db
+                )
+            }
+
+            binding.videoIndifferent.setOnClickListener {
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "indifferents",
+                    userData,
+                    postData,
+                    db
+                )
+            }
+
+            binding.videoDislike.setOnClickListener {
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "dislikes",
+                    userData,
+                    postData,
+                    db
+                )
             }
 
         }

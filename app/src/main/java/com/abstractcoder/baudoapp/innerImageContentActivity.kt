@@ -17,6 +17,7 @@ import com.abstractcoder.baudoapp.databinding.ActivityInnerImageContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
 import com.abstractcoder.baudoapp.recyclers.ImagePostMain
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
@@ -30,6 +31,8 @@ class innerImageContentActivity : AppCompatActivity() {
     val firestoreInst = Firestore()
 
     private lateinit var postId: String
+    private lateinit var userData: FirebaseUser
+    private lateinit var postData: PostData
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var commentAdapter: CommentaryAdapter
     private lateinit var commentRecyclerView: RecyclerView
@@ -47,16 +50,21 @@ class innerImageContentActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
-        println("Name on innerImageContentActivity $name")
 
         firestoreInst.activateSubscribers(this, email!!)
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
-            val userName = user.name
-            println("currentUser in InnerImage: $user")
+            userData = user
+            setReactionIcons(userData)
         })
 
-        setup(imageContent!!, name!!)
+        firestoreInst.subscribeToSinglePostUpdates(this, postId)
+        firestoreInst.singlePostLiveData.observe(this, Observer { post ->
+            // Update your UI with the new data
+            postData = post
+        })
+
+        setup(imageContent!!, name!!, email!!)
     }
 
     private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
@@ -75,7 +83,6 @@ class innerImageContentActivity : AppCompatActivity() {
         firestoreInst.postCommentsLiveData.observe(this, Observer { commentaries ->
             // Update your UI with the new data
             val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
-            println("organizedCommentaries: $organizedCommentaries")
             setCommentsOnRecycler(organizedCommentaries)
         })
     }
@@ -92,7 +99,6 @@ class innerImageContentActivity : AppCompatActivity() {
                 "post" to postId)
         ).addOnSuccessListener { documentReference ->
             val commentId = documentReference.id
-            println("Firestore New document created with ID: $commentId")
 
             db.collection("posts").document(postId!!).update(
                 "commentaries", FieldValue.arrayUnion(commentId)
@@ -107,7 +113,51 @@ class innerImageContentActivity : AppCompatActivity() {
         }
     }
 
-    private fun setup(imageContent: ImagePostMain, userName: String) {
+    private fun savePost(email: String) {
+        val isSaved = userData.saved_posts.contains(postId)
+        if (isSaved) {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayRemove(postId)
+            )
+            binding.imageSave.setImageResource(R.drawable.save)
+        } else {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayUnion(postId)
+            )
+            binding.imageSave.setImageResource(R.drawable.save_selected)
+        }
+    }
+
+    private fun setReactionIcons(user: FirebaseUser) {
+        val isSaved = user.saved_posts.contains(postId)
+        binding.imageSave.setImageResource(if (isSaved) R.drawable.save_selected else R.drawable.save)
+        val reaction = user.reactions.find { it.post == postId }
+        println("reaction: $reaction")
+        if (reaction == null) {
+            binding.imageLike.setImageResource(R.drawable.like)
+            binding.imageIndifferent.setImageResource(R.drawable.indifferent)
+            binding.imageDislike.setImageResource(R.drawable.dislike)
+        }
+        when (reaction?.type) {
+            "likes" -> {
+                binding.imageLike.setImageResource(R.drawable.like_selected)
+                binding.imageIndifferent.setImageResource(R.drawable.indifferent)
+                binding.imageDislike.setImageResource(R.drawable.dislike)
+            }
+            "indifferents" -> {
+                binding.imageLike.setImageResource(R.drawable.like)
+                binding.imageIndifferent.setImageResource(R.drawable.indifferent_selected)
+                binding.imageDislike.setImageResource(R.drawable.dislike)
+            }
+            "dislikes" -> {
+                binding.imageLike.setImageResource(R.drawable.like)
+                binding.imageIndifferent.setImageResource(R.drawable.indifferent)
+                binding.imageDislike.setImageResource(R.drawable.dislike_selected)
+            }
+        }
+    }
+
+    private fun setup(imageContent: ImagePostMain, userName: String, email: String) {
         if (imageContent != null) {
             val imageUrl = imageContent.thumbnail
             Glide.with(binding.imageMainImage)
@@ -141,19 +191,42 @@ class innerImageContentActivity : AppCompatActivity() {
             }
 
             binding.imageSave.setOnClickListener {
-                binding.imageSave.setImageResource(R.drawable.save_selected)
+                savePost(email)
             }
 
+            val reactionHandler = ReactionHandler()
+
             binding.imageLike.setOnClickListener {
-                binding.imageLike.setImageResource(R.drawable.like_selected)
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "likes",
+                    userData,
+                    postData,
+                    db
+                )
             }
 
             binding.imageIndifferent.setOnClickListener {
-                binding.imageIndifferent.setImageResource(R.drawable.indifferent_selected)
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "indifferents",
+                    userData,
+                    postData,
+                    db
+                )
             }
 
             binding.imageDislike.setOnClickListener {
-                binding.imageDislike.setImageResource(R.drawable.dislike_selected)
+                reactionHandler.addReaction(
+                    email,
+                    postId,
+                    "dislikes",
+                    userData,
+                    postData,
+                    db
+                )
             }
 
             binding.sendImageCommentary.setOnClickListener {

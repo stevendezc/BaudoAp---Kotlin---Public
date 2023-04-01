@@ -14,10 +14,9 @@ data class Commentary(
 )
 
 data class Reaction(
-    val id: String,
-    val author: String,
-    val timestamp: Timestamp,
-    val type: String
+    val post: String? = "",
+    val timestamp: Timestamp? = null,
+    var type: String? = ""
 )
 
 data class PostData(
@@ -27,10 +26,9 @@ data class PostData(
     val commentaries: List<String>? = null,
     val description: String? = "",
     val main_media: String? = "",
-    val reactions: List<Reaction>? = null,
-    val likes: Number? = 0,
-    val dislikes: Number? = 0,
-    val indifferents: Number? = 0,
+    val likes: Int? = 0,
+    val dislikes: Int? = 0,
+    val indifferents: Int? = 0,
     val thumbnail: String? = "",
     val timestamp: Timestamp? = null,
     val title: String? = "",
@@ -43,10 +41,9 @@ data class PostData(
         parcel.createStringArrayList(),
         parcel.readString(),
         parcel.readString(),
-        TODO("reactions"),
-        TODO("likes"),
-        TODO("dislikes"),
-        TODO("indifferents"),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
         parcel.readString(),
@@ -61,6 +58,9 @@ data class PostData(
         parcel.writeStringList(commentaries)
         parcel.writeString(description)
         parcel.writeString(main_media)
+        parcel.writeValue(likes)
+        parcel.writeValue(dislikes)
+        parcel.writeValue(indifferents)
         parcel.writeString(thumbnail)
         parcel.writeParcelable(timestamp, flags)
         parcel.writeString(title)

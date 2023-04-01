@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityInnerPodcastContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
+import com.abstractcoder.baudoapp.recyclers.ImagePostMain
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.google.firebase.Timestamp
@@ -37,6 +39,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
     private var firestoreInst = Firestore()
 
     private lateinit var postId: String
+    private lateinit var userData: FirebaseUser
+    private lateinit var postData: PostData
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var commentAdapter: CommentaryAdapter
     private lateinit var commentRecyclerView: RecyclerView
@@ -58,11 +62,17 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         firestoreInst.activateSubscribers(this, email!!)
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
-            val userName = user.name
-            println("currentUser in InnerImage: $user")
+            userData = user
+            setReactionIcons(userData)
         })
 
-        setup(podcastContent!!, name!!)
+        firestoreInst.subscribeToSinglePostUpdates(this, postId)
+        firestoreInst.singlePostLiveData.observe(this, Observer { post ->
+            // Update your UI with the new data
+            postData = post
+        })
+
+        setup(podcastContent!!, name!!, email!!)
     }
 
     private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
@@ -113,7 +123,51 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
     }
 
-    private fun setup(podcastContent: PodcastPostMain, userName: String) {
+    private fun savePost(email: String) {
+        val isSaved = userData.saved_posts.contains(postId)
+        if (isSaved) {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayRemove(postId)
+            )
+            binding.podcastSave.setImageResource(R.drawable.save)
+        } else {
+            db.collection("users").document(email!!).update(
+                "saved_posts", FieldValue.arrayUnion(postId)
+            )
+            binding.podcastSave.setImageResource(R.drawable.save_selected)
+        }
+    }
+
+    private fun setReactionIcons(user: FirebaseUser) {
+        val isSaved = user.saved_posts.contains(postId)
+        binding.podcastSave.setImageResource(if (isSaved) R.drawable.save_selected else R.drawable.save)
+        val reaction = user.reactions.find { it.post == postId }
+        println("reaction: $reaction")
+        if (reaction == null) {
+            binding.podcastLike.setImageResource(R.drawable.like)
+            binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
+            binding.podcastDislike.setImageResource(R.drawable.dislike)
+        }
+        when (reaction?.type) {
+            "likes" -> {
+                binding.podcastLike.setImageResource(R.drawable.like_selected)
+                binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
+                binding.podcastDislike.setImageResource(R.drawable.dislike)
+            }
+            "indifferents" -> {
+                binding.podcastLike.setImageResource(R.drawable.like)
+                binding.podcastIndifferent.setImageResource(R.drawable.indifferent_selected)
+                binding.podcastDislike.setImageResource(R.drawable.dislike)
+            }
+            "dislikes" -> {
+                binding.podcastLike.setImageResource(R.drawable.like)
+                binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
+                binding.podcastDislike.setImageResource(R.drawable.dislike_selected)
+            }
+        }
+    }
+
+    private fun setup(podcastContent: PodcastPostMain, userName: String, email: String) {
         if (podcastContent.thumbnail != null) {
             val imageUrl = podcastContent.thumbnail
 
@@ -192,6 +246,45 @@ class InnerPodcastContentActivity : AppCompatActivity() {
                 var currentPosition = msg.what
                 binding.innerPodcastSeekbar.progress = currentPosition
             }
+        }
+
+        binding.podcastSave.setOnClickListener {
+            savePost(email)
+        }
+
+        val reactionHandler = ReactionHandler()
+
+        binding.podcastLike.setOnClickListener {
+            reactionHandler.addReaction(
+                email,
+                postId,
+                "likes",
+                userData,
+                postData,
+                db
+            )
+        }
+
+        binding.podcastIndifferent.setOnClickListener {
+            reactionHandler.addReaction(
+                email,
+                postId,
+                "indifferents",
+                userData,
+                postData,
+                db
+            )
+        }
+
+        binding.podcastDislike.setOnClickListener {
+            reactionHandler.addReaction(
+                email,
+                postId,
+                "dislikes",
+                userData,
+                postData,
+                db
+            )
         }
 
         binding.sendPodcastCommentary.setOnClickListener {
