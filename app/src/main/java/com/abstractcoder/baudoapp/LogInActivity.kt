@@ -31,6 +31,8 @@ class LogInActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var binding: ActivityLogInBinding
 
+    val userCollectionRef = db.collection("users")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Thread.sleep(2000)
         setTheme(R.style.Theme_BaudoApp)
@@ -157,9 +159,18 @@ class LogInActivity : AppCompatActivity() {
         val database = Firebase.database
         val myRef = database.getReference("DB")
 
-        myRef.child("GoogleUsers").child(id).setValue(user).addOnSuccessListener {
-            Toast.makeText(this, "Usuario de Google creado", Toast.LENGTH_SHORT).show()
-        }
+        userCollectionRef.document(user.email).set(
+            mapOf("provider" to ProviderType.GOOGLE,
+                "verified" to true,
+                "name" to user.name,
+                "password" to "",
+                "user_pic" to "",
+                "saved_posts" to emptyList<String>(),
+                "liked_posts" to emptyList<String>(),
+                "disliked_posts" to emptyList<String>(),
+                "indifferent_posts" to emptyList<String>()
+            )
+        )
     }
 
     private fun showAlert() {
