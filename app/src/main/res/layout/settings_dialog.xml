@@ -33,7 +33,7 @@
                 android:src="@drawable/baudo" />
 
             <TextView
-                android:id="@+id/settingsPopUpBaudo"
+                android:id="@+id/baudoVideoLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sofia"

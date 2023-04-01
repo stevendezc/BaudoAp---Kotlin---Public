@@ -3,6 +3,7 @@ package com.abstractcoder.baudoapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.fragments.*
@@ -37,18 +38,6 @@ class UserActivity : FragmentActivity() {
         title = "Pagina de Usuario"
 
         binding.userNameTextView.text = name
-        bottomNav = findViewById(R.id.bottomNavigationView)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
-            val fragment = when (item.itemId) {
-                R.id.ic_home -> HomeFragment()
-                R.id.ic_store -> StoreFragment()
-                R.id.ic_community -> CommunityFragment()
-                R.id.ic_events -> EventsFragment()
-                R.id.ic_navegantes -> NavegantesFragment()
-                else -> null
-            }
-            return@setOnNavigationItemSelectedListener false
-        }
 
         binding.settingsButton.setOnClickListener {
             SettingsDialog(
@@ -63,6 +52,9 @@ class UserActivity : FragmentActivity() {
                     }
                     FirebaseAuth.getInstance().signOut()
                     showLogIn()
+                },
+                onBaudoVideoLinkListener = {
+                    showFixedVideo()
                 }
             ).show(supportFragmentManager, "settings dialog")
         }
@@ -75,5 +67,10 @@ class UserActivity : FragmentActivity() {
     private fun showLogIn() {
         val logInIntent = Intent(this, LogInActivity::class.java)
         startActivity(logInIntent)
+    }
+
+    private fun showFixedVideo() {
+        val fixedVideoIntent = Intent(this, FixedVideoActivity::class.java)
+        startActivity(fixedVideoIntent)
     }
 }
