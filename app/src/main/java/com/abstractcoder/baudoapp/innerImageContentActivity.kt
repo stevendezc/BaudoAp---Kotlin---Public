@@ -134,6 +134,22 @@ class innerImageContentActivity : AppCompatActivity() {
                 }
             }
 
+            binding.imageSave.setOnClickListener {
+                binding.imageSave.setImageResource(R.drawable.save_selected)
+            }
+
+            binding.imageLike.setOnClickListener {
+                binding.imageLike.setImageResource(R.drawable.like_selected)
+            }
+
+            binding.imageIndifferent.setOnClickListener {
+                binding.imageIndifferent.setImageResource(R.drawable.indifferent_selected)
+            }
+
+            binding.imageDislike.setOnClickListener {
+                binding.imageDislike.setImageResource(R.drawable.dislike_selected)
+            }
+
             binding.sendImageCommentary.setOnClickListener {
                 addComment(userName)
             }

@@ -70,6 +70,61 @@
             android:textColor="#444444"
             android:textSize="11dp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/comment_round_bg"
+            android:backgroundTint="#66000000"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/image_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/save" />
+
+            <ImageView
+                android:id="@+id/image_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/like" />
+
+            <ImageView
+                android:id="@+id/image_indifferent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/indifferent" />
+
+            <ImageView
+                android:id="@+id/image_dislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/dislike" />
+
+            <ImageView
+                android:id="@+id/image_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/share" />
+        </LinearLayout>
+
         <View
             android:layout_width="40dp"
             android:layout_height="5dp"
