@@ -29,24 +29,36 @@
         android:id="@+id/contentNavigationView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingBottom="10dp"
         android:background="@color/fui_transparent"
-        app:layout_constraintTop_toBottomOf="@id/home_info_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/content_nav"
-        app:labelVisibilityMode="labeled"
-        app:itemTextColor="@color/content_items_text_color"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
         app:itemTextAppearanceActive="@style/bold_menu_item"
         app:itemTextAppearanceInactive="@style/bold_menu_item"
-        />
+        app:itemTextColor="@color/content_items_text_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_info_layout"
+        app:menu="@menu/content_nav" />
 
     <FrameLayout
         android:id="@+id/contentSubFragmentWrapper"
         android:layout_width="match_parent"
         android:layout_height="580dp"
+        android:visibility="gone"
         android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentNavigationView">
     </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/contentLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/orange_yellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_info_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

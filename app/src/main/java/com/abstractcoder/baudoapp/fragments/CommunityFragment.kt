@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,7 @@ import com.abstractcoder.baudoapp.recyclers.CommunityMain
 import com.abstractcoder.baudoapp.utils.CommunitiesCallback
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CommunityFragment : Fragment() {
 
@@ -55,6 +59,9 @@ class CommunityFragment : Fragment() {
         // Load Posts
         val community = firestore.retrieveCommunities(object : CommunitiesCallback {
             override fun onSuccess(incomingPostList: ArrayList<CommunityData>) {
+                binding.contentLoading.visibility = ProgressBar.GONE
+                binding.filterButtons.visibility = LinearLayout.VISIBLE
+                binding.imageListRecycler.visibility = RecyclerView.VISIBLE
                 Log.d(ContentValues.TAG, "posts on HomeFragment: $incomingPostList")
                 // Setup subfragments
                 initData(incomingPostList)
