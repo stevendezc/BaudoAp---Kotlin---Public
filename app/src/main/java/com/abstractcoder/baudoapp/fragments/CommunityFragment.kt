@@ -1,7 +1,8 @@
 package com.abstractcoder.baudoapp.fragments
 
 import android.content.ContentValues
-import android.content.res.ColorStateList
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -10,11 +11,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.CommunityData
@@ -22,16 +23,15 @@ import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentCommunityBinding
 import com.abstractcoder.baudoapp.recyclers.CommunityAdapter
 import com.abstractcoder.baudoapp.recyclers.CommunityMain
-import com.abstractcoder.baudoapp.utils.CommunitiesCallback
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CommunityFragment : Fragment() {
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
     private var firestore = Firestore()
+    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var communityAdapter: CommunityAdapter
@@ -56,8 +56,22 @@ class CommunityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         layoutManager = LinearLayoutManager(context)
 
-        // Load Posts
-        val community = firestore.retrieveCommunities(object : CommunitiesCallback {
+        sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = sharedPreferences.getString("email", "")
+        firestore.activateSubscribers(requireContext(), email!!)
+        // Load Communities
+        firestore.communitiesLiveData.observe(viewLifecycleOwner, Observer { communities ->
+            // Update your UI with the new data
+            binding.contentLoading.visibility = ProgressBar.GONE
+            binding.filterButtons.visibility = LinearLayout.VISIBLE
+            binding.imageListRecycler.visibility = RecyclerView.VISIBLE
+            Log.d(ContentValues.TAG, "communities on HomeFragment: $communities")
+            // Setup subfragments
+            val communitiesArrayList: ArrayList<CommunityData> = ArrayList()
+            communitiesArrayList.addAll(communities)
+            initData(communitiesArrayList)
+        })
+        /*val community = firestore.retrieveCommunities(object : CommunitiesCallback {
             override fun onSuccess(incomingPostList: ArrayList<CommunityData>) {
                 binding.contentLoading.visibility = ProgressBar.GONE
                 binding.filterButtons.visibility = LinearLayout.VISIBLE
@@ -66,7 +80,7 @@ class CommunityFragment : Fragment() {
                 // Setup subfragments
                 initData(incomingPostList)
             }
-        })
+        })*/
     }
 
     private fun applyFilter(filterNumber: Int, categoryName: String, buttonText: android.widget.TextView, categoryColor: Int) {
@@ -111,7 +125,7 @@ class CommunityFragment : Fragment() {
             val lastname = community.lastname
             val description = community.description
             val category = community.category
-            val imagePost = CommunityMain(uri, name, lastname, description, category)
+            val imagePost = CommunityMain(uri, name!!, lastname!!, description!!, category!!)
             communityMainList.add(imagePost)
         }
 

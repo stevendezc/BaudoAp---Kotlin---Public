@@ -63,7 +63,7 @@ class HomeVideoFragment : Fragment() {
                 val title = post.title
                 val description = post.description
                 val category = post.category
-                val imagePost = VideoPostMain(id, video, thumbnail, title, description, category)
+                val imagePost = VideoPostMain(id, video, thumbnail, title!!, description!!, category!!)
                 videoPostMainList.add(imagePost)
             }
         }

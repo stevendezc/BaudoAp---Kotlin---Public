@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.abstractcoder.baudoapp.databinding.ActivityHomeBinding
 import com.abstractcoder.baudoapp.fragments.*
+import com.abstractcoder.baudoapp.utils.Firestore
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,7 +22,7 @@ enum class ProviderType {
 
 class HomeActivity : AppCompatActivity() {
     lateinit var topMenu: LinearLayout
-    private val db = FirebaseFirestore.getInstance()
+    val firestoreInst = Firestore()
 
     private lateinit var binding: ActivityHomeBinding
 
@@ -43,6 +45,8 @@ class HomeActivity : AppCompatActivity() {
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
+
+        firestoreInst.activateSubscribers(this, email)
 
         // Setup fragments
         fragmentSetup()
@@ -107,13 +111,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getUser(email: String) {
-        db.collection("users").document(email).get().addOnSuccessListener {
-            val userName = it.get("name").toString()
+        firestoreInst.userLiveData.observe(this, Observer { user ->
+            // Update your UI with the new data
+            val userName = user.name
+            println("currentUser: $user")
             val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
             prefs.putString("name", userName)
             prefs.apply()
             binding.nameTextView.text = userName
-        }
+        })
     }
 
     private fun makeCurrentFragment(fragment: Fragment) {

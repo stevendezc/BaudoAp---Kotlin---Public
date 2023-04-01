@@ -1,113 +1,96 @@
 package com.abstractcoder.baudoapp.utils
 
-import android.content.ContentValues
-import android.util.Log
-import com.abstractcoder.baudoapp.Commentary
-import com.abstractcoder.baudoapp.CommunityData
-import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.Reaction
-import com.google.firebase.Timestamp
+import android.content.Context
+import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import com.abstractcoder.baudoapp.*
 import com.google.firebase.firestore.FirebaseFirestore
-
-interface PostsCallback {
-    fun onSuccess(result: ArrayList<PostData>)
-}
-
-interface CommunitiesCallback {
-    fun onSuccess(result: ArrayList<CommunityData>)
-}
-
-interface CommentsCallback {
-    fun onSuccess(result: ArrayList<Commentary>)
-}
 
 class Firestore {
 
     private val db = FirebaseFirestore.getInstance()
 
-    private var postsMainList: ArrayList<PostData> = arrayListOf<PostData>()
-    private var communityMainList: ArrayList<CommunityData> = arrayListOf<CommunityData>()
+    val userLiveData = MutableLiveData<FirebaseUser>()
+    val postsLiveData = MutableLiveData<List<PostData>>()
+    val communitiesLiveData = MutableLiveData<List<CommunityData>>()
+    val postCommentsLiveData = MutableLiveData<List<Commentary>>()
 
-    fun retrieveDocuments(callback: PostsCallback) {
-        // Recover DB documents
-        db.collection("posts").get().addOnSuccessListener { posts ->
-            for (post in posts) {
-                var data = post.data
-                Log.d(ContentValues.TAG, "community id: ${post.id}")
-                var postData = PostData(
-                    post.id,
-                    data["author"] as String,
-                    data["category"] as String,
-                    data["commentaries"] as List<String>,
-                    data["description"] as String,
-                    data["main_media"] as String,
-                    data["reactions"] as List<Reaction>,
-                    data["thumbnail"] as String,
-                    data["timestamp"] as Timestamp,
-                    data["title"] as String,
-                    data["type"] as String,
-                )
-                postsMainList.add(postData)
+    val userCollectionRef = db.collection("users")
+    val postsCollectionRef = db.collection("posts")
+    val communitiesCollectionRef = db.collection("communities")
+    val commentariesCollectionRef = db.collection("commentaries")
+
+    fun activateSubscribers(context: Context, email: String) {
+        subscribeToUserUpdates(context, email)
+        subscribeToPostUpdates(context)
+        subscribeToCommunityUpdates(context)
+    }
+
+    private fun subscribeToUserUpdates(context: Context, email: String) {
+        userCollectionRef.document(email).addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
             }
-            callback.onSuccess(postsMainList)
-        }.addOnFailureListener { exception ->
-            Log.w(ContentValues.TAG, "Error cargando posts.", exception)
+            value?.let {
+                val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+                userLiveData.value = myData
+            }
         }
     }
 
-    fun retrieveCommunities(callback: CommunitiesCallback) {
-        // Recover DB documents
-        db.collection("communities").get().addOnSuccessListener { communities ->
-            for (community in communities) {
-                var data = community.data
-                Log.d(ContentValues.TAG, "community id: ${community.id}")
-                var communityData = CommunityData(
-                    community.id,
-                    data["category"] as String,
-                    data["description"] as String,
-                    data["facebook"] as String,
-                    data["instagram"] as String,
-                    data["lastname"] as String,
-                    data["name"] as String,
-                    data["thumbnail"] as String,
-                    data["twitter"] as String,
-                    data["whatsapp"] as String
-                )
-                communityMainList.add(communityData)
+    private fun subscribeToPostUpdates(context: Context) {
+        postsCollectionRef.addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
             }
-            callback.onSuccess(communityMainList)
-        }.addOnFailureListener { exception ->
-            Log.w(ContentValues.TAG, "Error cargando posts.", exception)
-        }
-    }
-
-    fun retrievePostComments(callback: CommentsCallback, postId: String) {
-        // Recover DB documents
-        db.collection("commentaries")
-            .whereEqualTo("post", postId)
-            .get().addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val documentSnapshot = querySnapshot.documents
-                    val commentariesList = arrayListOf<Commentary>()
-                    for (commentary in documentSnapshot) {
-                        val commentaryId = commentary.id
-                        val commentaryData = commentary.data
-                        val incomingCommentary = Commentary(
-                            id = commentaryId,
-                            post = commentaryData?.get("post").toString(),
-                            author = commentaryData?.get("author").toString(),
-                            text = commentaryData?.get("text").toString(),
-                            timestamp = commentaryData?.get("timestamp") as Timestamp,
-                            replies = listOf<Commentary>()
-                        )
-                        commentariesList.add(incomingCommentary)
-                    }
-                    callback.onSuccess(commentariesList)
-                } else {
-                    Log.d("Firestore", "No matching Commentary(ies) found")
+            value?.let {
+                val postDataList = mutableListOf<PostData>()
+                for (document in it) {
+                    val postData = document.toObject(PostData::class.java)
+                    postData.id = document.id
+                    postDataList.add(postData)
                 }
-        }.addOnFailureListener { exception ->
-            Log.w(ContentValues.TAG, "Error cargando comentarios.", exception)
+                postsLiveData.value = postDataList
+            }
+        }
+    }
+
+    private fun subscribeToCommunityUpdates(context: Context) {
+        communitiesCollectionRef.addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                val communityDataList = mutableListOf<CommunityData>()
+                for (document in it) {
+                    val myData = document.toObject(CommunityData::class.java)
+                    communityDataList.add(myData)
+                }
+                communitiesLiveData.value = communityDataList
+            }
+        }
+    }
+
+    fun subscribeToPostCommentariesUpdates(context: Context, postId: String) {
+        println("postId on subscribe: $postId")
+        commentariesCollectionRef.whereEqualTo("post", postId).addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                val commentariesList = mutableListOf<Commentary>()
+                for (commentary in it) {
+                    var commentaryData = commentary.toObject(Commentary::class.java)
+                    commentaryData.id = commentary.id
+                    commentariesList.add(commentaryData)
+                }
+                println("commentariesList: $commentariesList")
+                postCommentsLiveData.value = commentariesList
+            }
         }
     }
 }

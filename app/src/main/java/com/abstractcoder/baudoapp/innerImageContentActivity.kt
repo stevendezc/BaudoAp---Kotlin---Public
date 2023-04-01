@@ -10,12 +10,12 @@ import android.text.style.StyleSpan
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityInnerImageContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
 import com.abstractcoder.baudoapp.recyclers.ImagePostMain
-import com.abstractcoder.baudoapp.utils.CommentsCallback
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
@@ -27,7 +27,7 @@ class innerImageContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInnerImageContentBinding
     private val db = FirebaseFirestore.getInstance()
-    private var firestore = Firestore()
+    val firestoreInst = Firestore()
 
     private lateinit var postId: String
     private lateinit var layoutManager: LinearLayoutManager
@@ -46,7 +46,15 @@ class innerImageContentActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
+        val email = sharedPref.getString("email", "")
         println("Name on innerImageContentActivity $name")
+
+        firestoreInst.activateSubscribers(this, email!!)
+        firestoreInst.userLiveData.observe(this, Observer { user ->
+            // Update your UI with the new data
+            val userName = user.name
+            println("currentUser in InnerImage: $user")
+        })
 
         setup(imageContent!!, name!!)
     }
@@ -63,13 +71,13 @@ class innerImageContentActivity : AppCompatActivity() {
     private fun getComments() {
         // Load Posts
         imageCommentList.clear()
-        val posts = firestore.retrievePostComments(object: CommentsCallback {
-            override fun onSuccess(result: ArrayList<Commentary>) {
-                // Organize Commentaries by timestamp
-                val organizedCommentaries = result.sortedByDescending { it.timestamp }.toCollection(ArrayList())
-                setCommentsOnRecycler(organizedCommentaries)
-            }
-        }, postId!!)
+        firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
+        firestoreInst.postCommentsLiveData.observe(this, Observer { commentaries ->
+            // Update your UI with the new data
+            val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
+            println("organizedCommentaries: $organizedCommentaries")
+            setCommentsOnRecycler(organizedCommentaries)
+        })
     }
 
     private fun addComment(userName: String) {
@@ -96,8 +104,6 @@ class innerImageContentActivity : AppCompatActivity() {
             binding.imageCommentary.clearFocus()
 
             Toast.makeText(this, "Comentario guardado", Toast.LENGTH_SHORT).show()
-
-            getComments()
         }
     }
 
