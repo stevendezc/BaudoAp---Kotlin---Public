@@ -49,6 +49,10 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
     private fun setup(email: String, provider: String) {
         title = "Inicio"
 
