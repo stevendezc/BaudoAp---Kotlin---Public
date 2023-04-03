@@ -167,6 +167,13 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
     }
 
+    private fun formatPodcastTime(milliseconds: Int): String {
+        val seconds = milliseconds / 1000
+        val minutes = seconds / 60
+        val remainingSeconds = seconds % 60
+        return String.format("%02d:%02d", minutes, remainingSeconds)
+    }
+
     private fun setup(podcastContent: PodcastPostMain, userName: String, email: String) {
         if (podcastContent.thumbnail != null) {
             val imageUrl = podcastContent.thumbnail
@@ -198,6 +205,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         binding.innerPodcastDescription.text = podcastContent.description
 
         podcastMedia = MediaPlayer.create(this, podcastContent.media)
+        val totalPodcastTime = formatPodcastTime(podcastMedia.duration)
+        binding.podcastTotalTime.text = totalPodcastTime
 
         binding.innerPodcastBack.setOnClickListener {
             finish()
@@ -213,6 +222,9 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             }
         }
         // Seekbar functionalities
+        binding.innerPodcastSeekbar.setProgress(0);
+        binding.innerPodcastSeekbar.setMax(0);
+        binding.innerPodcastSeekbar.setPadding(0, 0, 0, 0);
         binding.innerPodcastSeekbar.progress = 0
         binding.innerPodcastSeekbar.max = podcastMedia.duration
         binding.innerPodcastSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
@@ -228,24 +240,17 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(p0: SeekBar?) {
             }
         })
-        Thread(Runnable {
-            while (podcastMedia != null) {
-                try {
-                    var msg = Message()
-                    msg.what = podcastMedia.currentPosition
-                    handler.sendMessage(msg)
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                }
-            }
-        })
 
-        @SuppressLint("HandlerLeak")
-        var handler = object: Handler() {
-            override fun handleMessage(msg: Message) {
-                var currentPosition = msg.what
-                binding.innerPodcastSeekbar.progress = currentPosition
-            }
+        runnable = Runnable {
+            binding.innerPodcastSeekbar.progress = podcastMedia.currentPosition
+            val currentPodcastTime = formatPodcastTime(podcastMedia.currentPosition)
+            binding.podcastCurrentTime.text = currentPodcastTime
+            handler.postDelayed(runnable, 1000)
+        }
+        handler.postDelayed(runnable, 1000)
+        podcastMedia.setOnCompletionListener {
+            binding.innerPodcastPlay.setImageResource(R.drawable.play)
+            binding.innerPodcastSeekbar.progress = 0
         }
 
         binding.podcastSave.setOnClickListener {
