@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/background" />
-    <item android:width="150dp" android:height="200dp" android:gravity="center">
-        <bitmap android:src="@mipmap/ic_launcher" android:gravity="fill_horizontal|fill_vertical" />
-    </item>
+    <item android:drawable="@drawable/logo_baudo_small" android:width="150dp" android:height="230dp" android:gravity="center" />
 </layer-list>
