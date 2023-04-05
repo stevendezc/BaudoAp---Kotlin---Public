@@ -30,8 +30,9 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
                 .load(imageUrl)
                 .into(holder.imageThumbnail)
         }
-        holder.imageAuthor.text = currentItem.author
+        holder.imageLocation.text = currentItem.title
         holder.imageDescription.text = currentItem.description
+        holder.imageAuthor.text = "Foto por: ${currentItem.author}"
 
         holder.imageContainer.setOnClickListener {
             onItemClick?.invoke(currentItem)
@@ -48,6 +49,7 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
 
         val imageContainer = binding.imageListItemMediaContainer
         val imageThumbnail = binding.imageListItemMedia
+        val imageLocation = binding.imageListItemLocation
         val imageAuthor = binding.imageListItemAuthor
         val imageDescription = binding.imageListItemDescription
 

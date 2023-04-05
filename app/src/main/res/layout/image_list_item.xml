@@ -33,12 +33,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="20dp">
 
             <TextView
-                android:id="@+id/image_list_item_author"
+                android:id="@+id/image_list_item_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -55,12 +55,25 @@
                 android:id="@+id/image_list_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/sofia"
                 android:maxLines="4"
                 android:text="TextView"
                 android:textColor="@color/white"
+                android:textSize="11dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_list_item_author" />
+            <TextView
+                android:id="@+id/image_list_item_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/sofia"
+                android:maxLines="1"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 android:textSize="11dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_list_item_author" />
