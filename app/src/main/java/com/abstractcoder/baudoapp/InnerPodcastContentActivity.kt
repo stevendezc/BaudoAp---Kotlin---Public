@@ -1,13 +1,11 @@
 package com.abstractcoder.baudoapp
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import android.widget.Toast
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityInnerPodcastContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
-import com.abstractcoder.baudoapp.recyclers.ImagePostMain
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.ReactionHandler
@@ -176,10 +173,11 @@ class InnerPodcastContentActivity : AppCompatActivity() {
 
     private fun setup(podcastContent: PodcastPostMain, userName: String, email: String) {
         if (podcastContent.thumbnail != null) {
+            val backgroundUrl = podcastContent.background
             val imageUrl = podcastContent.thumbnail
 
             Glide.with(binding.podcastMainContainer)
-                .load(imageUrl)
+                .load(backgroundUrl)
                 .centerCrop()
                 .into(object : CustomTarget<Drawable>() {
                     override fun onResourceReady(
@@ -200,7 +198,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
         binding.innerPodcastTitle.text = podcastContent.title
         val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
-        val dateString = dateFormat.format(podcastContent.timestamp?.toDate() ?: null)
+        val dateString = dateFormat.format(podcastContent.creation_date?.toDate() ?: null)
         binding.innerPodcastTimestamp.text = dateString
         binding.innerPodcastDescription.text = podcastContent.description
 

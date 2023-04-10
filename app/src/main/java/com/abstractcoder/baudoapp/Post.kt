@@ -30,7 +30,8 @@ data class PostData(
     val dislikes: Int? = 0,
     val indifferents: Int? = 0,
     val thumbnail: String? = "",
-    val timestamp: Timestamp? = null,
+    val thumbnail2: String? = "",
+    val creation_date: Timestamp? = null,
     val title: String? = "",
     val type: String? = ""
 ) : Parcelable {
@@ -44,6 +45,7 @@ data class PostData(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
         parcel.readString(),
@@ -62,7 +64,8 @@ data class PostData(
         parcel.writeValue(dislikes)
         parcel.writeValue(indifferents)
         parcel.writeString(thumbnail)
-        parcel.writeParcelable(timestamp, flags)
+        parcel.writeString(thumbnail2)
+        parcel.writeParcelable(creation_date, flags)
         parcel.writeString(title)
         parcel.writeString(type)
     }

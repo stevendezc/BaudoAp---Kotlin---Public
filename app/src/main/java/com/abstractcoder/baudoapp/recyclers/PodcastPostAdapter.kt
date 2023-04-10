@@ -36,7 +36,7 @@ class PodcastPostAdapter(private val context: Context, private val podcastPostLi
         }
         holder.podcastTitle.text = currentItem.title
         val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
-        val dateString = dateFormat.format(currentItem.timestamp?.toDate() ?: null)
+        val dateString = dateFormat.format(currentItem.creation_date?.toDate() ?: null)
         holder.podcastTimestamp.text = dateString
         holder.podcastDescription.text = currentItem.description
 
