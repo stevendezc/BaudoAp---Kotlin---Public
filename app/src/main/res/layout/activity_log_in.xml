@@ -149,9 +149,19 @@
             android:inputType="textPassword"
             android:textSize="14dp" />
 
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Olvidé mi contraseña"
+            android:textAlignment="textEnd"
+            android:textColor="@color/purple_500"
+            android:textStyle="bold" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

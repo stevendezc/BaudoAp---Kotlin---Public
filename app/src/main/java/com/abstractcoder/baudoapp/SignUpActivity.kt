@@ -47,7 +47,6 @@ class SignUpActivity : AppCompatActivity() {
                         registerUser(user, ProviderType.BASIC)
                         Toast.makeText(this, "Correo de verificacion enviado", Toast.LENGTH_SHORT).show()
                         showLogIn()
-                        //showHome(name, it.result?.user?.email ?: "", ProviderType.BASIC)
                     } else {
                         val exception = it.exception
                         showAlert(exception)
@@ -82,15 +81,6 @@ class SignUpActivity : AppCompatActivity() {
         builder.setMessage(exception?.message ?: "")
         val dialog: AlertDialog = builder.create()
         dialog.show()
-    }
-
-    private fun showHome(name: String, email: String, provider: ProviderType) {
-        val homeIntent = Intent(this, HomeActivity::class.java).apply {
-            putExtra("name", name)
-            putExtra("email", email)
-            putExtra("provider", provider.name)
-        }
-        startActivity(homeIntent)
     }
 
     private fun showLogIn() {

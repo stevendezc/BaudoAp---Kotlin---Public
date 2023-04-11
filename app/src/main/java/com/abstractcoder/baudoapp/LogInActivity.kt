@@ -153,6 +153,10 @@ class LogInActivity : AppCompatActivity() {
         binding.registerButton.setOnClickListener {
             showRegister()
         }
+
+        binding.forgotPassword.setOnClickListener {
+            showPasswordRecovery()
+        }
     }
 
     private fun registerUser(id: String, user: GoogleUser) {
@@ -191,6 +195,11 @@ class LogInActivity : AppCompatActivity() {
 
     private fun showRegister() {
         val registerIntent = Intent(this, SignUpActivity::class.java)
+        startActivity(registerIntent)
+    }
+
+    private fun showPasswordRecovery() {
+        val registerIntent = Intent(this, PasswordRecoveryActivity::class.java)
         startActivity(registerIntent)
     }
 

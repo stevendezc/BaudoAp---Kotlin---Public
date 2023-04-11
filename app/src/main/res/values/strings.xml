@@ -7,7 +7,10 @@
     <string name="google_login">Acceder con Google</string>
     <string name="sign_up">Crear usuario</string>
     <string name="sign_up1">Crear cuenta</string>
+    <string name="pass_reset">Resetear contraseña</string>
     <string name="email">Correo</string>
+    <string name="account_recover">Recuperar cuenta</string>
+    <string name="email_reset">Ingresa el correo electronico de tu cuenta</string>
     <string name="email_hint">Dirección de correo electrónico</string>
     <string name="name">Nombre</string>
     <string name="greeting">Hola,</string>
