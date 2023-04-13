@@ -15,6 +15,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/fullSizeVideoAction"
+        android:visibility="gone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/pause" />
+
+    <ImageView
         android:id="@+id/fullSizeVideoBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

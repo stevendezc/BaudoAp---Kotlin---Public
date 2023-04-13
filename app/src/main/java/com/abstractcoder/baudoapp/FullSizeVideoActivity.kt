@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.widget.ImageView
 import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Observer
 import com.abstractcoder.baudoapp.databinding.ActivityFullSizeVideoBinding
@@ -101,6 +104,19 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
         }
     }
 
+    private fun fadeVideoAction() {
+        val fadeOut = AlphaAnimation(1f, 0f)
+        fadeOut.duration = 1000
+        fadeOut.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationEnd(animation: Animation) {
+                binding.fullSizeVideoAction.visibility = ImageView.GONE // Oculta el elemento cuando finaliza la animación
+            }
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+        binding.fullSizeVideoAction.startAnimation(fadeOut)
+    }
+
     private fun setup(videoContent: VideoPostMain, userName: String, email: String) {
         if (videoContent != null) {
             val videoView = binding.fullSizeVideoView
@@ -108,9 +124,45 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
             videoView.setVideoURI(videoContent.video)
             videoView.requestFocus()
             videoView.setOnPreparedListener {
+                // Get video size
+                val videoWidth = it.videoWidth
+                val videoHeight = it.videoHeight
+                // Get device screen size
+                val screenWidth = resources.displayMetrics.widthPixels
+                val screenHeight = resources.displayMetrics.heightPixels
+                // Get video scale proportion
+                val scaleX = screenWidth.toFloat() / videoWidth.toFloat()
+                val scaleY = screenHeight.toFloat() / videoHeight.toFloat()
+                val scale = scaleX.coerceAtMost(scaleY)
+                // Adjust video view to the video size
+                val layoutParams = videoView.layoutParams
+                layoutParams.width = (videoWidth * scale).toInt()
+                layoutParams.height = (videoHeight * scale).toInt()
+                videoView.layoutParams = layoutParams
+
                 it.start()
                 it.setOnCompletionListener {
                     finish()
+                }
+            }
+
+            videoView.setOnClickListener {
+                if (videoView.isPlaying) {
+                    videoView.pause()
+                    binding.fullSizeVideoAction.setImageResource(R.drawable.pause)
+                    binding.fullSizeVideoAction.visibility = ImageView.VISIBLE
+                } else {
+                    binding.fullSizeVideoAction.setImageResource(R.drawable.play)
+                    videoView.start()
+                    fadeVideoAction()
+                }
+            }
+
+            binding.fullSizeVideoAction.setOnClickListener {
+                if (!videoView.isPlaying) {
+                    binding.fullSizeVideoAction.setImageResource(R.drawable.play)
+                    videoView.start()
+                    fadeVideoAction()
                 }
             }
 
