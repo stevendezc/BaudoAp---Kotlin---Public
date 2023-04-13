@@ -87,13 +87,14 @@ class innerImageContentActivity : AppCompatActivity() {
         })
     }
 
-    private fun addComment(userName: String) {
+    private fun addComment(userName: String, authorEmail: String) {
         val commentText = binding.imageCommentary.text
         val timestamp = Timestamp.now()
 
         // Add comment
         db.collection("commentaries").add(
             hashMapOf("author" to userName,
+                "author_email" to authorEmail,
                 "text" to commentText.toString(),
                 "timestamp" to timestamp,
                 "post" to postId)
@@ -230,7 +231,7 @@ class innerImageContentActivity : AppCompatActivity() {
             }
 
             binding.sendImageCommentary.setOnClickListener {
-                addComment(userName)
+                addComment(userName, email)
             }
 
             getComments()

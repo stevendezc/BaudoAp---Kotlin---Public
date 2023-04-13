@@ -50,7 +50,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
             println("currentUser in InnerImage: $user")
         })
 
-        setup(videoContent!!, name!!)
+        setup(videoContent!!, name!!, email)
     }
 
     private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
@@ -74,13 +74,14 @@ class InnerVideoContentActivity : AppCompatActivity() {
         })
     }
 
-    private fun addComment(userName: String) {
+    private fun addComment(userName: String, authorEmail: String) {
         val commentText = binding.videoCommentary.text
         val timestamp = Timestamp.now()
 
         // Add comment
         db.collection("commentaries").add(
             hashMapOf("author" to userName,
+                "author_email" to authorEmail,
                 "text" to commentText.toString(),
                 "timestamp" to timestamp,
                 "post" to postId)
@@ -101,7 +102,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
         }
     }
 
-    private fun setup(videoContent: VideoPostMain, userName: String) {
+    private fun setup(videoContent: VideoPostMain, userName: String, authorEmail: String) {
         if (videoContent != null) {
 
             binding.innerVideoBack.setOnClickListener {
@@ -119,7 +120,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
             binding.innerVideoCategory.text = videoContent.category
 
             binding.sendVideoCommentary.setOnClickListener {
-                addComment(userName)
+                addComment(userName, authorEmail)
             }
 
             getComments()

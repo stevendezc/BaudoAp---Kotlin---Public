@@ -93,13 +93,14 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         })
     }
 
-    private fun addComment(userName: String) {
+    private fun addComment(userName: String, authorEmail: String) {
         val commentText = binding.podcastCommentary.text
         val timestamp = Timestamp.now()
 
         // Add comment
         db.collection("commentaries").add(
             hashMapOf("author" to userName,
+                "author_email" to authorEmail,
                 "text" to commentText.toString(),
                 "timestamp" to timestamp,
                 "post" to postId)
@@ -291,7 +292,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
 
         binding.sendPodcastCommentary.setOnClickListener {
-            addComment(userName)
+            addComment(userName, email)
         }
 
         getComments()
