@@ -2,23 +2,27 @@ package com.abstractcoder.baudoapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
-import com.abstractcoder.baudoapp.fragments.*
+import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.SettingsDialog
 import com.facebook.login.LoginManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import org.json.JSONObject
+import java.io.IOException
+import java.io.InputStream
 
 class UserActivity : FragmentActivity() {
-    private lateinit var bottomNav: BottomNavigationView
-    private val db = FirebaseFirestore.getInstance()
+    private val firestore = Firestore()
 
     private lateinit var binding: ActivityUserBinding
+    private lateinit var userData: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,14 @@ class UserActivity : FragmentActivity() {
         val email: String = bundle?.getString("email").toString()
         val provider: String = bundle?.getString("provider").toString()
         val name: String = bundle?.getString("name").toString()
+
+        firestore.activateSubscribers(this, email!!)
+        firestore.userLiveData.observe(this, Observer { user ->
+            // Update your UI with the new data
+            println("userData in User activity: ${user}")
+            userData = user
+            obtainMetrics(userData)
+        })
         // Setup incoming data
         setup(email, name, provider)
     }
@@ -61,6 +73,118 @@ class UserActivity : FragmentActivity() {
 
         binding.infoButton.setOnClickListener {
             InfoDialog("perfil").show(supportFragmentManager, "info dialog")
+        }
+    }
+
+    private fun obtainMetrics(user: FirebaseUser) {
+        firestore.postsLiveData.observe(this, Observer { posts ->
+            val postsArrayList: ArrayList<PostData> = ArrayList()
+            val totalReactions = user.reactions.size
+            val totalPositiveReactions = user.reactions.filter { reaction -> reaction.type == "likes" }.size
+            val totalSavedPosts = user.saved_posts.size
+            var likedAmbientalPosts = 0
+            var likedMemoryPosts = 0
+            var likedGenderPosts = 0
+            postsArrayList.addAll(posts)
+            for (reaction in user.reactions) {
+                val postInfo = postsArrayList.find { post -> post.id == reaction.post }
+                when (postInfo?.category) {
+                    "medio_ambiente" -> likedAmbientalPosts += 1
+                    "memoria" -> likedMemoryPosts += 1
+                    "genero" -> likedGenderPosts += 1
+                }
+            }
+
+            setMetrics(UserMetrics(
+                totalReactions,
+                totalPositiveReactions,
+                totalSavedPosts,
+                likedAmbientalPosts,
+                likedMemoryPosts,
+                likedGenderPosts
+            ))
+        })
+    }
+
+    private fun renderCategoryMetrics(renderParams: JSONObject, userMetrics: UserMetrics, mainCategoryPercentage: Int, secondaryCategoryPercentage: Int, thirdCategoryPercentage: Int) {
+        val mainColor = renderParams.getString("mainCategoryContainer")
+        val mainProgressDrawableId = resources.getIdentifier(renderParams.getString("mainCategoryProgress"), "drawable", packageName)
+        val mainIconDrawableId = resources.getIdentifier(renderParams.getString("mainCategoryIcon"), "drawable", packageName)
+        val secondaryColor = renderParams.getString("secondaryCategoryContainer")
+        val secondaryProgressDrawableId = resources.getIdentifier(renderParams.getString("secondaryCategoryProgress"), "drawable", packageName)
+        val secondaryIconDrawableId = resources.getIdentifier(renderParams.getString("secondaryCategoryIcon"), "drawable", packageName)
+        val thirdColor = renderParams.getString("thirdCategoryContainer")
+        val thirdProgressDrawableId = resources.getIdentifier(renderParams.getString("thirdCategoryProgress"), "drawable", packageName)
+        val thirdIconDrawableId = resources.getIdentifier(renderParams.getString("thirdCategoryIcon"), "drawable", packageName)
+
+        // Main Liked Category
+        binding.mainCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(mainColor))
+        binding.mainCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, mainProgressDrawableId)
+        binding.mainCategoryProgress.progress = 100 - mainCategoryPercentage
+        binding.mainCategoryIcon.setImageDrawable(ContextCompat.getDrawable(this, mainIconDrawableId))
+        binding.mainCategoryPercentage.text = "$mainCategoryPercentage%"
+        binding.mainCategoryPercentage.setTextColor(Color.parseColor(mainColor))
+        binding.mainCategoryTitle.text = renderParams.getString("mainCategoryTitle")
+        binding.mainCategoryTitle.setTextColor(Color.parseColor(mainColor))
+        binding.mainCategoryStats.text = "Interacciones Totales: ${userMetrics.totalReactions}\n" +
+                "Reacciones positivas: ${userMetrics.totalPositiveReactions}\n" +
+                "Total comentarios: 0\n" +
+                "Total guardados: ${userMetrics.totalSavedPosts}"
+        binding.mainCategoryStats.setTextColor(Color.parseColor(mainColor))
+        // Secondary Liked Category
+        binding.secondaryCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(secondaryColor))
+        binding.secondaryCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, secondaryProgressDrawableId)
+        binding.secondaryCategoryProgress.progress = 100 - secondaryCategoryPercentage
+        binding.secondaryCategoryIcon.setImageDrawable(ContextCompat.getDrawable(this, secondaryIconDrawableId))
+        binding.secondaryCategoryPercentage.text = "$secondaryCategoryPercentage%"
+        binding.secondaryCategoryPercentage.setTextColor(Color.parseColor(secondaryColor))
+        binding.secondaryCategoryTitle.text = renderParams.getString("secondaryCategoryTitle")
+        binding.secondaryCategoryTitle.setTextColor(Color.parseColor(secondaryColor))
+        // Tertiary Liked Category
+        binding.thirdCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(thirdColor))
+        binding.thirdCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, thirdProgressDrawableId)
+        binding.thirdCategoryProgress.progress = 100 - thirdCategoryPercentage
+        binding.thirdCategoryIcon.setImageDrawable(ContextCompat.getDrawable(this, thirdIconDrawableId))
+        binding.thirdCategoryPercentage.text = "$thirdCategoryPercentage%"
+        binding.thirdCategoryPercentage.setTextColor(Color.parseColor(thirdColor))
+        binding.thirdCategoryTitle.text = renderParams.getString("thirdCategoryTitle")
+        binding.thirdCategoryTitle.setTextColor(Color.parseColor(thirdColor))
+    }
+
+    private fun obtainCategoryOpts(variant: String, userMetrics: UserMetrics, mainCategoryPercentage: Int, secondaryCategoryPercentage: Int, thirdCategoryPercentage: Int) {
+        var json: String? = null
+        var jsonObject: JSONObject? = null
+        try {
+            val inputStream: InputStream = assets.open("userLikedCategories.json")
+            json = inputStream.bufferedReader().use { it.readText() }
+            jsonObject = JSONObject(json)
+            val outputJson = jsonObject.getJSONObject(variant)
+            renderCategoryMetrics(
+                outputJson,
+                userMetrics,
+                mainCategoryPercentage,
+                secondaryCategoryPercentage,
+                thirdCategoryPercentage
+            )
+        } catch (e: IOException) {}
+    }
+
+    private fun setMetrics(userMetrics: UserMetrics) {
+        val likedAmbientalPosts = ((userMetrics.likedAmbientalPosts.toFloat() / userMetrics.totalReactions.toFloat()) * 100).toInt()
+        val likedMemoryPosts = ((userMetrics.likedMemoryPosts.toFloat() / userMetrics.totalReactions.toFloat()) * 100).toInt()
+        val likedGenderPosts = ((userMetrics.likedGenderPosts.toFloat() / userMetrics.totalReactions.toFloat()) * 100).toInt()
+        if (likedAmbientalPosts > likedMemoryPosts &&
+            likedAmbientalPosts > likedGenderPosts) {
+            if (likedMemoryPosts > likedGenderPosts) obtainCategoryOpts("1", userMetrics, likedAmbientalPosts, likedMemoryPosts, likedGenderPosts)
+            else obtainCategoryOpts("2", userMetrics, likedAmbientalPosts, likedGenderPosts, likedMemoryPosts)
+        }
+        if (likedMemoryPosts > likedAmbientalPosts &&
+            likedMemoryPosts > likedGenderPosts) {
+            if (likedAmbientalPosts > likedGenderPosts) obtainCategoryOpts("3", userMetrics, likedMemoryPosts, likedAmbientalPosts, likedGenderPosts)
+            else obtainCategoryOpts("4", userMetrics, likedMemoryPosts, likedGenderPosts, likedAmbientalPosts)
+        } else {
+            if (likedAmbientalPosts > likedMemoryPosts) obtainCategoryOpts("5", userMetrics, likedGenderPosts, likedAmbientalPosts, likedMemoryPosts)
+            else obtainCategoryOpts("6", userMetrics, likedGenderPosts, likedMemoryPosts, likedAmbientalPosts)
         }
     }
 

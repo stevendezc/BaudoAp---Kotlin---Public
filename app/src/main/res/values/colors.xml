@@ -11,4 +11,7 @@
     <color name="productivos">#00FF6D</color>
     <color name="cultura">#00CFFF</color>
     <color name="turismo">#FF7A00</color>
+    <color name="ambiente">#75B078</color>
+    <color name="memoria">#F9D12B</color>
+    <color name="genero">#CE5632</color>
 </resources>

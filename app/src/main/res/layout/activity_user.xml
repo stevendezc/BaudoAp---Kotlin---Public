@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:paddingTop="10dp"
-        android:paddingRight="10dp"
+        android:paddingRight="20dp"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp">
 
@@ -36,8 +36,8 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/fui_ic_anonymous_white_24dp"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="#FFBC00" />
+                    app:civ_border_color="#FFBC00"
+                    app:civ_border_width="1dp" />
 
                 <ImageView
                     android:id="@+id/editUserImage"
@@ -55,7 +55,6 @@
                 android:paddingStart="15dp">
 
                 <TextView
-                    android:id="@+id/textView6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sofia"
@@ -120,7 +119,8 @@
             android:id="@+id/imageView13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/user_dummy_bg" />
+            android:src="@drawable/user_dummy_bg"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/userInterests"
@@ -128,12 +128,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/sofia"
                 android:text="@string/user_interests"
@@ -148,25 +148,207 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/main_category_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/circular_shape"
-                        android:indeterminate="false"
-                        android:progressDrawable="@drawable/circular_progress_bar"
-                        android:textAlignment="center" />
+                        android:backgroundTintMode="multiply"
+                        android:orientation="vertical">
+
+                        <ProgressBar
+                            android:id="@+id/main_category_progress"
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:indeterminateOnly="false"
+                            android:progress="60"
+                            android:progressDrawable="@drawable/ambiental_circle"
+                            android:rotation="-90"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/main_category_progress"
+                            app:layout_constraintEnd_toEndOf="@+id/main_category_progress"
+                            app:layout_constraintStart_toStartOf="@+id/main_category_progress"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/main_category_icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:src="@drawable/ambiental_icon" />
+
+                            <TextView
+                                android:id="@+id/main_category_percentage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sofia"
+                                android:text="TextView"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="24dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/main_category_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/main_category_stats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sofia"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/secondary_category_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circular_shape"
+                        android:backgroundTintMode="multiply"
+                        android:orientation="vertical">
+
+                        <ProgressBar
+                            android:id="@+id/secondary_category_progress"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:indeterminateOnly="false"
+                            android:progress="60"
+                            android:progressDrawable="@drawable/ambiental_circle"
+                            android:rotation="-90"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/secondary_category_progress"
+                            app:layout_constraintStart_toStartOf="@+id/secondary_category_progress"
+                            app:layout_constraintTop_toTopOf="@+id/secondary_category_progress">
+
+                            <ImageView
+                                android:id="@+id/secondary_category_icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:src="@drawable/memory_icon" />
+
+                            <TextView
+                                android:id="@+id/secondary_category_percentage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sofia"
+                                android:text="TextView"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/secondary_category_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="TextView"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/third_category_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circular_shape"
+                        android:backgroundTintMode="multiply"
+                        android:orientation="vertical">
+
+                        <ProgressBar
+                            android:id="@+id/third_category_progress"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:indeterminateOnly="false"
+                            android:progress="60"
+                            android:progressDrawable="@drawable/ambiental_circle"
+                            android:rotation="-90"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/third_category_progress"
+                            app:layout_constraintStart_toStartOf="@+id/third_category_progress"
+                            app:layout_constraintTop_toTopOf="@+id/third_category_progress">
+
+                            <ImageView
+                                android:id="@+id/third_category_icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:src="@drawable/gender_icon" />
+
+                            <TextView
+                                android:id="@+id/third_category_percentage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sofia"
+                                android:text="TextView"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/third_category_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="TextView"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

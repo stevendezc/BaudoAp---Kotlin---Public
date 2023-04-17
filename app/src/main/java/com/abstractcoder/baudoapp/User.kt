@@ -13,3 +13,12 @@ data class FirebaseUser(
     val user_pic: String = "",
     val verified: Boolean = false
     )
+
+data class UserMetrics(
+    val totalReactions: Int = 0,
+    val totalPositiveReactions: Int = 0,
+    val totalSavedPosts: Int = 0,
+    val likedAmbientalPosts: Int = 0,
+    val likedMemoryPosts: Int = 0,
+    val likedGenderPosts: Int = 0
+)
