@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.abstractcoder.baudoapp.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestoreSettings
 
 class Firestore {
 
@@ -22,6 +24,9 @@ class Firestore {
     val commentariesCollectionRef = db.collection("commentaries")
 
     fun activateSubscribers(context: Context, email: String) {
+        db.firestoreSettings = firestoreSettings {
+            this.isPersistenceEnabled = true
+        }
         subscribeToUserUpdates(context, email)
         subscribeToPostUpdates(context)
         subscribeToCommunityUpdates(context)
