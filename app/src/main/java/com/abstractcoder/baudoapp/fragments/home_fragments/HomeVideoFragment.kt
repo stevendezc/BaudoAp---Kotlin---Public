@@ -1,5 +1,6 @@
 package com.abstractcoder.baudoapp.fragments.home_fragments
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,10 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.FullSizeVideoActivity
 import com.abstractcoder.baudoapp.PostData
+import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentHomeVideoBinding
 import com.abstractcoder.baudoapp.recyclers.*
 
@@ -24,6 +27,7 @@ class HomeVideoFragment : Fragment() {
     private lateinit var videoAdapter: VideoPostAdapter
     private lateinit var videoRecyclerView: RecyclerView
     private var videoPostMainList: ArrayList<VideoPostMain> = arrayListOf<VideoPostMain>()
+    private var isOnline: Boolean = false
     lateinit var videoId: Array<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,9 @@ class HomeVideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         layoutManager = GridLayoutManager(context, 3)
+
+        val sharedPref = this.activity?.getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        isOnline = sharedPref?.getBoolean("online", false)!!
 
         val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
         initVideoData(incomingPostList)
@@ -75,9 +82,13 @@ class HomeVideoFragment : Fragment() {
         videoRecyclerView.adapter = videoAdapter
 
         videoAdapter.onItemClick = {
-            val intent = Intent(this.context, FullSizeVideoActivity::class.java)
-            intent.putExtra("video", it)
-            startActivity(intent)
+            if (isOnline) {
+                val intent = Intent(this.context, FullSizeVideoActivity::class.java)
+                intent.putExtra("video", it)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this.context, "Conexión inactiva, intente mas tarde", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

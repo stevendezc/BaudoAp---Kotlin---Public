@@ -1,6 +1,7 @@
 package com.abstractcoder.baudoapp.fragments.home_fragments
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,10 +10,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.InnerPodcastContentActivity
 import com.abstractcoder.baudoapp.PostData
+import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
@@ -25,6 +28,7 @@ class HomePodcastFragment : Fragment() {
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var podcastAdapter: PodcastPostAdapter
     private lateinit var podcastRecyclerView: RecyclerView
+    private var isOnline: Boolean = false
     private var podcastPostMainList: ArrayList<PodcastPostMain> = arrayListOf<PodcastPostMain>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,9 @@ class HomePodcastFragment : Fragment() {
 
         val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
         Log.d(ContentValues.TAG, "incomingPostList on PodcastFragment: ${incomingPostList.size}")
+
+        val sharedPref = this.activity?.getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        isOnline = sharedPref?.getBoolean("online", false)!!
         // Load Posts
         initData(view,incomingPostList)
     }
@@ -77,9 +84,13 @@ class HomePodcastFragment : Fragment() {
         podcastRecyclerView.adapter = podcastAdapter
 
         podcastAdapter.onItemClick = {
-            val intent = Intent(this.context, InnerPodcastContentActivity::class.java)
-            intent.putExtra("podcast", it)
-            startActivity(intent)
+            if (isOnline) {
+                val intent = Intent(this.context, InnerPodcastContentActivity::class.java)
+                intent.putExtra("podcast", it)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this.context, "Conexión inactiva, intente mas tarde", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
