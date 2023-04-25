@@ -30,7 +30,7 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
                 .load(imageUrl)
                 .into(holder.imageThumbnail)
         }
-        holder.imageLocation.text = currentItem.title
+        holder.imageLocation.text = currentItem.location
         holder.imageDescription.text = currentItem.description
         holder.imageAuthor.text = "Foto por: ${currentItem.author}"
 

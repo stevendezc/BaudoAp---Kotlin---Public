@@ -63,9 +63,10 @@ class HomeImageFragment : Fragment() {
                 val uri = Uri.parse(post.thumbnail)
                 val title = post.title
                 val author = post.author
+                val location = post.location
                 val description = post.description
                 val comments = post.commentaries
-                val imagePost = ImagePostMain(id, uri, title, author, description, comments!!)
+                val imagePost = ImagePostMain(id, uri, title, author, location, description, comments!!)
                 imagePostMainList.add(imagePost)
             }
         }

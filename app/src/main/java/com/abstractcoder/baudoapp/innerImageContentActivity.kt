@@ -165,7 +165,7 @@ class innerImageContentActivity : AppCompatActivity() {
                 .load(imageUrl)
                 .into(binding.imageMainImage)
 
-            binding.imageTitle.text = imageContent.title
+            binding.imageTitle.text = imageContent.location
 
             val descriptionTextComplement = " Foto por: " + imageContent.author
             val descriptionText = imageContent.description + descriptionTextComplement

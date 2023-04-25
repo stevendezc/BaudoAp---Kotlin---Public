@@ -33,6 +33,7 @@ data class PostData(
     val thumbnail2: String? = "",
     val creation_date: Timestamp? = null,
     val title: String? = "",
+    val location: String? = "",
     val type: String? = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -48,6 +49,7 @@ data class PostData(
         parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -67,6 +69,7 @@ data class PostData(
         parcel.writeString(thumbnail2)
         parcel.writeParcelable(creation_date, flags)
         parcel.writeString(title)
+        parcel.writeString(location)
         parcel.writeString(type)
     }
 
