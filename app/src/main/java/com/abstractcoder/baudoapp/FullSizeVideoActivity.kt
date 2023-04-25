@@ -170,6 +170,13 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
                 finish()
             }
 
+            binding.videoCommentaries.setOnClickListener {
+                val intent = Intent(this.baseContext, InnerVideoContentActivity::class.java)
+                intent.putExtra("video_content", videoContent)
+                startActivity(intent)
+                overridePendingTransition(com.facebook.R.anim.abc_slide_in_bottom, com.facebook.R.anim.abc_slide_out_top)
+            }
+
             binding.videoSave.setOnClickListener {
                 savePost(email)
             }
