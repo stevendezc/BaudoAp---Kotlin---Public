@@ -60,7 +60,8 @@ class HomeFragment : Fragment() {
             Log.d(ContentValues.TAG, "posts on HomeFragment: $posts")
             // Setup subfragments
             val postsArrayList: ArrayList<PostData> = ArrayList()
-            postsArrayList.addAll(posts)
+            val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
+            postsArrayList.addAll(organizedPosts)
             fragmentSetup(postsArrayList)
         })
     }
