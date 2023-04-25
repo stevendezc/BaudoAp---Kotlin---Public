@@ -160,7 +160,7 @@ class innerImageContentActivity : AppCompatActivity() {
 
     private fun setup(imageContent: ImagePostMain, userName: String, email: String) {
         if (imageContent != null) {
-            val imageUrl = imageContent.thumbnail
+            val imageUrl = imageContent.main_media
             Glide.with(binding.imageMainImage)
                 .load(imageUrl)
                 .into(binding.imageMainImage)
