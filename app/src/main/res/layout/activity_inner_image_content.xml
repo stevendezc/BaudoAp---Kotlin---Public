@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/image_main_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <FrameLayout
         android:id="@+id/image_main_media"
@@ -57,7 +58,7 @@
             android:fontFamily="@font/sofia"
             android:paddingBottom="5dp"
             android:text="TextView"
-            android:textColor="#444444"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sofia"
             android:text="TextView"
-            android:textColor="#444444"
+            android:textColor="@color/white"
             android:textSize="11dp" />
 
         <LinearLayout
@@ -145,7 +146,7 @@
             android:fontFamily="@font/sofia"
             android:includeFontPadding="false"
             android:text="Comentarios"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
     </LinearLayout>
