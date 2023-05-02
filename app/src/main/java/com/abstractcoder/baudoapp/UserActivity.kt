@@ -1,14 +1,23 @@
 package com.abstractcoder.baudoapp
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
+import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
+import com.abstractcoder.baudoapp.recyclers.ImagePostMain
+import com.abstractcoder.baudoapp.recyclers.SavedPostAdapter
+import com.abstractcoder.baudoapp.recyclers.SavedPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.SettingsDialog
@@ -23,6 +32,18 @@ class UserActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityUserBinding
     private lateinit var userData: FirebaseUser
+
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var savedPostAdapter: SavedPostAdapter
+    private lateinit var savedPostRecyclerView: RecyclerView
+    private var userSavedPosts: ArrayList<SavedPostMain> = ArrayList()
+
+    private lateinit var weekImagelayoutManager: LinearLayoutManager
+    private lateinit var weekImageAdapter: ImagePostAdapter
+    private lateinit var weekImageRecyclerView: RecyclerView
+    private var weekImagePosts: ArrayList<ImagePostMain> = ArrayList()
+
+    private lateinit var lastImagePost: PostData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +62,26 @@ class UserActivity : FragmentActivity() {
             println("userData in User activity: ${user}")
             userData = user
             obtainMetrics(userData)
+        })
+
+        layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        weekImagelayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        firestore.postsLiveData.observe(this, Observer { posts ->
+            Log.d(ContentValues.TAG, "posts on User activity: $posts")
+            // Setup subfragments
+            var savedPosts = posts.filter { item -> userData.saved_posts.contains(item.id) }
+            val parsedSavedPosts = savedPosts.map { SavedPostMain(
+                it.id,
+                it.thumbnail,
+                if (it.title != "") it.title else it.location,
+                userData.liked_posts.contains(it.id),
+                userData.indifferent_posts.contains(it.id),
+                userData.disliked_posts.contains(it.id)
+            ) }
+            userSavedPosts.addAll(parsedSavedPosts)
+            val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
+            lastImagePost = organizedPosts.filter { it.type == "image" }[0]
+            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail), Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author, lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!))
         })
         // Setup incoming data
         setup(email, name, provider)
@@ -74,6 +115,18 @@ class UserActivity : FragmentActivity() {
         binding.infoButton.setOnClickListener {
             InfoDialog("perfil").show(supportFragmentManager, "info dialog")
         }
+
+        savedPostRecyclerView = binding.savedPostListRecycler
+        savedPostRecyclerView.layoutManager = layoutManager
+        savedPostRecyclerView.setHasFixedSize(true)
+        savedPostAdapter = SavedPostAdapter(userSavedPosts)
+        savedPostRecyclerView.adapter = savedPostAdapter
+
+        weekImageRecyclerView = binding.weeklyImageListRecycler
+        weekImageRecyclerView.layoutManager = weekImagelayoutManager
+        weekImageRecyclerView.setHasFixedSize(true)
+        weekImageAdapter = ImagePostAdapter(weekImagePosts)
+        weekImageRecyclerView.adapter = weekImageAdapter
     }
 
     private fun obtainMetrics(user: FirebaseUser) {
