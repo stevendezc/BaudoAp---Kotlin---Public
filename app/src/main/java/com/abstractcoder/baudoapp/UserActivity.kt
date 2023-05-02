@@ -79,6 +79,7 @@ class UserActivity : FragmentActivity() {
     private fun obtainMetrics(user: FirebaseUser) {
         firestore.postsLiveData.observe(this, Observer { posts ->
             val postsArrayList: ArrayList<PostData> = ArrayList()
+            val totalCommentaries = user.commentaries.size
             val totalReactions = user.reactions.size
             val totalPositiveReactions = user.reactions.filter { reaction -> reaction.type == "likes" }.size
             val totalSavedPosts = user.saved_posts.size
@@ -96,6 +97,7 @@ class UserActivity : FragmentActivity() {
             }
 
             setMetrics(UserMetrics(
+                totalCommentaries,
                 totalReactions,
                 totalPositiveReactions,
                 totalSavedPosts,
@@ -128,7 +130,7 @@ class UserActivity : FragmentActivity() {
         binding.mainCategoryTitle.setTextColor(Color.parseColor(mainColor))
         binding.mainCategoryStats.text = "Interacciones Totales: ${userMetrics.totalReactions}\n" +
                 "Reacciones positivas: ${userMetrics.totalPositiveReactions}\n" +
-                "Total comentarios: 0\n" +
+                "Total comentarios: ${userMetrics.totalCommentaries}\n" +
                 "Total guardados: ${userMetrics.totalSavedPosts}"
         binding.mainCategoryStats.setTextColor(Color.parseColor(mainColor))
         // Secondary Liked Category

@@ -93,6 +93,10 @@ class InnerVideoContentActivity : AppCompatActivity() {
                 "commentaries", FieldValue.arrayUnion(commentId)
             )
 
+            db.collection("users").document(authorEmail).update(
+                "commentaries", FieldValue.arrayUnion(commentId)
+            )
+
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.videoCommentary.windowToken, 0)
             binding.videoCommentary.text.clear()

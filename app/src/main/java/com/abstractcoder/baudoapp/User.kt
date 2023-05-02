@@ -8,6 +8,7 @@ data class FirebaseUser(
     val name: String = "",
     val password: String = "",
     val provider: String = "",
+    val commentaries: ArrayList<String> = arrayListOf<String>(),
     val saved_posts: ArrayList<String> = arrayListOf<String>(),
     val reactions: ArrayList<Reaction> = arrayListOf<Reaction>(),
     val user_pic: String = "",
@@ -15,6 +16,7 @@ data class FirebaseUser(
     )
 
 data class UserMetrics(
+    val totalCommentaries: Int = 0,
     val totalReactions: Int = 0,
     val totalPositiveReactions: Int = 0,
     val totalSavedPosts: Int = 0,

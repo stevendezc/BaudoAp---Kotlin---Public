@@ -105,6 +105,10 @@ class innerImageContentActivity : AppCompatActivity() {
                 "commentaries", FieldValue.arrayUnion(commentId)
             )
 
+            db.collection("users").document(authorEmail).update(
+                "commentaries", FieldValue.arrayUnion(commentId)
+            )
+
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.imageCommentary.windowToken, 0)
             binding.imageCommentary.text.clear()
