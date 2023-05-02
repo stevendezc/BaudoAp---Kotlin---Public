@@ -10,6 +10,9 @@ data class FirebaseUser(
     val provider: String = "",
     val commentaries: ArrayList<String> = arrayListOf<String>(),
     val saved_posts: ArrayList<String> = arrayListOf<String>(),
+    val liked_posts: ArrayList<String> = arrayListOf<String>(),
+    val indifferent_posts: ArrayList<String> = arrayListOf<String>(),
+    val disliked_posts: ArrayList<String> = arrayListOf<String>(),
     val reactions: ArrayList<Reaction> = arrayListOf<Reaction>(),
     val user_pic: String = "",
     val verified: Boolean = false
