@@ -53,12 +53,12 @@
         android:id="@+id/filter_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:orientation="horizontal"
+        android:paddingStart="10dp"
         android:paddingTop="20dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
-        android:paddingStart="10dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_icon">
 
@@ -153,8 +153,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="520dp"
-        android:visibility="gone"
+        android:layout_height="580dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_buttons"
         tools:listitem="@layout/community_list_item" />

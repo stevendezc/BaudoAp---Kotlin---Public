@@ -13,42 +13,42 @@
         android:gravity="right"
         android:orientation="horizontal"
         android:paddingTop="10dp"
+        android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/contentNavigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@color/fui_transparent"
+            android:visibility="visible"
+            app:itemTextAppearanceActive="@style/bold_menu_item"
+            app:itemTextAppearanceInactive="@style/bold_menu_item"
+            app:itemTextColor="@color/content_items_text_color"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/content_nav" />
+
         <ImageView
             android:id="@+id/home_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/info" />
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/contentNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/fui_transparent"
-        android:paddingBottom="10dp"
-        android:visibility="gone"
-        app:itemTextAppearanceActive="@style/bold_menu_item"
-        app:itemTextAppearanceInactive="@style/bold_menu_item"
-        app:itemTextColor="@color/content_items_text_color"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_info_layout"
-        app:menu="@menu/content_nav" />
 
     <FrameLayout
         android:id="@+id/contentSubFragmentWrapper"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
-        android:visibility="gone"
+        android:layout_height="630dp"
         android:background="@color/black"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentNavigationView">
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/home_info_layout"></FrameLayout>
 
     <ProgressBar
         android:id="@+id/contentLoading"
