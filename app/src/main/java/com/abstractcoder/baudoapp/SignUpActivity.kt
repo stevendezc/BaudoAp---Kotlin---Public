@@ -33,6 +33,11 @@ class SignUpActivity : AppCompatActivity() {
     private fun setup() {
         title = "Registro"
         val authInstance = FirebaseAuth.getInstance()
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.signUpButton.setOnClickListener {
             val name: String = binding.registerNameEditText.text.toString()
             val email: String = binding.registerEmailEditText.text.toString()

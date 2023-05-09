@@ -24,6 +24,10 @@ class PasswordRecoveryActivity : AppCompatActivity() {
     private fun setup() {
         title = "Reset de contraseña"
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.resetButton.setOnClickListener {
             val email = binding.resetEmailEditText.text.toString()
             if (email != null) {
