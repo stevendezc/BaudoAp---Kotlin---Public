@@ -37,20 +37,35 @@ class SignUpActivity : AppCompatActivity() {
             val name: String = binding.registerNameEditText.text.toString()
             val email: String = binding.registerEmailEditText.text.toString()
             val password: String = binding.registerPasswordEditText.text.toString()
+            val rightsAccepted: Boolean = binding.rightsSwitch.isChecked
             val user = User(name, email, password)
             if (binding.registerNameEditText.text.isNotEmpty() && binding.registerEmailEditText.text.isNotEmpty() && binding.registerPasswordEditText.text.isNotEmpty()) {
-                authInstance.createUserWithEmailAndPassword(binding.registerEmailEditText.text.toString(),
-                    binding.registerPasswordEditText.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val fireUser = authInstance.currentUser
-                        fireUser?.sendEmailVerification()
-                        registerUser(user, ProviderType.BASIC)
-                        Toast.makeText(this, "Correo de verificacion enviado", Toast.LENGTH_SHORT).show()
-                        showLogIn()
-                    } else {
-                        val exception = it.exception
-                        showAlert(exception)
+                if (rightsAccepted) {
+                    authInstance.createUserWithEmailAndPassword(
+                        binding.registerEmailEditText.text.toString(),
+                        binding.registerPasswordEditText.text.toString()
+                    ).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val fireUser = authInstance.currentUser
+                            fireUser?.sendEmailVerification()
+                            registerUser(user, ProviderType.BASIC)
+                            Toast.makeText(
+                                this,
+                                "Correo de verificacion enviado",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            showLogIn()
+                        } else {
+                            val exception = it.exception
+                            showAlert(exception)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "No ha aceptado la politica de tratamiento de datos",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
