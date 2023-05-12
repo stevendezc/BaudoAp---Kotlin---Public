@@ -164,9 +164,10 @@ class innerImageContentActivity : AppCompatActivity() {
 
     private fun setup(imageContent: ImagePostMain, userName: String, email: String) {
         if (imageContent != null) {
-            val imageUrl = imageContent.main_media
+            val imageThumbnail = imageContent.thumbnail
+            val imageMainMedia = imageContent.main_media
             Glide.with(binding.imageMainImage)
-                .load(imageUrl)
+                .load(imageThumbnail)
                 .into(binding.imageMainImage)
 
             binding.imageTitle.text = imageContent.location
@@ -190,7 +191,7 @@ class innerImageContentActivity : AppCompatActivity() {
 
             binding.imageExpand.setOnClickListener {
                 Intent(this, resizedImageActivity::class.java).apply {
-                    putExtra("image", imageUrl)
+                    putExtra("image", imageMainMedia)
                     startActivity(this)
                 }
             }
