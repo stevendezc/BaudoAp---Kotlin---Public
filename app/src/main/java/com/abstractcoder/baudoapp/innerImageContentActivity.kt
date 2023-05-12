@@ -22,6 +22,9 @@ import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class innerImageContentActivity : AppCompatActivity() {
@@ -155,18 +158,34 @@ class innerImageContentActivity : AppCompatActivity() {
 
             binding.imageTitle.text = imageContent.location
 
-            val descriptionTextComplement = " Foto por: " + imageContent.author
-            val descriptionText = imageContent.description + descriptionTextComplement
-            val spannableString = SpannableString(descriptionText)
-            val startIndex: Int = descriptionText.indexOf(descriptionTextComplement)
-            val endIndex = startIndex + descriptionTextComplement.length
-            spannableString.setSpan(
+            binding.imageDescription.text = imageContent.description
+
+            val authorComplementaryText = "\nFoto por:  "
+            val descriptionText = authorComplementaryText + imageContent.author
+            val spannableAuthorString = SpannableString(descriptionText)
+            val startIndex: Int = descriptionText.indexOf(authorComplementaryText)
+            val endIndex = startIndex + authorComplementaryText.length
+            spannableAuthorString.setSpan(
                 StyleSpan(Typeface.BOLD),
                 startIndex,
                 endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-            binding.imageDescription.text = spannableString
+            binding.imageAuthor.text = spannableAuthorString
+
+            val dateComplementaryText = "Publicado:  "
+            val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
+            val postDate = dateComplementaryText + dateFormat.format(imageContent.creation_date?.toDate() ?: null)
+            val spannableDateString = SpannableString(postDate)
+            val startIndex2: Int = postDate.indexOf(dateComplementaryText)
+            val endIndex2 = startIndex2 + dateComplementaryText.length
+            spannableDateString.setSpan(
+                StyleSpan(Typeface.BOLD),
+                startIndex2,
+                endIndex2,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding.imageDate.text = spannableDateString
 
             binding.imageClose.setOnClickListener {
                 finish()

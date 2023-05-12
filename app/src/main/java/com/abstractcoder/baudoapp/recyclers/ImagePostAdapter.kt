@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.ImageListItemBinding
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : RecyclerView.Adapter<ImagePostAdapter.ImagePostHolder>() {
 
@@ -33,6 +36,9 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
         holder.imageLocation.text = currentItem.location
         holder.imageDescription.text = currentItem.description
         holder.imageAuthor.text = "Foto por: ${currentItem.author}"
+        val dateFormat = SimpleDateFormat("dd MMMM ',' yyyy", Locale("es", "ES"))
+        val postDate = "Publicado:  " + dateFormat.format(currentItem.creation_date?.toDate() ?: null)
+        holder.imageDate.text = postDate
 
         holder.imageContainer.setOnClickListener {
             onItemClick?.invoke(currentItem)
@@ -52,6 +58,7 @@ class ImagePostAdapter(private val imagePostList: ArrayList<ImagePostMain>) : Re
         val imageLocation = binding.imageListItemLocation
         val imageAuthor = binding.imageListItemAuthor
         val imageDescription = binding.imageListItemDescription
+        val imageDate = binding.imageListItemDate
 
     }
 

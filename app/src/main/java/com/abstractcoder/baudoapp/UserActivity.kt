@@ -79,7 +79,7 @@ class UserActivity : FragmentActivity() {
             userSavedPosts.addAll(parsedSavedPosts)
             val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
             lastImagePost = organizedPosts.filter { it.type == "image" }[0]
-            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail), Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author, lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!))
+            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail), Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author, lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!, lastImagePost.creation_date))
         })
         // Setup incoming data
         setup(email, name, provider)

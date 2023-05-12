@@ -31,8 +31,6 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
                 .into(holder.communityThumbnail)
         }
         if (currentItem.category == "productivos") {
-            holder.communityThumbnail.setStrokeColorResource(R.color.productivos)
-            holder.communityBadge.setImageResource(R.drawable.productivos_badge)
             holder.communityTitle.setTextColor(
                 ContextCompat.getColor(
                     holder.binding.root.context,
@@ -42,7 +40,6 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
         }
         if (currentItem.category == "cultura") {
             holder.communityThumbnail.setStrokeColorResource(R.color.cultura)
-            holder.communityBadge.setImageResource(R.drawable.cultura_badge)
             holder.communityTitle.setTextColor(
                 ContextCompat.getColor(
                     holder.binding.root.context,
@@ -52,7 +49,6 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
         }
         if (currentItem.category == "turismo") {
             holder.communityThumbnail.setStrokeColorResource(R.color.turismo)
-            holder.communityBadge.setImageResource(R.drawable.turismo_badge)
             holder.communityTitle.setTextColor(
                 ContextCompat.getColor(
                     holder.binding.root.context,
@@ -74,7 +70,6 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
         val binding = CommunityListItemBinding.bind(itemView)
 
         val communityThumbnail = binding.communityThumbnail
-        val communityBadge = binding.communityBadge
         val communityTitle = binding.communityTitle
         val communityDescription = binding.communityDescription
 

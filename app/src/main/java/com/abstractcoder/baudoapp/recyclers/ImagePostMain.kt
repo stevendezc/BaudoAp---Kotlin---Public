@@ -3,8 +3,9 @@ package com.abstractcoder.baudoapp.recyclers
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 
-data class ImagePostMain(var id: String?, var thumbnail: Uri, var main_media: Uri, var title: String?, var author: String?, val location: String?, var description: String?, var commentaries: List<String>): Parcelable {
+data class ImagePostMain(var id: String?, var thumbnail: Uri, var main_media: Uri, var title: String?, var author: String?, val location: String?, var description: String?, var commentaries: List<String>, var creation_date: Timestamp?): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readParcelable(Uri::class.java.classLoader)!!,
@@ -13,7 +14,8 @@ data class ImagePostMain(var id: String?, var thumbnail: Uri, var main_media: Ur
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
+        parcel.readParcelable(Timestamp::class.java.classLoader)
     ) {
     }
 
@@ -26,6 +28,7 @@ data class ImagePostMain(var id: String?, var thumbnail: Uri, var main_media: Ur
         parcel.writeString(location)
         parcel.writeString(description)
         parcel.writeStringList(commentaries)
+        parcel.writeParcelable(creation_date, flags)
     }
 
     override fun describeContents(): Int {
