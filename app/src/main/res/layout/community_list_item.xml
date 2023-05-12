@@ -122,18 +122,6 @@
                 android:textColor="@color/white"
                 android:textSize="11dp" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/shareButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    tools:srcCompat="@drawable/share"
-                    android:src="@drawable/share"/>
-            </FrameLayout>
-
         </LinearLayout>
     </LinearLayout>
 
