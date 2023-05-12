@@ -24,7 +24,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                app:srcCompat="@drawable/info" />
+                app:srcCompat="@drawable/info"
+                app:tint="#f6c63c"/>
         </FrameLayout>
 
         <LinearLayout

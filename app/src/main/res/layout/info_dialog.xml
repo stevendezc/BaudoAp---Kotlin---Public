@@ -7,10 +7,8 @@
 
     <LinearLayout
         android:id="@+id/infoContainer1"
-        android:layout_width="300dp"
-        android:layout_height="340dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="370dp"
         android:background="@drawable/settings_background"
         android:backgroundTint="#80000000"
         android:backgroundTintMode="src_over"
@@ -61,14 +59,29 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="40dp"
+            android:background="#FCCA2E" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/roundImage"
+            app:strokeColor="@null"
+            android:src="@drawable/yellow_close"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/infoContainer2"
-        android:layout_width="300dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:background="@drawable/settings_background"
         android:backgroundTint="#80000000"
         android:backgroundTintMode="src_over"
@@ -119,6 +132,23 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="#FCCA2E" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dialog_close2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/roundImage"
+            app:strokeColor="@null"
+            android:src="@drawable/yellow_close"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

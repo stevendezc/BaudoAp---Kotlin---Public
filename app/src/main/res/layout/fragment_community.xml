@@ -8,48 +8,6 @@
     tools:context=".fragments.CommunityFragment">
 
     <LinearLayout
-        android:id="@+id/home_info_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:paddingStart="40dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center|bottom"
-            android:text="Comunidad"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/community_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/info" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/filter_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/filter"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_info_layout" />
-
-    <LinearLayout
         android:id="@+id/filter_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +18,7 @@
         android:paddingBottom="20dp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_icon">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/button_productivos"
@@ -124,6 +82,7 @@
             android:id="@+id/button_turismo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:background="@drawable/turismo_button"
             android:gravity="center"
@@ -148,6 +107,14 @@
                 android:textSize="10dp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/community_info"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/info"
+            app:tint="@color/white" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -168,6 +135,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_info_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/filter_buttons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

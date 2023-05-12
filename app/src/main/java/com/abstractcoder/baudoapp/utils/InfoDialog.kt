@@ -30,7 +30,7 @@ class InfoDialog(
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setGravity(Gravity.TOP)
+        dialog.window!!.setGravity(Gravity.BOTTOM)
         dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
         return dialog
     }
@@ -59,6 +59,14 @@ class InfoDialog(
             binding.infoComplementaryText11.visibility = if (info.complementary == "") TextView.GONE else TextView.VISIBLE
             binding.InfoComplementaryText21.text = info.complementary2
             binding.InfoComplementaryText21.visibility = if (info.complementary2 == "") TextView.GONE else TextView.VISIBLE
+        }
+
+        binding.dialogClose.setOnClickListener {
+            dismiss()
+        }
+
+        binding.dialogClose2.setOnClickListener {
+            dismiss()
         }
     }
 }
