@@ -24,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:background="@color/fui_transparent"
             android:visibility="visible"
             app:itemTextAppearanceActive="@style/bold_menu_item"
             app:itemTextAppearanceInactive="@style/bold_menu_item"
@@ -38,7 +37,6 @@
             android:layout_height="25dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:src="@drawable/info"
             app:tint="#f6c63c" />
     </LinearLayout>

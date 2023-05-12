@@ -31,13 +31,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/userImageView2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/fui_ic_anonymous_white_24dp"
-                    app:civ_border_color="#FFBC00"
-                    app:civ_border_width="1dp" />
+                    android:padding="15dp"
+                    android:background="@drawable/yellow_border2"
+                    app:srcCompat="@drawable/user" />
 
                 <ImageView
                     android:id="@+id/editUserImage"
@@ -95,10 +95,11 @@
 
                 <ImageView
                     android:id="@+id/settingsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/settings" />
+                    android:src="@drawable/settings"
+                    android:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/infoButton"
