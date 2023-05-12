@@ -38,11 +38,6 @@
                     app:strokeWidth="1dp"
                     tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-                <ImageView
-                    android:id="@+id/community_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@drawable/cultura_badge" />
             </FrameLayout>
 
             <LinearLayout
