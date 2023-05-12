@@ -37,7 +37,7 @@
                     android:layout_height="80dp"
                     android:padding="15dp"
                     android:background="@drawable/yellow_border2"
-                    app:srcCompat="@drawable/user" />
+                    android:src="@drawable/user" />
 
                 <ImageView
                     android:id="@+id/editUserImage"
