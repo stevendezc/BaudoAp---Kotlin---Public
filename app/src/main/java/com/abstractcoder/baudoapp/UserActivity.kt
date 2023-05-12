@@ -74,9 +74,7 @@ class UserActivity : FragmentActivity() {
                 it.id,
                 it.thumbnail,
                 if (it.title != "") it.title else it.location,
-                userData.liked_posts.contains(it.id),
-                userData.indifferent_posts.contains(it.id),
-                userData.disliked_posts.contains(it.id)
+                userData.liked_posts.contains(it.id)
             ) }
             userSavedPosts.addAll(parsedSavedPosts)
             val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())

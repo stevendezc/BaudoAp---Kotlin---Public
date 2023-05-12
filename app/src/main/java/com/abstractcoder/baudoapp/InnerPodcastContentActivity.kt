@@ -147,25 +147,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         println("reaction: $reaction")
         if (reaction == null) {
             binding.podcastLike.setImageResource(R.drawable.like)
-            binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
-            binding.podcastDislike.setImageResource(R.drawable.dislike)
-        }
-        when (reaction?.type) {
-            "likes" -> {
-                binding.podcastLike.setImageResource(R.drawable.like_selected)
-                binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
-                binding.podcastDislike.setImageResource(R.drawable.dislike)
-            }
-            "indifferents" -> {
-                binding.podcastLike.setImageResource(R.drawable.like)
-                binding.podcastIndifferent.setImageResource(R.drawable.indifferent_selected)
-                binding.podcastDislike.setImageResource(R.drawable.dislike)
-            }
-            "dislikes" -> {
-                binding.podcastLike.setImageResource(R.drawable.like)
-                binding.podcastIndifferent.setImageResource(R.drawable.indifferent)
-                binding.podcastDislike.setImageResource(R.drawable.dislike_selected)
-            }
+        } else {
+            binding.podcastLike.setImageResource(R.drawable.like_selected)
         }
     }
 
@@ -267,28 +250,6 @@ class InnerPodcastContentActivity : AppCompatActivity() {
                 email,
                 postId,
                 "likes",
-                userData,
-                postData,
-                db
-            )
-        }
-
-        binding.podcastIndifferent.setOnClickListener {
-            reactionHandler.addReaction(
-                email,
-                postId,
-                "indifferents",
-                userData,
-                postData,
-                db
-            )
-        }
-
-        binding.podcastDislike.setOnClickListener {
-            reactionHandler.addReaction(
-                email,
-                postId,
-                "dislikes",
                 userData,
                 postData,
                 db

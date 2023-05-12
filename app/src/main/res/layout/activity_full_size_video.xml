@@ -45,7 +45,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:paddingStart="5dp"
         android:paddingTop="5dp"
         android:paddingRight="5dp"
@@ -61,45 +61,27 @@
             app:srcCompat="@drawable/commentaries" />
 
         <ImageView
-            android:id="@+id/video_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/save" />
-
-        <ImageView
             android:id="@+id/video_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/like" />
 
         <ImageView
-            android:id="@+id/video_indifferent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/video_save"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/indifferent" />
-
-        <ImageView
-            android:id="@+id/video_dislike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/dislike" />
+            app:srcCompat="@drawable/save" />
 
         <ImageView
             android:id="@+id/video_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             app:srcCompat="@drawable/share" />

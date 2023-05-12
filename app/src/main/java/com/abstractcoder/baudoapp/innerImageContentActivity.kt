@@ -140,25 +140,8 @@ class innerImageContentActivity : AppCompatActivity() {
         println("reaction: $reaction")
         if (reaction == null) {
             binding.imageLike.setImageResource(R.drawable.like)
-            binding.imageIndifferent.setImageResource(R.drawable.indifferent)
-            binding.imageDislike.setImageResource(R.drawable.dislike)
-        }
-        when (reaction?.type) {
-            "likes" -> {
-                binding.imageLike.setImageResource(R.drawable.like_selected)
-                binding.imageIndifferent.setImageResource(R.drawable.indifferent)
-                binding.imageDislike.setImageResource(R.drawable.dislike)
-            }
-            "indifferents" -> {
-                binding.imageLike.setImageResource(R.drawable.like)
-                binding.imageIndifferent.setImageResource(R.drawable.indifferent_selected)
-                binding.imageDislike.setImageResource(R.drawable.dislike)
-            }
-            "dislikes" -> {
-                binding.imageLike.setImageResource(R.drawable.like)
-                binding.imageIndifferent.setImageResource(R.drawable.indifferent)
-                binding.imageDislike.setImageResource(R.drawable.dislike_selected)
-            }
+        } else {
+            binding.imageLike.setImageResource(R.drawable.like_selected)
         }
     }
 
@@ -207,28 +190,6 @@ class innerImageContentActivity : AppCompatActivity() {
                     email,
                     postId,
                     "likes",
-                    userData,
-                    postData,
-                    db
-                )
-            }
-
-            binding.imageIndifferent.setOnClickListener {
-                reactionHandler.addReaction(
-                    email,
-                    postId,
-                    "indifferents",
-                    userData,
-                    postData,
-                    db
-                )
-            }
-
-            binding.imageDislike.setOnClickListener {
-                reactionHandler.addReaction(
-                    email,
-                    postId,
-                    "dislikes",
                     userData,
                     postData,
                     db

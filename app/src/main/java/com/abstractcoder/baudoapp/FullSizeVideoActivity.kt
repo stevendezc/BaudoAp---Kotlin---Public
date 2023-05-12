@@ -82,25 +82,8 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
         println("reaction: $reaction")
         if (reaction == null) {
             binding.videoLike.setImageResource(R.drawable.like)
-            binding.videoIndifferent.setImageResource(R.drawable.indifferent)
-            binding.videoDislike.setImageResource(R.drawable.dislike)
-        }
-        when (reaction?.type) {
-            "likes" -> {
-                binding.videoLike.setImageResource(R.drawable.like_selected)
-                binding.videoIndifferent.setImageResource(R.drawable.indifferent)
-                binding.videoDislike.setImageResource(R.drawable.dislike)
-            }
-            "indifferents" -> {
-                binding.videoLike.setImageResource(R.drawable.like)
-                binding.videoIndifferent.setImageResource(R.drawable.indifferent_selected)
-                binding.videoDislike.setImageResource(R.drawable.dislike)
-            }
-            "dislikes" -> {
-                binding.videoLike.setImageResource(R.drawable.like)
-                binding.videoIndifferent.setImageResource(R.drawable.indifferent)
-                binding.videoDislike.setImageResource(R.drawable.dislike_selected)
-            }
+        } else {
+            binding.videoLike.setImageResource(R.drawable.like_selected)
         }
     }
 
@@ -188,28 +171,6 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
                     email,
                     postId,
                     "likes",
-                    userData,
-                    postData,
-                    db
-                )
-            }
-
-            binding.videoIndifferent.setOnClickListener {
-                reactionHandler.addReaction(
-                    email,
-                    postId,
-                    "indifferents",
-                    userData,
-                    postData,
-                    db
-                )
-            }
-
-            binding.videoDislike.setOnClickListener {
-                reactionHandler.addReaction(
-                    email,
-                    postId,
-                    "dislikes",
                     userData,
                     postData,
                     db

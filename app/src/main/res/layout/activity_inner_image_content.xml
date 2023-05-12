@@ -72,14 +72,6 @@
                     android:paddingBottom="10dp">
 
                     <ImageView
-                        android:id="@+id/image_save"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/save" />
-
-                    <ImageView
                         android:id="@+id/image_like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,20 +80,12 @@
                         app:srcCompat="@drawable/like" />
 
                     <ImageView
-                        android:id="@+id/image_indifferent"
+                        android:id="@+id/image_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/indifferent" />
-
-                    <ImageView
-                        android:id="@+id/image_dislike"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/dislike" />
+                        app:srcCompat="@drawable/save" />
 
                     <ImageView
                         android:id="@+id/image_share"
