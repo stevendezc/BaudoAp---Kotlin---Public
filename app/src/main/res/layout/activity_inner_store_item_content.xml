@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".innerStoreItemContentActivity">
 
     <LinearLayout
@@ -98,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sofia"
                     android:text="TextView"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="22dp"
                     android:textStyle="bold" />
 
@@ -109,7 +110,7 @@
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/sofia"
                     android:text="TextView"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -117,7 +118,7 @@
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/sofia"
                     android:text="Talla"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <LinearLayout
