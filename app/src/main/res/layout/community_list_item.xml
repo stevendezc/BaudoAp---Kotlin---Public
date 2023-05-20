@@ -75,8 +75,9 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_weight="1"
-                    tools:srcCompat="@drawable/twitter_link_icon"
-                    android:src="@drawable/twitter_link_icon"/>
+                    android:src="@drawable/twitter_link_icon"
+                    android:visibility="gone"
+                    tools:srcCompat="@drawable/twitter_link_icon" />
 
             </LinearLayout>
 

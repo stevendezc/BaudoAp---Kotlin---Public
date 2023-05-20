@@ -10,5 +10,5 @@ data class CommunityData(
     val name: String? = "",
     val thumbnail: String? = "",
     val twitter: String? = "",
-    val whatsapp: String? = ""
+    val number: String? = ""
 )

@@ -4,13 +4,16 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
-data class CommunityMain(var thumbnail: Uri, var name: String, var lastname: String, var description: String, var category: String): Parcelable {
+data class CommunityMain(var thumbnail: Uri?, var name: String?, var lastname: String?, var description: String?, var category: String?, var whatsapp: String?, var instagram: String?, var facebook: String?): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readParcelable(Uri::class.java.classLoader)!!,
-        parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
@@ -20,6 +23,9 @@ data class CommunityMain(var thumbnail: Uri, var name: String, var lastname: Str
         parcel.writeString(lastname)
         parcel.writeString(description)
         parcel.writeString(category)
+        parcel.writeString(whatsapp)
+        parcel.writeString(instagram)
+        parcel.writeString(facebook)
     }
 
     override fun describeContents(): Int {
