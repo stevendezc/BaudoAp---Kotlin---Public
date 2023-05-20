@@ -31,13 +31,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/userImageView2"
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/userImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:padding="15dp"
-                    android:background="@drawable/yellow_border2"
-                    android:src="@drawable/user" />
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/roundUserImage"
+                    app:strokeColor="#FFAA00"
+                    app:strokeWidth="1dp"
+                    app:srcCompat="@drawable/user" />
 
                 <ImageView
                     android:id="@+id/editUserImage"

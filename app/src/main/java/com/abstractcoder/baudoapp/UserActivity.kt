@@ -21,6 +21,8 @@ import com.abstractcoder.baudoapp.recyclers.SavedPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.SettingsDialog
+import com.abstractcoder.baudoapp.utils.UserImageDialog
+import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
@@ -62,6 +64,8 @@ class UserActivity : FragmentActivity() {
             println("userData in User activity: ${user}")
             userData = user
             obtainMetrics(userData)
+            // Setup incoming data
+            setup(email, name, provider)
         })
 
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -81,14 +85,37 @@ class UserActivity : FragmentActivity() {
             lastImagePost = organizedPosts.filter { it.type == "image" }[0]
             weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail), Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author, lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!, lastImagePost.creation_date))
         })
-        // Setup incoming data
-        setup(email, name, provider)
+
     }
 
     private fun setup(email: String, name: String, provider: String) {
         title = "Pagina de Usuario"
 
+        val userImage = userData.user_pic
+        Glide.with(binding.userImage)
+            .load(userImage)
+            .into(binding.userImage)
+
         binding.userNameTextView.text = name
+
+        binding.editUserImage.setOnClickListener {
+            UserImageDialog(
+                onSubmitClickListener = {
+                    // saved prefs removal (session Data)
+                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                    prefs.clear()
+                    prefs.apply()
+
+                    if (provider == ProviderType.FACEBOOK.name) {
+                        LoginManager.getInstance().logOut()
+                    }
+                    FirebaseAuth.getInstance().signOut()
+                    showLogIn()
+                },
+                userData,
+                email
+            ).show(supportFragmentManager, "user image dialog")
+        }
 
         binding.settingsButton.setOnClickListener {
             SettingsDialog(

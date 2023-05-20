@@ -13,6 +13,7 @@ import com.abstractcoder.baudoapp.databinding.ActivityHomeBinding
 import com.abstractcoder.baudoapp.fragments.*
 import com.abstractcoder.baudoapp.utils.Connection
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
     val firestoreInst = Firestore()
     val networkConnection = Connection()
 
+    private lateinit var userData: FirebaseUser
     private lateinit var binding: ActivityHomeBinding
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -68,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setup(email: String, provider: String) {
         title = "Inicio"
 
-        binding.userImageView.setOnClickListener {
+        binding.userImage.setOnClickListener {
             showUserActivity(email, provider)
         }
 
@@ -121,11 +123,19 @@ class HomeActivity : AppCompatActivity() {
     private fun getUser(email: String) {
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
-            val userName = user.name
-            println("currentUser: $user")
+            userData = user
+            val userName = userData.name
+            println("currentUser: $userData")
             val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
             prefs.putString("name", userName)
             prefs.apply()
+
+            if (userData.user_pic != "") {
+                binding.userImage.setContentPadding(0,0,0,0)
+                Glide.with(binding.userImage)
+                    .load(userData.user_pic)
+                    .into(binding.userImage)
+            }
             binding.nameTextView.text = userName
         })
     }

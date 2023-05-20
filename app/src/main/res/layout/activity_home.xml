@@ -18,14 +18,17 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp">
 
-        <ImageView
-            android:id="@+id/userImageView"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/userImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
-            android:padding="8dp"
-            android:background="@drawable/yellow_border"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/homeRoundUserImage"
+            app:strokeColor="#FFAA00"
+            app:strokeWidth="2dp"
+            app:contentPadding="8dp"
             app:srcCompat="@drawable/user" />
 
         <LinearLayout
