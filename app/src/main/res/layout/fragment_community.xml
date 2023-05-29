@@ -120,10 +120,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/community_list_item" />
 
     <ProgressBar
