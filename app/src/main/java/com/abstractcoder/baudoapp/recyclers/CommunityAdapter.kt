@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -77,6 +78,26 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
             openWhatsApp(holder.itemView.context, currentItem.whatsapp!!)
         }
 
+        holder.communityShare.setOnClickListener {
+            val intent = Intent()
+            val facebookPageId =  currentItem.facebook?.substringAfter("id=")
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "${currentItem.name} ${currentItem.lastname}")
+            intent.putExtra(Intent.EXTRA_TEXT, "${currentItem.name} ${currentItem.lastname}" +
+                    "\n\n${currentItem.description}" +
+                    "\n\nContacto: ${if (currentItem.whatsapp != "") currentItem.whatsapp else "Indefinido"}" +
+                    "\nFacebook: ${if (currentItem.facebook != "") "https://www.facebook.com/$facebookPageId" else "Indefinido"}" +
+                    "\nInstagram: ${if (currentItem.instagram != "") currentItem.instagram else "Indefinido"}")
+
+            try {
+                holder.itemView.context.startActivity(Intent.createChooser(intent, "Share via"))
+            } catch (e: ActivityNotFoundException) {
+                // Handle the case where the desired app is not installed
+                Toast.makeText(holder.itemView.context, "Error compartiendo contenido... intente mas tarde", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     fun openFacebook(context: Context, link: String) {
@@ -125,6 +146,7 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
         val communityInstagram = binding.instagramButton
         val communityWhatsapp = binding.whatsappButton
         val communityTwitter = binding.twitterButton
+        val communityShare = binding.shareButton
 
     }
 

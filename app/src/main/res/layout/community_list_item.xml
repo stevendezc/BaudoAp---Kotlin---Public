@@ -118,6 +118,13 @@
                 android:textColor="@color/white"
                 android:textSize="11dp" />
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shareButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:src="@drawable/share" />
+
         </LinearLayout>
     </LinearLayout>
 
