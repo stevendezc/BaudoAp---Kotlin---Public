@@ -28,12 +28,12 @@ class innerStoreItemContentActivity : AppCompatActivity() {
 
     private fun setup(storeItemContent: StoreItemMain) {
         if (storeItemContent != null) {
-            val imageMainMedia = storeItemContent.image
+            val imageMainMedia = storeItemContent.thumbnail
             Glide.with(binding.storeItemImageView)
                 .load(imageMainMedia)
                 .into(binding.storeItemImageView)
 
-            binding.storeItemTitle.text = storeItemContent.name
+            binding.storeItemTitle.text = storeItemContent.title
             binding.storeItemPrice.text = "Precio $" + storeItemContent.price
             binding.storeItemDescription.text = "Descripcion del producto, " + storeItemContent.description
 

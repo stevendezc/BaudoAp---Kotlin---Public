@@ -23,14 +23,14 @@ class StoreItemAdapter(private val storeList: ArrayList<StoreItemMain>) : Recycl
 
     override fun onBindViewHolder(holder: StoreItemHolder, position: Int) {
         val currentItem = storeList[position]
-        if (currentItem.image != null) {
-            val imageUrl = currentItem.image
+        if (currentItem.thumbnail != null) {
+            val imageUrl = currentItem.thumbnail
             Log.d(ContentValues.TAG, "Tumbnail => ${imageUrl}")
             Glide.with(holder.storeItemThumbnail)
                 .load(imageUrl)
                 .into(holder.storeItemThumbnail)
         }
-        holder.storeItemTitle.text = currentItem.name
+        holder.storeItemTitle.text = currentItem.title
 
         holder.storeItemThumbnail.setOnClickListener {
             onItemClick?.invoke(currentItem)

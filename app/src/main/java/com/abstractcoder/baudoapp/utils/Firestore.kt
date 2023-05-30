@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.abstractcoder.baudoapp.*
+import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -16,12 +17,14 @@ class Firestore {
     val postsLiveData = MutableLiveData<List<PostData>>()
     val communitiesLiveData = MutableLiveData<List<CommunityData>>()
     val postCommentsLiveData = MutableLiveData<List<Commentary>>()
+    val productsLiveData = MutableLiveData<List<StoreItemMain>>()
     val singlePostLiveData = MutableLiveData<PostData>()
 
     val userCollectionRef = db.collection("users")
     val postsCollectionRef = db.collection("posts")
     val communitiesCollectionRef = db.collection("communities")
     val commentariesCollectionRef = db.collection("commentaries")
+    val productsCollectionRef = db.collection("productos")
 
     fun activateSubscribers(context: Context, email: String) {
         db.firestoreSettings = firestoreSettings {
@@ -30,6 +33,7 @@ class Firestore {
         subscribeToUserUpdates(context, email)
         subscribeToPostUpdates(context)
         subscribeToCommunityUpdates(context)
+        subscribeToProductsUpdates(context)
     }
 
     private fun subscribeToUserUpdates(context: Context, email: String) {
@@ -111,6 +115,23 @@ class Firestore {
                 postData.id = it.id
                 println("singlePostLiveData: $postData")
                 singlePostLiveData.value = postData
+            }
+        }
+    }
+
+    private fun subscribeToProductsUpdates(context: Context) {
+        productsCollectionRef.addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                val productsDataList = mutableListOf<StoreItemMain>()
+                for (document in it) {
+                    val myData = document.toObject(StoreItemMain::class.java)
+                    productsDataList.add(myData)
+                }
+                productsLiveData.value = productsDataList
             }
         }
     }

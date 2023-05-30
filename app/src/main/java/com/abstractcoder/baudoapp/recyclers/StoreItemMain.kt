@@ -1,34 +1,36 @@
 package com.abstractcoder.baudoapp.recyclers
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 
 data class StoreItemMain(
-    var id: String?,
-    var name: String?,
-    var image: Uri,
-    var price: Double?,
-    var description: String?,
-    var sizes: List<String>
+    var id: String? = "",
+    var title: String? = "",
+    var thumbnail: String? = "",
+    var price: String? = "",
+    var description: String? = "",
+    var creation_date: Timestamp? = null,
+    var sizes: List<Long>? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
-        parcel.readParcelable(Uri::class.java.classLoader)!!,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readString(),
-        parcel.createStringArrayList()!!
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readParcelable(Timestamp::class.java.classLoader),
+        emptyList()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(name)
-        parcel.writeParcelable(image, flags)
-        parcel.writeValue(price)
+        parcel.writeString(title)
+        parcel.writeString(thumbnail)
+        parcel.writeString(price)
         parcel.writeString(description)
-        parcel.writeStringList(sizes)
+        parcel.writeParcelable(creation_date, flags)
     }
 
     override fun describeContents(): Int {
