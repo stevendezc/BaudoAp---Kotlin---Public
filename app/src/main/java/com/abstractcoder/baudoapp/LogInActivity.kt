@@ -160,21 +160,23 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun registerUser(id: String, user: GoogleUser) {
-        val database = Firebase.database
-        val myRef = database.getReference("DB")
 
-        userCollectionRef.document(user.email).set(
-            mapOf("provider" to ProviderType.GOOGLE,
-                "verified" to true,
-                "name" to user.name,
-                "password" to "",
-                "user_pic" to "",
-                "saved_posts" to emptyList<String>(),
-                "liked_posts" to emptyList<String>(),
-                "disliked_posts" to emptyList<String>(),
-                "indifferent_posts" to emptyList<String>()
-            )
-        )
+        userCollectionRef.document(user.email).get().addOnSuccessListener {
+            if (!it.exists()) {
+                userCollectionRef.document(user.email).set(
+                    mapOf("provider" to ProviderType.GOOGLE,
+                        "verified" to true,
+                        "name" to user.name,
+                        "password" to "",
+                        "user_pic" to "",
+                        "saved_posts" to emptyList<String>(),
+                        "liked_posts" to emptyList<String>(),
+                        "disliked_posts" to emptyList<String>(),
+                        "indifferent_posts" to emptyList<String>()
+                    )
+                )
+            }
+        }
     }
 
     private fun showAlert() {
