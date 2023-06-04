@@ -24,7 +24,6 @@ import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
 class UserImageDialog(
-    private val onSubmitClickListener: () -> Unit,
     private val userData: FirebaseUser,
     private val email: String
 ): DialogFragment() {

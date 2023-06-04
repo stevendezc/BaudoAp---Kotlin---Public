@@ -20,7 +20,6 @@ import com.abstractcoder.baudoapp.recyclers.SavedPostAdapter
 import com.abstractcoder.baudoapp.recyclers.SavedPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
-import com.abstractcoder.baudoapp.utils.SettingsDialog
 import com.abstractcoder.baudoapp.utils.UserImageDialog
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
@@ -100,41 +99,13 @@ class UserActivity : FragmentActivity() {
 
         binding.editUserImage.setOnClickListener {
             UserImageDialog(
-                onSubmitClickListener = {
-                    // saved prefs removal (session Data)
-                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                    prefs.clear()
-                    prefs.apply()
-
-                    if (provider == ProviderType.FACEBOOK.name) {
-                        LoginManager.getInstance().logOut()
-                    }
-                    FirebaseAuth.getInstance().signOut()
-                    showLogIn()
-                },
                 userData,
                 email
             ).show(supportFragmentManager, "user image dialog")
         }
 
         binding.settingsButton.setOnClickListener {
-            SettingsDialog(
-                onSubmitClickListener = {
-                    // saved prefs removal (session Data)
-                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                    prefs.clear()
-                    prefs.apply()
-
-                    if (provider == ProviderType.FACEBOOK.name) {
-                        LoginManager.getInstance().logOut()
-                    }
-                    FirebaseAuth.getInstance().signOut()
-                    showLogIn()
-                },
-                onBaudoVideoLinkListener = {
-                    showFixedVideo()
-                }
-            ).show(supportFragmentManager, "settings dialog")
+            showSettings()
         }
 
         binding.infoButton.setOnClickListener {
@@ -268,13 +239,8 @@ class UserActivity : FragmentActivity() {
         }
     }
 
-    private fun showLogIn() {
-        val logInIntent = Intent(this, LogInActivity::class.java)
-        startActivity(logInIntent)
-    }
-
-    private fun showFixedVideo() {
-        val fixedVideoIntent = Intent(this, FixedVideoActivity::class.java)
-        startActivity(fixedVideoIntent)
+    private fun showSettings() {
+        val configIntent = Intent(this, ConfigActivity::class.java)
+        startActivity(configIntent)
     }
 }

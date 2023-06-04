@@ -41,14 +41,31 @@
     <string name="user_suggested_content">Contenido Sugerido</string>
     <!-- SETTINGS POPUP Strings -->
     <string name="settings_popup_baudo">¿Qué es Baudó?</string>
-    <string name="settings_popup_payment">Informaciones de pago</string>
-    <string name="settings_popup_team">El equipo</string>
-    <string name="settings_popup_support">Soporte</string>
+    <string name="settings_popup_support">Contacto</string>
     <string name="settings_popup_faq">Preguntas frecuentes</string>
-    <string name="settings_popup_invite">invita a tus amigos</string>
     <string name="settings_popup_privacy">Acuerdo de privacidad</string>
-    <string name="settings_popup_disconnect">Desconectar</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings_popup_disconnect">Cerrar sesión</string>
+    <!-- FAQ Strings -->
+    <string name="faq1_title">¿Cómo hago parte de la red comunitaria de Baudó AP?</string>
+    <string name="faq1_content">Si quieres hacer parte de esta red escríbenos a comunidades.baudoap@gmail.com o el teléfono +57 321 7344601.</string>
+    <string name="faq2_title">¿Cómo hago parte de la programación de eventos de Baudó AP?</string>
+    <string name="faq2_content">Si quieres visibilizar tu evento o sugerir un evento comunidades.baudoap@gmail.com o el teléfono+57 321 7344601.</string>
+    <string name="faq3_title">¿Cómo me convierto en navegante?</string>
+    <string name="faq3_content">Dirígete a la sección Navegates que se encuentra en el menú principal y selecciona el aporte que más se ajuste, a continuación sigue los pasos para ejecutar el pago.</string>
+    <string name="faq4_title">¿Cómo accedo a la versión Premium de Baudó AP?</string>
+    <string name="faq4_content">Dirígete a la sección Navegates que se encuentra en el menú principal y selecciona el aporte que más se ajuste, a continuación sigue los pasos para ejecutar el pago.</string>
+    <string name="faq5_title">Tengo un problema con un producto ¿Cómo lo soluciono?</string>
+    <string name="faq5_content">Dirígete a perfil y accede a las configuraciones mediante el ícono de engranaje y selecciona “Contacto”, llena el formulario y escríbenos.</string>
+    <!-- PRIVACY Strings -->
+    <string name="privacy_title">Políticas de privacidad y requerimiento del uso de información personal</string>
+    <string name="privacy_content">El controlador de información de Baudo AP. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur interdum cursus neque nec venenatis. Morbi sed massa magna. Nam consectetur tincidunt velit, ut lobortis neque gravida at. Pellentesque sit amet iaculis massa. Phasellus gravida, nisl sit amet ornare blandit, augue mi dictum augue, vel dignissim nunc tortor in arcu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ac semper orci, at rhoncus neque. Nullam iaculis posuere mattis.
+
+Vestibulum condimentum gravida nisl, a gravida elit lacinia sed. Maecenas feugiat pretium nisi ut hendrerit.
+Etiam rutrum, ligula nec elementum aliquet, metus diam tincidunt orci, ac aliquet arcu dui vitae risus.
+Curabitur quis dui facilisis, semper elit eget, posuere augue. Nulla risus arcu, porta at dapibus et, condimentum in massa. Donec nec urna interdum, efficitur enim quis, viverra velit.
+
+Integer elementum quis ex at congue. Curabitur a consectetur turpis, et imperdiet nulla. Fusce non orci tempor, tristique enim a, sollicitudin mi. Pellentesque neque sem, lobortis at orci vel, vestibulum malesuada nulla. In nulla urna, molestie vitae nulla at, dapibus aliquam orci. Nunc quis pellentesque arcu, vel facilisis ipsum. Proin fermentum quis ante a porttitor. Nulla at mi vel purus sagittis semper in sit amet risus. In sagittis malesuada libero, nec elementum tortor fringilla ac. Aenean nec viverra nulla. Curabitur viverra, dui vel sagittis ultrices, tellus eros viverra magna, sed luctus nulla lacus eget arcu. Donec interdum augue ac ante rutrum fringilla.
+Nulla facilisi. Proin et semper nulla. In ante nunc, facilisis at nunc ac, consequat ornare lorem. Nam porttitor magna id tincidunt mollis. Fusce mauris turpis, tempus a arcu ac, faucibus gravida libero. Sed faucibus felis est, sed pulvinar risus pretium sed. Etiam convallis varius magna, nec semper sapien molestie eget.</string>
     <!-- INFO DIALOGS Strings -->
     <string name="info_perfil_main_text">Navega por contenidos exclusivos creados y ajustados a tu perfil e intereses junto a BaudoAP. Revisa tus reacciones y tipo de contenidos que más visitas y compartes.</string>
     <string name="info_navegantes_main_text">Ser navegante es asumirse como transformador social, siendo parte de una comunidad digital que cree en el periodismo independiente y contribuye activamente para su desarrollo y difusión. En esta sección puedes hacerte navegante y realizar una donación que apoye nuestro trabajo.</string>

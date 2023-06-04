@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".fragments.ContactFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/sofia"
+            android:text="Contacto"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Email"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="@string/email_hint"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Nombre"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="@string/name"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Asunto"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactSubject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Asunto"
+                        android:inputType="textEmailAddress"
+                        android:minHeight="48dp"
+                        android:padding="12dp"
+                        android:textColorHint="#848484"
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Mensaje"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:gravity="left"
+                        android:hint="Mensaje"
+                        android:inputType="textMultiLine"
+                        android:lines="6"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="14dp"/>
+
+                    <Button
+                        android:id="@+id/contactSubmit"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="@drawable/yellow_border"
+                        android:drawableEnd="@drawable/send"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="Enviar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="16dp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
