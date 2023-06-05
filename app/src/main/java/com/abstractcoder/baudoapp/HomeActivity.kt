@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.abstractcoder.baudoapp.databinding.ActivityHomeBinding
@@ -23,6 +26,7 @@ enum class ProviderType {
     GOOGLE,
     FACEBOOK
 }
+data class BottomMenuOption(val icon: ImageView, val label: TextView)
 
 class HomeActivity : AppCompatActivity() {
     lateinit var topMenu: LinearLayout
@@ -85,24 +89,55 @@ class HomeActivity : AppCompatActivity() {
         val communityFragment = CommunityFragment()
         val eventsFragment = EventsFragment()
         val navegantesFragment = NavegantesFragment()
+
         makeCurrentFragment(homeFragment)
+        switchBottomMenuColor(0)
 
         // Fragment Navigation
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.ic_home -> makeCurrentFragment(homeFragment)
-                R.id.ic_store -> makeCurrentFragment(storeFragment)
-                R.id.ic_community -> makeCurrentFragment(communityFragment)
-                R.id.ic_events -> makeCurrentFragment(eventsFragment)
-                R.id.ic_navegantes -> makeCurrentFragment(navegantesFragment)
-            }
-            true
+        binding.menuHome.setOnClickListener {
+            makeCurrentFragment(homeFragment)
+            switchBottomMenuColor(0)
+        }
+        binding.menuStore.setOnClickListener {
+            makeCurrentFragment(storeFragment)
+            switchBottomMenuColor(1)
+        }
+        binding.menuCommunity.setOnClickListener {
+            makeCurrentFragment(communityFragment)
+            switchBottomMenuColor(2)
+        }
+        binding.menuEvents.setOnClickListener {
+            makeCurrentFragment(eventsFragment)
+            switchBottomMenuColor(3)
+        }
+        binding.menuNavegantes.setOnClickListener {
+            makeCurrentFragment(navegantesFragment)
+            switchBottomMenuColor(4)
         }
     }
 
-    private fun showLogIn() {
-        val logInIntent = Intent(this, LogInActivity::class.java)
-        startActivity(logInIntent)
+    private fun switchBottomMenuColor(pos: Int) {
+        val selectedColor = ContextCompat.getColor(this, R.color.baudo_yellow)
+        val unselectedColor = ContextCompat.getColor(this, R.color.white)
+        val optionsItems = arrayOf(
+            BottomMenuOption(binding.menuHomeIcon,binding.menuHomeLabel),
+            BottomMenuOption(binding.menuStoreIcon,binding.menuStoreLabel),
+            BottomMenuOption(binding.menuCommunityIcon,binding.menuCommunityLabel),
+            BottomMenuOption(binding.menuEventsIcon,binding.menuEventsLabel),
+            BottomMenuOption(binding.menuNavegantesIcon,binding.menuNavegantesLabel)
+        )
+        for (index in optionsItems.indices) {
+            val option = optionsItems[index]
+            println(pos)
+            println(option)
+            if (index == pos) {
+                option.icon.setColorFilter(selectedColor)
+                option.label.setTextColor(selectedColor)
+            } else {
+                option.icon.setColorFilter(unselectedColor)
+                option.label.setTextColor(unselectedColor)
+            }
+        }
     }
 
     private fun showFixedVideo() {
