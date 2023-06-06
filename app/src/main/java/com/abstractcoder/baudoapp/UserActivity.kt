@@ -8,18 +8,17 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
-import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
-import com.abstractcoder.baudoapp.recyclers.ImagePostMain
-import com.abstractcoder.baudoapp.recyclers.SavedPostAdapter
-import com.abstractcoder.baudoapp.recyclers.SavedPostMain
+import com.abstractcoder.baudoapp.recyclers.*
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.abstractcoder.baudoapp.utils.ItemSpacingDecoration
 import com.abstractcoder.baudoapp.utils.UserImageDialog
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
@@ -44,7 +43,13 @@ class UserActivity : FragmentActivity() {
     private lateinit var weekImageRecyclerView: RecyclerView
     private var weekImagePosts: ArrayList<ImagePostMain> = ArrayList()
 
+    private lateinit var recommendedVideosLayoutManager: LinearLayoutManager
+    private lateinit var recommendedVideosAdapter: VideoPostAdapter
+    private lateinit var recommendedVideoRecyclerView: RecyclerView
+    private var recommendedVideoPosts: ArrayList<VideoPostMain> = ArrayList()
+
     private lateinit var lastImagePost: PostData
+    private lateinit var lastlyRecommendedVideos: List<PostData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +74,7 @@ class UserActivity : FragmentActivity() {
 
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         weekImagelayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recommendedVideosLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         firestore.postsLiveData.observe(this, Observer { posts ->
             Log.d(ContentValues.TAG, "posts on User activity: $posts")
             // Setup subfragments
@@ -79,10 +85,23 @@ class UserActivity : FragmentActivity() {
                 if (it.title != "") it.title else it.location,
                 userData.liked_posts.contains(it.id)
             ) }
+            if (parsedSavedPosts.size == 0) {
+                binding.savedContent.visibility = LinearLayout.GONE
+            }
             userSavedPosts.addAll(parsedSavedPosts)
             val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
             lastImagePost = organizedPosts.filter { it.type == "image" }[0]
-            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail), Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author, lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!, lastImagePost.creation_date))
+            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail),
+                Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author,
+                lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!,
+                lastImagePost.creation_date))
+            lastlyRecommendedVideos = organizedPosts.filter { it.type == "video" }.subList(0, 3)
+            for (video in lastlyRecommendedVideos) {
+                recommendedVideoPosts.add(
+                    VideoPostMain(video.id, Uri.parse(video.main_media),
+                    Uri.parse(video.thumbnail), video.title.toString(), video.description.toString(),
+                    video.category.toString()))
+            }
         })
 
     }
@@ -123,6 +142,14 @@ class UserActivity : FragmentActivity() {
         weekImageRecyclerView.setHasFixedSize(true)
         weekImageAdapter = ImagePostAdapter(weekImagePosts)
         weekImageRecyclerView.adapter = weekImageAdapter
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+        recommendedVideoRecyclerView = binding.recommendedVideosListRecycler
+        recommendedVideoRecyclerView.layoutManager = recommendedVideosLayoutManager
+        recommendedVideoRecyclerView.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
+        recommendedVideoRecyclerView.setHasFixedSize(true)
+        recommendedVideosAdapter = VideoPostAdapter(recommendedVideoPosts)
+        recommendedVideoRecyclerView.adapter = recommendedVideosAdapter
     }
 
     private fun obtainMetrics(user: FirebaseUser) {

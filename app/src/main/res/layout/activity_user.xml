@@ -103,14 +103,14 @@
                     android:layout_height="25dp"
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/settings"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/infoButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/info"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
             </LinearLayout>
 
@@ -369,7 +369,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sofia"
@@ -393,13 +392,14 @@
                     android:id="@+id/weeklyImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sofia"
+                        android:paddingBottom="20dp"
                         android:text="@string/user_weekly_image"
                         android:textColor="@color/white"
                         android:textSize="24dp"
@@ -417,37 +417,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sofia"
+                        android:paddingBottom="20dp"
                         android:text="@string/user_recommended_videos"
                         android:textColor="@color/white"
                         android:textSize="24dp"
                         android:textStyle="bold" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/suggestedContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/textView12"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recommended_videos_list_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/user_suggested_content"
-                        android:textColor="@color/white"
-                        android:textSize="24dp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        tools:listitem="@layout/saved_post_list_item" />
                 </LinearLayout>
 
             </LinearLayout>
