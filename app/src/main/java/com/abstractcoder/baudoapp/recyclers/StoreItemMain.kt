@@ -11,7 +11,11 @@ data class StoreItemMain(
     var price: String? = "",
     var description: String? = "",
     var creation_date: Timestamp? = null,
-    var sizes: List<Long>? = null
+    var stock_xs: Int = 0,
+    var stock_s: Int = 0,
+    var stock_m: Int = 0,
+    var stock_l: Int = 0,
+    var stock_xl: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -20,7 +24,11 @@ data class StoreItemMain(
         parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
-        emptyList()
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt()
     ) {
     }
 
@@ -31,6 +39,11 @@ data class StoreItemMain(
         parcel.writeString(price)
         parcel.writeString(description)
         parcel.writeParcelable(creation_date, flags)
+        parcel.writeInt(stock_xs)
+        parcel.writeInt(stock_s)
+        parcel.writeInt(stock_m)
+        parcel.writeInt(stock_l)
+        parcel.writeInt(stock_xl)
     }
 
     override fun describeContents(): Int {

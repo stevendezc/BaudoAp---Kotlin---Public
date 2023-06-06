@@ -4,27 +4,21 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.abstractcoder.baudoapp.PostData
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentStoreBinding
-import com.abstractcoder.baudoapp.innerImageContentActivity
 import com.abstractcoder.baudoapp.innerStoreItemContentActivity
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemAdapter
 import com.abstractcoder.baudoapp.utils.Firestore
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class StoreFragment : Fragment() {
 
@@ -74,21 +68,6 @@ class StoreFragment : Fragment() {
     private fun setup(view: View, productsArrayList: ArrayList<StoreItemMain>) {
 
         val nonDuplicates = productsArrayList.distinct()
-        /*storeItemMainList = arrayListOf<StoreItemMain>()
-        for (post in nonDuplicates) {
-            val id = post.id
-            val thumbnail = Uri.parse(post.thumbnail)
-            val main_media = Uri.parse(post.main_media)
-            val title = post.title
-            val author = post.author
-            val location = post.location
-            val description = post.description
-            val comments = post.commentaries
-            val creation_date = post.creation_date
-            val imagePost = StoreItemMain(id, thumbnail, main_media, title, author, location, description, comments!!, creation_date)
-            storeItemMainList.add(imagePost)
-        }
-        temporalAddToList()*/
 
         storeRecyclerView = binding.storeListRecycler
         storeRecyclerView.layoutManager = layoutManager
@@ -102,33 +81,5 @@ class StoreFragment : Fragment() {
             startActivity(intent)
         }
     }
-
-    /*private fun temporalAddToList() {
-        var storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/200"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-        storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/200/300"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-        storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/300/200"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-        storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/300/400"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-        storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/400/300"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-        storeItem = StoreItemMain("1", generateRandomString(10), Uri.parse("https://picsum.photos/200/400"), getRandomPrice(), generateRandomString(50), listOf("M"))
-        storeItemMainList.add(storeItem)
-    }
-
-    fun generateRandomString(length: Int): String {
-        val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-        return (1..length)
-            .map { charset.random() }
-            .joinToString("")
-    }
-    fun getRandomPrice(): Double {
-        val min = 50000
-        val max = 100000
-        val randomPrice = (min + (Math.random() * (max - min))).toDouble()
-        return String.format("%.2f", randomPrice).toDouble()
-    }*/
 
 }
