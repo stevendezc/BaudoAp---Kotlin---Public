@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.StoreCheckOutActivity
 import com.abstractcoder.baudoapp.databinding.FragmentStoreBinding
 import com.abstractcoder.baudoapp.innerStoreItemContentActivity
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
@@ -78,6 +79,11 @@ class StoreFragment : Fragment() {
         storeItemAdapter.onItemClick = {
             val intent = Intent(this.context, innerStoreItemContentActivity::class.java)
             intent.putExtra("item", it)
+            startActivity(intent)
+        }
+
+        binding.shoppingCartButton.setOnClickListener {
+            val intent = Intent(activity, StoreCheckOutActivity::class.java)
             startActivity(intent)
         }
     }

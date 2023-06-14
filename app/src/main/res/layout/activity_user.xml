@@ -103,14 +103,14 @@
                     android:layout_height="25dp"
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/settings"
-                    app:tint="@color/white" />
+                    android:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/infoButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/info"
-                    app:tint="@color/white" />
+                    android:tint="@color/white" />
 
             </LinearLayout>
 
