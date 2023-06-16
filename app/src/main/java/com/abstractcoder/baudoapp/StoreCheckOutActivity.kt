@@ -11,6 +11,9 @@ import com.abstractcoder.baudoapp.databinding.ActivityStoreCheckOutBinding
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.google.gson.Gson
+import com.revenuecat.purchases.LogLevel
+import com.revenuecat.purchases.Purchases
+import com.revenuecat.purchases.PurchasesConfiguration
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -32,11 +35,17 @@ class StoreCheckOutActivity : AppCompatActivity() {
 
         layoutManager = LinearLayoutManager(this.baseContext)
 
+        setUpPurchaseSystem()
         fillPurchases()
 
         binding.backButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setUpPurchaseSystem() {
+        Purchases.logLevel = LogLevel.DEBUG
+        Purchases.configure(PurchasesConfiguration.Builder(this, "sk_IzIKdvhWDJWVaZQXYrhDGWLVrrVCK").build())
     }
 
     private fun fillPurchases() {
