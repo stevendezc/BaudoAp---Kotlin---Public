@@ -53,16 +53,16 @@ class InnerVideoContentActivity : AppCompatActivity() {
         setup(videoContent!!, name!!, email)
     }
 
-    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
+    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>, userEmail: String) {
         videoCommentList = commentaryList
         commentRecyclerView = binding.imageCommentListRecycler
         commentRecyclerView.layoutManager = layoutManager
         commentRecyclerView.setHasFixedSize(true)
-        commentAdapter = CommentaryAdapter(videoCommentList)
+        commentAdapter = CommentaryAdapter(this, supportFragmentManager, postId, userEmail, videoCommentList)
         commentRecyclerView.adapter = commentAdapter
     }
 
-    private fun getComments() {
+    private fun getComments(userEmail: String) {
         // Load Posts
         videoCommentList.clear()
         firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
@@ -70,7 +70,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
             // Update your UI with the new data
             val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             println("organizedCommentaries: $organizedCommentaries")
-            setCommentsOnRecycler(organizedCommentaries)
+            setCommentsOnRecycler(organizedCommentaries, userEmail)
         })
     }
 
@@ -127,7 +127,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
                 addComment(userName, authorEmail)
             }
 
-            getComments()
+            getComments(authorEmail)
         }
     }
 }

@@ -8,6 +8,7 @@ data class Commentary(
     var id: String? = "",
     val post: String? = "",
     val author: String? = "",
+    val author_email: String? = "",
     val text: String? = "",
     val timestamp: Timestamp? = null,
     val replies: List<Commentary>? = null

@@ -72,16 +72,16 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         setup(podcastContent!!, name!!, email!!)
     }
 
-    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
+    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>, userEmail: String) {
         podcastCommentList = commentaryList
         commentRecyclerView = binding.podcastCommentListRecycler
         commentRecyclerView.layoutManager = layoutManager
         commentRecyclerView.setHasFixedSize(true)
-        commentAdapter = CommentaryAdapter(podcastCommentList)
+        commentAdapter = CommentaryAdapter(this, supportFragmentManager, postId, userEmail, podcastCommentList)
         commentRecyclerView.adapter = commentAdapter
     }
 
-    private fun getComments() {
+    private fun getComments(userEmail: String) {
         // Load Posts
         podcastCommentList.clear()
         firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
@@ -89,7 +89,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             // Update your UI with the new data
             val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             println("organizedCommentaries: $organizedCommentaries")
-            setCommentsOnRecycler(organizedCommentaries)
+            setCommentsOnRecycler(organizedCommentaries, userEmail)
         })
     }
 
@@ -260,7 +260,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             addComment(userName, email)
         }
 
-        getComments()
+        getComments(email)
     }
 
     override fun onDestroy() {

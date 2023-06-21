@@ -70,23 +70,23 @@ class innerImageContentActivity : AppCompatActivity() {
         setup(imageContent!!, name!!, email!!)
     }
 
-    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>) {
+    private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>, userEmail: String) {
         imageCommentList = commentaryList
         commentRecyclerView = binding.imageCommentListRecycler
         commentRecyclerView.layoutManager = layoutManager
         commentRecyclerView.setHasFixedSize(true)
-        commentAdapter = CommentaryAdapter(imageCommentList)
+        commentAdapter = CommentaryAdapter(this, supportFragmentManager, postId, userEmail, imageCommentList)
         commentRecyclerView.adapter = commentAdapter
     }
 
-    private fun getComments() {
+    private fun getComments(userEmail: String) {
         // Load Posts
         imageCommentList.clear()
         firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
         firestoreInst.postCommentsLiveData.observe(this, Observer { commentaries ->
             // Update your UI with the new data
             val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
-            setCommentsOnRecycler(organizedCommentaries)
+            setCommentsOnRecycler(organizedCommentaries, userEmail)
         })
     }
 
@@ -219,7 +219,7 @@ class innerImageContentActivity : AppCompatActivity() {
                 addComment(userName, email)
             }
 
-            getComments()
+            getComments(email)
         }
     }
 }
