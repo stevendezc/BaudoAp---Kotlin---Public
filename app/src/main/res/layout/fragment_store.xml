@@ -84,17 +84,36 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shopping_cart_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:background="@color/baudo_yellow"
-        android:scaleType="center"
-        app:shapeAppearanceOverlay="@style/roundButton"
-        app:srcCompat="@drawable/shopping_cart"
-        app:strokeColor="@color/baudo_yellow" />
+        android:layout_marginBottom="30dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shopping_cart_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/baudo_yellow"
+            android:scaleType="center"
+            app:shapeAppearanceOverlay="@style/roundButton"
+            app:srcCompat="@drawable/shopping_cart"
+            app:strokeColor="@color/baudo_yellow" />
+
+        <TextView
+            android:id="@+id/shopping_cart_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/sofia"
+            android:text="n"
+            android:textColor="@color/baudo_yellow"
+            android:textSize="9dp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
 </FrameLayout>

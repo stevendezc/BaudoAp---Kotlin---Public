@@ -1,7 +1,7 @@
 package com.abstractcoder.baudoapp
 
-import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,13 +19,15 @@ import com.abstractcoder.baudoapp.utils.StoreDialog
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 
-class innerStoreItemContentActivity : AppCompatActivity(), DialogListener {
+class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var binding: ActivityInnerStoreItemContentBinding
 
     private lateinit var itemId: String
     private lateinit var layoutManager: LinearLayoutManager
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private var shoppingCartItems: MutableList<PurchaseItemMain> = mutableListOf<PurchaseItemMain>()
     private var selectedSize: String = ""
     private var productQuantity: Int = 0
     private var maxQuantityLimit: Int = 0
@@ -39,7 +41,19 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener {
         val storeItemContent = intent.getParcelableExtra<StoreItemMain>("item")
         itemId = storeItemContent?.id.toString()
 
+        // Get reference to SharedPreferences
+        sharedPreferences = getSharedPreferences("shopping_cart", MODE_PRIVATE)
+        // Register the listener
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
         setup(storeItemContent!!)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        if (key == "itemList") {
+            // Handle the update of the specific preference key
+            getShoppingCartItems(key)
+        }
     }
 
     private fun setup(storeItemContent: StoreItemMain) {
@@ -166,6 +180,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener {
                 val intent = Intent(this, StoreCheckOutActivity::class.java)
                 startActivityForResult(intent, 1)
             }
+            getShoppingCartItems("itemList")
         }
     }
 
@@ -220,22 +235,25 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener {
             "XL" to storeItemContent.stock_xl
         )
         val baseSize = sizeMap[selectedSize]
-        val shoppingCartItems = getShoppingCartItems()
+        getShoppingCartItems("itemList")
         val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
         if (baseSize != null) {
             maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
         }
     }
 
-    private fun getShoppingCartItems(): MutableList<PurchaseItemMain> {
-        val sharedPreferences = getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
-        var itemListString = sharedPreferences?.getString("itemList", "") ?: ""
-        val itemList = if (itemListString.isNotEmpty()) {
+    private fun getShoppingCartItems(key: String) {
+        var itemListString = sharedPreferences?.getString(key, "") ?: ""
+        shoppingCartItems = if (itemListString.isNotEmpty()) {
             Gson().fromJson(itemListString, Array<PurchaseItemMain>::class.java).toMutableList()
         } else {
             mutableListOf<PurchaseItemMain>()
         }
-        return itemList
+        binding.shoppingCartItemCount.text = if (shoppingCartItems.size > 0) {
+            shoppingCartItems.size.toString()
+        } else {
+            "n"
+        }
     }
 
     private fun switchBottomMenuColor(pos: Int) {
