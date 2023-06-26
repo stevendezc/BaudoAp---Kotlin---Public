@@ -1,6 +1,7 @@
 package com.abstractcoder.baudoapp.recyclers
 
 import android.content.ContentValues
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.ShoppingCartListItemBinding
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PurchaseItemAdapter(private val storeList: ArrayList<PurchaseItemMain>) : RecyclerView.Adapter<PurchaseItemAdapter.PurchaseItemHolder>() {
+class PurchaseItemAdapter(private val storeList: ArrayList<PurchaseItemMain>, private val sharedPreferences: SharedPreferences) : RecyclerView.Adapter<PurchaseItemAdapter.PurchaseItemHolder>() {
     var onItemClick : ((PurchaseItemMain) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PurchaseItemHolder {
@@ -47,7 +49,11 @@ class PurchaseItemAdapter(private val storeList: ArrayList<PurchaseItemMain>) : 
         holder.purchaseItemSize.text = "Talla: ${currentItem.size}"
 
         holder.purchaseItemDelete.setOnClickListener {
-            println("SHOULD BE DELETED")
+            storeList.remove(currentItem)
+            val editor = sharedPreferences?.edit()
+            val itemListString = Gson().toJson(storeList.toTypedArray())
+            editor?.putString("itemList", itemListString)
+            editor?.apply()
         }
     }
 

@@ -56,7 +56,7 @@ class StoreFragment : Fragment() {
         firestore.activateSubscribers(requireContext(), email!!)
 
         firestore.productsLiveData.observe(viewLifecycleOwner, Observer { posts ->
-            Log.d(ContentValues.TAG, "posts on HomeFragment: $posts")
+            Log.d(ContentValues.TAG, "items on StoreFragment: $posts")
             // Setup subfragments
             val productsArrayList: ArrayList<StoreItemMain> = ArrayList()
             val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())

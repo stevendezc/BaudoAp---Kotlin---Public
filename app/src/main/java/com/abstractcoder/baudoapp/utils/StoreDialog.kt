@@ -20,8 +20,13 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
+interface DialogListener {
+    fun onDialogSubmit(success: Boolean)
+}
+
 class StoreDialog(
     private val directPurchase: Boolean,
+    private val itemId: String,
     private val itemThumbnail: String,
     private val itemName: String,
     private val itemPrice: String,
@@ -29,6 +34,7 @@ class StoreDialog(
     private val itemSize: String
 ): DialogFragment() {
     private lateinit var binding: StoreSingleItemDialogBinding
+    private lateinit var listener: DialogListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreate(savedInstanceState)
@@ -44,6 +50,16 @@ class StoreDialog(
         dialog.window!!.setGravity(Gravity.BOTTOM)
         dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
         return dialog
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            // Assign the reference of the hosting activity to the listener variable
+            listener = context as DialogListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context must implement DialogListener")
+        }
     }
 
     private fun setup() {
@@ -69,14 +85,15 @@ class StoreDialog(
 
         binding.purchaseButton.setOnClickListener {
             if (directPurchase) {
-                val newItem = PurchaseItemMain(itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
+                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
                 addItemToShoppingCart(newItem)
                 val intent = Intent(activity, StoreCheckOutActivity::class.java)
                 dismiss()
                 startActivity(intent)
             } else {
-                val newItem = PurchaseItemMain(itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
+                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
                 addItemToShoppingCart(newItem)
+                listener.onDialogSubmit(true)
                 dismiss()
                 Toast.makeText(
                     this.context,
@@ -90,15 +107,40 @@ class StoreDialog(
     private fun addItemToShoppingCart(newItem: PurchaseItemMain) {
         val sharedPreferences = activity?.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
         var itemListString = sharedPreferences?.getString("itemList", "") ?: ""
+        var itemList = if (itemListString.isNotEmpty()) {
+            Gson().fromJson(itemListString, Array<PurchaseItemMain>::class.java).toMutableList()
+        } else {
+            mutableListOf<PurchaseItemMain>()
+        }
+
+        val shoppingCartItems = getShoppingCartItems()
+        val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == itemSize }
+        if (similarPurchase.size != 0) {
+            val updatedItemList = itemList.map {
+                if (it.id == itemId) {
+                    it.copy(quantity = it.quantity?.plus(similarPurchase[0].quantity!!))
+                } else {
+                    it
+                }
+            }
+            itemList = updatedItemList.toMutableList()
+        } else {
+            itemList.add(newItem)
+        }
+        val editor = sharedPreferences?.edit()
+        itemListString = Gson().toJson(itemList.toTypedArray())
+        editor?.putString("itemList", itemListString)
+        editor?.apply()
+    }
+
+    private fun getShoppingCartItems(): MutableList<PurchaseItemMain> {
+        val sharedPreferences = activity?.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+        var itemListString = sharedPreferences?.getString("itemList", "") ?: ""
         val itemList = if (itemListString.isNotEmpty()) {
             Gson().fromJson(itemListString, Array<PurchaseItemMain>::class.java).toMutableList()
         } else {
             mutableListOf<PurchaseItemMain>()
         }
-        itemList.add(newItem)
-        val editor = sharedPreferences?.edit()
-        itemListString = Gson().toJson(itemList.toTypedArray())
-        editor?.putString("itemList", itemListString)
-        editor?.apply()
+        return itemList
     }
 }

@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class PurchaseItemMain(
+    val id: String? = "",
     val name: String? = "",
     val thumbnail: String? = "",
     val price: String? = "",
@@ -14,12 +15,14 @@ data class PurchaseItemMain(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeString(name)
         parcel.writeString(thumbnail)
         parcel.writeString(price)

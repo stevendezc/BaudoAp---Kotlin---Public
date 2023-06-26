@@ -1,5 +1,6 @@
 package com.abstractcoder.baudoapp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -11,19 +12,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.abstractcoder.baudoapp.databinding.ActivityInnerStoreItemContentBinding
+import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
+import com.abstractcoder.baudoapp.utils.DialogListener
 import com.abstractcoder.baudoapp.utils.StoreDialog
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 
-class innerStoreItemContentActivity : AppCompatActivity() {
+class innerStoreItemContentActivity : AppCompatActivity(), DialogListener {
 
     private lateinit var binding: ActivityInnerStoreItemContentBinding
 
-    private lateinit var postId: String
+    private lateinit var itemId: String
     private lateinit var layoutManager: LinearLayoutManager
 
     private var selectedSize: String = ""
     private var productQuantity: Int = 0
+    private var maxQuantityLimit: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +37,7 @@ class innerStoreItemContentActivity : AppCompatActivity() {
 
         layoutManager = LinearLayoutManager(this.baseContext)
         val storeItemContent = intent.getParcelableExtra<StoreItemMain>("item")
-        postId = storeItemContent?.id.toString()
+        itemId = storeItemContent?.id.toString()
 
         setup(storeItemContent!!)
     }
@@ -70,22 +75,32 @@ class innerStoreItemContentActivity : AppCompatActivity() {
             }
             binding.xsBadge.setOnClickListener {
                 this.selectedSize = "XS"
+                setMaxQuantityLimit(storeItemContent)
+                resetProductQuantity()
                 switchBottomMenuColor(0)
             }
             binding.sBadge.setOnClickListener {
                 this.selectedSize = "S"
+                setMaxQuantityLimit(storeItemContent)
+                resetProductQuantity()
                 switchBottomMenuColor(1)
             }
             binding.mBadge.setOnClickListener {
                 this.selectedSize = "M"
+                setMaxQuantityLimit(storeItemContent)
+                resetProductQuantity()
                 switchBottomMenuColor(2)
             }
             binding.lBadge.setOnClickListener {
                 this.selectedSize = "L"
+                setMaxQuantityLimit(storeItemContent)
+                resetProductQuantity()
                 switchBottomMenuColor(3)
             }
             binding.xlBadge.setOnClickListener {
                 this.selectedSize = "XL"
+                setMaxQuantityLimit(storeItemContent)
+                resetProductQuantity()
                 switchBottomMenuColor(4)
             }
 
@@ -95,7 +110,7 @@ class innerStoreItemContentActivity : AppCompatActivity() {
 
             binding.quantity.text = this.productQuantity.toString()
             binding.quantityIncreaser.setOnClickListener {
-                if (this.productQuantity < getMaxQuantityLimit(storeItemContent)!!) {
+                if (this.productQuantity < maxQuantityLimit!!) {
                     this.productQuantity = this.productQuantity + 1
                     binding.quantity.text = this.productQuantity.toString()
                 }
@@ -111,6 +126,7 @@ class innerStoreItemContentActivity : AppCompatActivity() {
                 if (selectedSize != "" && productQuantity != 0) {
                     StoreDialog(
                         true,
+                        itemId,
                         imageMainMedia!!,
                         storeItemContent.title!!,
                         storeItemContent.price!!,
@@ -130,6 +146,7 @@ class innerStoreItemContentActivity : AppCompatActivity() {
                 if (selectedSize != "" && productQuantity != 0) {
                     StoreDialog(
                         false,
+                        itemId,
                         imageMainMedia!!,
                         storeItemContent.title!!,
                         storeItemContent.price!!,
@@ -147,12 +164,54 @@ class innerStoreItemContentActivity : AppCompatActivity() {
 
             binding.shoppingCartButton.setOnClickListener {
                 val intent = Intent(this, StoreCheckOutActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, 1)
             }
         }
     }
 
-    private fun getMaxQuantityLimit(storeItemContent: StoreItemMain): Int? {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == 2) {
+                productQuantity = 0
+                binding.quantity.text = productQuantity.toString()
+                resetSizeSelection()
+            }
+        }
+    }
+
+    override fun onDialogSubmit(success: Boolean) {
+        if (success) {
+            productQuantity = 0
+            binding.quantity.text = productQuantity.toString()
+            resetSizeSelection()
+        }
+    }
+
+    private fun resetSizeSelection() {
+        binding.quantityContainer.visibility = LinearLayout.GONE
+        binding.quantityLabel.visibility = TextView.GONE
+        this.selectedSize = ""
+        val unselectedColor = ContextCompat.getColor(this, R.color.gray_85)
+        val optionsItems = arrayOf(
+            binding.xsBadge,
+            binding.sBadge,
+            binding.mBadge,
+            binding.lBadge,
+            binding.xlBadge,
+        )
+        for (index in optionsItems.indices) {
+            val option = optionsItems[index]
+            option.background = unselectedColor.toDrawable()
+            option.setTypeface(null, Typeface.NORMAL)
+        }
+    }
+    private fun resetProductQuantity() {
+        this.productQuantity = 0
+        binding.quantity.text = this.productQuantity.toString()
+    }
+
+    private fun setMaxQuantityLimit(storeItemContent: StoreItemMain) {
         val sizeMap = mapOf(
             "XS" to storeItemContent.stock_xs,
             "S" to storeItemContent.stock_s,
@@ -160,7 +219,23 @@ class innerStoreItemContentActivity : AppCompatActivity() {
             "L" to storeItemContent.stock_l,
             "XL" to storeItemContent.stock_xl
         )
-        return sizeMap[selectedSize]
+        val baseSize = sizeMap[selectedSize]
+        val shoppingCartItems = getShoppingCartItems()
+        val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+        if (baseSize != null) {
+            maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+        }
+    }
+
+    private fun getShoppingCartItems(): MutableList<PurchaseItemMain> {
+        val sharedPreferences = getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+        var itemListString = sharedPreferences?.getString("itemList", "") ?: ""
+        val itemList = if (itemListString.isNotEmpty()) {
+            Gson().fromJson(itemListString, Array<PurchaseItemMain>::class.java).toMutableList()
+        } else {
+            mutableListOf<PurchaseItemMain>()
+        }
+        return itemList
     }
 
     private fun switchBottomMenuColor(pos: Int) {

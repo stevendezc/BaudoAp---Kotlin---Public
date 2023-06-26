@@ -129,6 +129,7 @@ class Firestore {
                 val productsDataList = mutableListOf<StoreItemMain>()
                 for (document in it) {
                     val myData = document.toObject(StoreItemMain::class.java)
+                    myData.id = document.id.toString()
                     productsDataList.add(myData)
                 }
                 productsLiveData.value = productsDataList
