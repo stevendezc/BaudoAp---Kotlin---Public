@@ -20,6 +20,39 @@ data class Reaction(
     var type: String? = ""
 )
 
+data class PodcastInfo(
+    val post: String? = "",
+    var finished: Boolean? = false,
+    var duration: Int? = 0
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Int::class.java.classLoader) as? Int
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(post)
+        parcel.writeValue(finished)
+        parcel.writeValue(duration)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<PodcastInfo> {
+        override fun createFromParcel(parcel: Parcel): PodcastInfo {
+            return PodcastInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<PodcastInfo?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 data class PostData(
     var id: String? = "",
     val author: String? = "",

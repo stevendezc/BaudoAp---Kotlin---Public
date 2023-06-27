@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var userData: FirebaseUser
     private var firestore = Firestore()
     private val bundle = Bundle()
     private lateinit var sharedPreferences: SharedPreferences
@@ -52,6 +53,9 @@ class HomeFragment : Fragment() {
         firestore.activateSubscribers(requireContext(), email!!)
         // Load Posts
 
+        firestore.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+            userData = user
+        })
         firestore.postsLiveData.observe(viewLifecycleOwner, Observer { posts ->
             // Update your UI with the new data
             binding.contentLoading.visibility = ProgressBar.GONE
@@ -73,6 +77,7 @@ class HomeFragment : Fragment() {
 
     private fun fragmentSetup(posts: ArrayList<PostData>) {
         bundle.putSerializable("posts", posts)
+        bundle.putSerializable("active_podcasts", userData.active_podcasts)
         val imageSubFragment = HomeImageFragment()
         imageSubFragment.arguments = bundle
         val videoSubFragment = HomeVideoFragment()

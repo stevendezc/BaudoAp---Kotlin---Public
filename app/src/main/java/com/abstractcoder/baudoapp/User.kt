@@ -14,6 +14,7 @@ data class FirebaseUser(
     val indifferent_posts: ArrayList<String> = arrayListOf<String>(),
     val disliked_posts: ArrayList<String> = arrayListOf<String>(),
     val reactions: ArrayList<Reaction> = arrayListOf<Reaction>(),
+    val active_podcasts: ArrayList<PodcastInfo> = arrayListOf<PodcastInfo>(),
     val user_pic: String = "",
     val verified: Boolean = false
     )

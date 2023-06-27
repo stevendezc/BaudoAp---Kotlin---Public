@@ -8,82 +8,99 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
 
-    <LinearLayout
-        android:id="@+id/podcast_list_item_media_container"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@drawable/image_item_layout"
-        android:backgroundTint="#181818"
-        android:orientation="vertical"
-        android:padding="15dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/podcast_list_item_media_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="15dp">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/podcast_list_item_media"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:shapeAppearanceOverlay="@style/roundVideo"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-            </FrameLayout>
+            android:layout_height="180dp"
+            android:background="@drawable/image_item_layout"
+            android:backgroundTint="#181818"
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/podcast_list_item_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sofia"
-                    android:maxLines="2"
-                    android:paddingBottom="10dp"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                <FrameLayout
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="15dp">
 
-                <TextView
-                    android:id="@+id/podcast_list_item_timestamp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sofia"
-                    android:maxLines="1"
-                    android:paddingBottom="5dp"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/podcast_list_item_media"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/roundVideo"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-                <TextView
-                    android:id="@+id/podcast_list_item_description"
+                </FrameLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sofia"
-                    android:maxLines="6"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/podcast_list_item_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sofia"
+                        android:maxLines="2"
+                        android:paddingBottom="10dp"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/podcast_list_item_timestamp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sofia"
+                        android:maxLines="1"
+                        android:paddingBottom="5dp"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/podcast_list_item_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sofia"
+                        android:maxLines="6"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/podcastStatus"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:scaleType="centerInside"
+            android:background="@color/baudo_yellow"
+            app:shapeAppearanceOverlay="@style/roundPodcastStatusBadge"
+            android:src="@drawable/podcast_played" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

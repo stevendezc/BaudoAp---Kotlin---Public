@@ -5,7 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.Timestamp
 
-data class PodcastPostMain(var id: String?, var thumbnail: Uri?, var background: Uri?, var title: String?, var creation_date: Timestamp?, var description: String?, var media: Uri?): Parcelable {
+data class PodcastPostMain(var id: String?, var thumbnail: Uri?, var background: Uri?, var title: String?, var creation_date: Timestamp?, var description: String?, var media: Uri?, var status: String?): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readParcelable(Uri::class.java.classLoader),
@@ -13,7 +13,8 @@ data class PodcastPostMain(var id: String?, var thumbnail: Uri?, var background:
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
         parcel.readString(),
-        parcel.readParcelable(Uri::class.java.classLoader)
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readString()
     ) {
     }
 
@@ -25,6 +26,7 @@ data class PodcastPostMain(var id: String?, var thumbnail: Uri?, var background:
         parcel.writeParcelable(creation_date, flags)
         parcel.writeString(description)
         parcel.writeParcelable(media, flags)
+        parcel.writeString(status)
     }
 
     override fun describeContents(): Int {

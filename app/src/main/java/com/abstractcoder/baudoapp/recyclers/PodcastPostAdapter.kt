@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.PodcastListItemBinding
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -44,6 +45,15 @@ class PodcastPostAdapter(private val context: Context, private val podcastPostLi
             onItemClick?.invoke(currentItem)
         }
 
+        if (currentItem.status == "Iniciado") {
+            holder.podcastListenedStatusBadge.visibility = ShapeableImageView.VISIBLE
+            holder.podcastListenedStatusBadge.setImageResource(R.drawable.podcast_played)
+        }
+        if (currentItem.status == "Finalizado") {
+            holder.podcastListenedStatusBadge.visibility = ShapeableImageView.VISIBLE
+            holder.podcastListenedStatusBadge.setImageResource(R.drawable.podcast_check)
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -54,6 +64,7 @@ class PodcastPostAdapter(private val context: Context, private val podcastPostLi
 
         val binding = PodcastListItemBinding.bind(itemView)
 
+        val podcastListenedStatusBadge = binding.podcastStatus
         val podcastContainer = binding.podcastListItemMediaContainer
         val podcastThumbnail = binding.podcastListItemMedia
         val podcastTitle = binding.podcastListItemTitle

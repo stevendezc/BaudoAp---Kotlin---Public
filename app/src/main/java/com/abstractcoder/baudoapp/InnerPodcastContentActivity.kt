@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class InnerPodcastContentActivity : AppCompatActivity() {
 
@@ -36,7 +38,10 @@ class InnerPodcastContentActivity : AppCompatActivity() {
     private var firestoreInst = Firestore()
 
     private lateinit var postId: String
+    private lateinit var postStatus: String
+    private var podcastCurrentPosition: Int = 0
     private lateinit var userData: FirebaseUser
+    private lateinit var userEmail: String
     private lateinit var postData: PostData
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var commentAdapter: CommentaryAdapter
@@ -51,16 +56,19 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this.baseContext)
         val podcastContent = intent.getParcelableExtra<PodcastPostMain>("podcast")
         postId = podcastContent?.id.toString()
+        postStatus = podcastContent?.status.toString()
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
+        userEmail = email!!
 
         firestoreInst.activateSubscribers(this, email!!)
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
             userData = user
             setReactionIcons(userData)
+            setup(podcastContent!!, name!!, email!!)
         })
 
         firestoreInst.subscribeToSinglePostUpdates(this, postId)
@@ -68,8 +76,17 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             // Update your UI with the new data
             postData = post
         })
+    }
 
-        setup(podcastContent!!, name!!, email!!)
+    private fun getActivePodcastDuration(podcastContent: PodcastPostMain) {
+        if (podcastContent.status == "Iniciado") {
+            val userActivePodcasts = userData.active_podcasts
+            userActivePodcasts.forEach {
+                if (it.post == postId) {
+                    podcastCurrentPosition = it.duration!!
+                }
+            }
+        }
     }
 
     private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>, userEmail: String) {
@@ -191,6 +208,10 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         binding.innerPodcastDescription.text = podcastContent.description
 
         podcastMedia = MediaPlayer.create(this, podcastContent.media)
+        getActivePodcastDuration(podcastContent!!)
+        podcastMedia.currentPosition.plus(podcastCurrentPosition)
+        podcastMedia.seekTo(podcastCurrentPosition)
+
         val totalPodcastTime = formatPodcastTime(podcastMedia.duration)
         binding.podcastTotalTime.text = totalPodcastTime
 
@@ -198,9 +219,20 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             finish()
         }
         // Play button Event
+        binding.innerPodcastPlay.visibility = ImageView.VISIBLE
         binding.innerPodcastPlay.setOnClickListener {
             if (!podcastMedia.isPlaying) {
                 podcastMedia.start()
+                if (postStatus == "No escuchado") {
+                    val newPodcastInfo = PodcastInfo(
+                        postId, false, 0
+                    )
+                    // Add reaction
+                    db.collection("users").document(email!!).update(
+                        "active_podcasts", FieldValue.arrayUnion(newPodcastInfo)
+                    )
+                    postStatus = "Iniciado"
+                }
                 binding.innerPodcastPlay.setImageResource(R.drawable.pause)
             } else {
                 podcastMedia.pause()
@@ -227,7 +259,9 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             }
         })
 
+        binding.innerPodcastSeekbar.visibility = SeekBar.VISIBLE
         runnable = Runnable {
+            podcastCurrentPosition = podcastMedia.currentPosition
             binding.innerPodcastSeekbar.progress = podcastMedia.currentPosition
             val currentPodcastTime = formatPodcastTime(podcastMedia.currentPosition)
             binding.podcastCurrentTime.text = currentPodcastTime
@@ -237,6 +271,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         podcastMedia.setOnCompletionListener {
             binding.innerPodcastPlay.setImageResource(R.drawable.play)
             binding.innerPodcastSeekbar.progress = 0
+            updatePodcastCurrentStatus()
+            updatePodcastCurrentDuration(true)
         }
 
         binding.podcastSave.setOnClickListener {
@@ -263,8 +299,39 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         getComments(email)
     }
 
+    private fun updatePodcastCurrentStatus() {
+        val userActivePodcasts = userData.active_podcasts
+        userActivePodcasts.forEach {
+            if (it.post == postId) {
+                it.finished = true
+            }
+        }
+        db.collection("users").document(userEmail!!).update("active_podcasts", userActivePodcasts.toList())
+            .addOnCompleteListener {
+                println("podcast $postId: Actualizado")
+            }.addOnFailureListener {
+                println("podcast $postId: No pudo ser actualizado")
+            }
+    }
+
+    private fun updatePodcastCurrentDuration(finished: Boolean?) {
+        val userActivePodcasts = userData.active_podcasts
+        userActivePodcasts.forEach {
+            if (it.post == postId) {
+                it.duration = if (finished == true) 0 else podcastCurrentPosition
+            }
+        }
+        db.collection("users").document(userEmail!!).update("active_podcasts", userActivePodcasts.toList())
+            .addOnCompleteListener {
+                println("podcast $postId: Actualizado")
+            }.addOnFailureListener {
+                println("podcast $postId: No pudo ser actualizado")
+            }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        updatePodcastCurrentDuration(false)
         podcastMedia.stop()
     }
 }

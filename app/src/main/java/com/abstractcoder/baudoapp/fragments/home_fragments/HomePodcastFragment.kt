@@ -11,19 +11,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.InnerPodcastContentActivity
-import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.R
+import com.abstractcoder.baudoapp.*
 import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
+import com.abstractcoder.baudoapp.utils.Firestore
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomePodcastFragment : Fragment() {
 
     private var _binding: FragmentHomePodcastBinding? = null
     private val binding get() = _binding!!
+    private var firestoreInst = Firestore()
+    private lateinit var userData: FirebaseUser
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var podcastAdapter: PodcastPostAdapter
@@ -51,13 +54,32 @@ class HomePodcastFragment : Fragment() {
         val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
         Log.d(ContentValues.TAG, "incomingPostList on PodcastFragment: ${incomingPostList.size}")
 
+        val incomingActivePodcastList: ArrayList<PodcastInfo> = arguments?.get("active_podcasts") as ArrayList<PodcastInfo>
+        Log.d(ContentValues.TAG, "incomingActivePodcastList on PodcastFragment: ${incomingActivePodcastList.size}")
+
         val sharedPref = this.activity?.getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = sharedPref?.getString("email", "")
         isOnline = sharedPref?.getBoolean("online", false)!!
         // Load Posts
-        initData(view,incomingPostList)
+        firestoreInst.activateSubscribers(requireContext(), email!!)
+        firestoreInst.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+            // Update your UI with the new data
+            userData = user
+            initData(view,incomingPostList, incomingActivePodcastList)
+        })
     }
 
-    private fun initData(view: View, incomingPosts: ArrayList<PostData>) {
+    private fun getPodcastStatus(podcastId: String?): String? {
+        val userActivePodcasts = userData.active_podcasts
+        val activePodcast = userActivePodcasts.find { it.post == podcastId }
+        if (activePodcast != null) {
+            return if (activePodcast?.finished == true) "Finalizado" else "Iniciado"
+        } else {
+            return "No escuchado"
+        }
+    }
+
+    private fun initData(view: View, incomingPosts: ArrayList<PostData>, incomingActivePodcastList: ArrayList<PodcastInfo> ) {
 
         Log.d(ContentValues.TAG, "Init data")
         Log.d(ContentValues.TAG, "incomingPosts: ${incomingPosts.size}")
@@ -72,7 +94,17 @@ class HomePodcastFragment : Fragment() {
                 val timestamp = post.creation_date
                 val description = post.description
                 val media = Uri.parse(post.main_media)
-                val podcastPost = PodcastPostMain(id, thumbnail, background, title, timestamp, description, media)
+                val activePodcast = incomingActivePodcastList.filter { it.post.equals(id) }
+                var status = getPodcastStatus(id)
+                if (activePodcast.isNotEmpty() &&
+                    activePodcast[0].post == id &&
+                    activePodcast[0].finished == true) {
+                }
+                if (activePodcast.isNotEmpty() &&
+                    activePodcast[0].post == id &&
+                    activePodcast[0].finished == false) {
+                }
+                val podcastPost = PodcastPostMain(id, thumbnail, background, title, timestamp, description, media, status)
                 podcastPostMainList.add(podcastPost)
             }
         }
