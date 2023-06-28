@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.abstractcoder.baudoapp.*
+import com.abstractcoder.baudoapp.recyclers.EventMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -16,6 +17,7 @@ class Firestore {
     val userLiveData = MutableLiveData<FirebaseUser>()
     val postsLiveData = MutableLiveData<List<PostData>>()
     val communitiesLiveData = MutableLiveData<List<CommunityData>>()
+    val eventsLiveData = MutableLiveData<List<EventMain>>()
     val postCommentsLiveData = MutableLiveData<List<Commentary>>()
     val productsLiveData = MutableLiveData<List<StoreItemMain>>()
     val singlePostLiveData = MutableLiveData<PostData>()
@@ -23,6 +25,7 @@ class Firestore {
     val userCollectionRef = db.collection("users")
     val postsCollectionRef = db.collection("posts")
     val communitiesCollectionRef = db.collection("communities")
+    val eventsCollectionRef = db.collection("events")
     val commentariesCollectionRef = db.collection("commentaries")
     val productsCollectionRef = db.collection("productos")
 
@@ -33,6 +36,7 @@ class Firestore {
         subscribeToUserUpdates(context, email)
         subscribeToPostUpdates(context)
         subscribeToCommunityUpdates(context)
+        subscribeToEventUpdates(context)
         subscribeToProductsUpdates(context)
     }
 
@@ -80,6 +84,25 @@ class Firestore {
                     communityDataList.add(myData)
                 }
                 communitiesLiveData.value = communityDataList
+            }
+        }
+    }
+
+    private fun subscribeToEventUpdates(context: Context) {
+        eventsCollectionRef.addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                val eventDataList = mutableListOf<EventMain>()
+                for (document in it) {
+                    println("DOCUMENT: $document")
+                    val myData = document.toObject(EventMain::class.java)
+                    myData.id = document.id
+                    eventDataList.add(myData)
+                }
+                eventsLiveData.value = eventDataList
             }
         }
     }
