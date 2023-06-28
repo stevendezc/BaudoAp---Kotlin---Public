@@ -335,7 +335,7 @@
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <Button
                             android:id="@+id/periodismoButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -344,10 +344,8 @@
                             android:background="@drawable/round_input"
                             android:backgroundTint="@color/baudo_grey"
                             android:fontFamily="@font/sofia"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
                             android:text="Periodismo"
-                            android:textAlignment="center"
+                            android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
 
@@ -355,7 +353,7 @@
                             android:id="@+id/memoriaButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.85"
+                            android:layout_weight="1.1"
                             android:background="@drawable/round_input"
                             android:backgroundTint="@color/baudo_grey"
                             android:orientation="vertical"
@@ -363,6 +361,7 @@
                             android:paddingBottom="7dp">
 
                             <TextView
+                                android:id="@+id/memoriaButtonLabel1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -373,6 +372,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/memoriaButtonLabel2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
