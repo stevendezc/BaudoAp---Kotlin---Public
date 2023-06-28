@@ -28,6 +28,7 @@ import com.abstractcoder.baudoapp.recyclers.CommunityMain
 import com.abstractcoder.baudoapp.recyclers.EventAdapter
 import com.abstractcoder.baudoapp.recyclers.EventMain
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.abstractcoder.baudoapp.utils.InfoDialog
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -240,6 +241,10 @@ class EventsFragment : Fragment() {
                 activeSubjectFilter(4, binding.ambienteButton)
                 applyFilters()
             }
+        }
+
+        binding.eventsInfo.setOnClickListener {
+            InfoDialog("eventos").show(requireFragmentManager(), "info dialog")
         }
     }
 

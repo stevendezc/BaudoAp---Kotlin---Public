@@ -42,7 +42,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/community_info"
+                        android:id="@+id/eventsInfo"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center|right"
