@@ -23,10 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.CommunityData
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentEventsBinding
-import com.abstractcoder.baudoapp.recyclers.CommunityAdapter
-import com.abstractcoder.baudoapp.recyclers.CommunityMain
-import com.abstractcoder.baudoapp.recyclers.EventAdapter
-import com.abstractcoder.baudoapp.recyclers.EventMain
+import com.abstractcoder.baudoapp.recyclers.*
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import java.text.SimpleDateFormat
@@ -129,7 +126,12 @@ class EventsFragment : Fragment() {
         eventsRecyclerView = binding.eventListRecycler
         eventsRecyclerView.layoutManager = layoutManager
         eventsRecyclerView.setHasFixedSize(true)
-        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), eventsMainList)
+        val nonDuplicatedList = eventsMainList.distinct()
+        val nonDuplicatedArrayList = arrayListOf<EventMain>()
+        nonDuplicatedList.forEach { event: EventMain ->
+            nonDuplicatedArrayList.add(event)
+        }
+        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), nonDuplicatedArrayList)
         eventsRecyclerView.adapter = eventAdapter
 
         getCurrentDateValues()
@@ -331,7 +333,12 @@ class EventsFragment : Fragment() {
         if (subjectFilter != 0) {
             filteredArrayList = eventsMainList.filter { it.year == yearFilter && it.month == monthFilter && it.subject == subjectList[subjectFilter-1] } as ArrayList<EventMain>
         }
-        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), filteredArrayList)
+        val nonDuplicatedList = filteredArrayList.distinct()
+        val nonDuplicatedArrayList = arrayListOf<EventMain>()
+        nonDuplicatedList.forEach { event: EventMain ->
+            nonDuplicatedArrayList.add(event)
+        }
+        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), nonDuplicatedArrayList)
         eventsRecyclerView.adapter = eventAdapter
     }
 
