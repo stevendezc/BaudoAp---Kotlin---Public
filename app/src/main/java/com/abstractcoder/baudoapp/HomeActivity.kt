@@ -83,27 +83,7 @@ class HomeActivity : AppCompatActivity() {
         val permission = Manifest.permission.POST_NOTIFICATIONS
         var notificationPermission = ContextCompat.checkSelfPermission(this, permission)
         if (notificationPermission == PackageManager.PERMISSION_DENIED) {
-            println("Permiso no garantizado")
-            //ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
-        } else {
-            println("Permiso garantizado")
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, handle the action
-                Toast.makeText(this, "Permisos garantizados", Toast.LENGTH_SHORT).show()
-            } else {
-                // Permission denied, handle accordingly (e.g., show a message or disable functionality)
-                Toast.makeText(this, "Permisos no garantizados", Toast.LENGTH_SHORT).show()
-            }
+            ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
         }
     }
 
