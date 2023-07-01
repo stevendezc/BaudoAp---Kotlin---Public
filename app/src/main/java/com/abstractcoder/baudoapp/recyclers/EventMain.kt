@@ -8,6 +8,7 @@ data class EventMain(
     var id: String? = "",
     var date: Timestamp? = null,
     var description: String? = "",
+    var event_url: String? = "",
     var month: Int? = 0,
     var subject: String? = "",
     var title: String? = "",
@@ -16,6 +17,7 @@ data class EventMain(
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
+        parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
@@ -28,6 +30,7 @@ data class EventMain(
         parcel.writeString(id)
         parcel.writeParcelable(date, flags)
         parcel.writeString(description)
+        parcel.writeString(event_url)
         parcel.writeValue(month)
         parcel.writeString(subject)
         parcel.writeString(title)

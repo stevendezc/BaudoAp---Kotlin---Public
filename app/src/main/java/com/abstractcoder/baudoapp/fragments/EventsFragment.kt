@@ -129,7 +129,7 @@ class EventsFragment : Fragment() {
         eventsRecyclerView = binding.eventListRecycler
         eventsRecyclerView.layoutManager = layoutManager
         eventsRecyclerView.setHasFixedSize(true)
-        eventAdapter = EventAdapter(eventsMainList)
+        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), eventsMainList)
         eventsRecyclerView.adapter = eventAdapter
 
         getCurrentDateValues()
@@ -331,7 +331,7 @@ class EventsFragment : Fragment() {
         if (subjectFilter != 0) {
             filteredArrayList = eventsMainList.filter { it.year == yearFilter && it.month == monthFilter && it.subject == subjectList[subjectFilter-1] } as ArrayList<EventMain>
         }
-        eventAdapter = EventAdapter(filteredArrayList)
+        eventAdapter = EventAdapter(requireContext(), requireFragmentManager(), filteredArrayList)
         eventsRecyclerView.adapter = eventAdapter
     }
 

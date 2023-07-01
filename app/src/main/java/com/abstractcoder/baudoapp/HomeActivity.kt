@@ -1,14 +1,19 @@
 package com.abstractcoder.baudoapp
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -54,11 +59,14 @@ class HomeActivity : AppCompatActivity() {
         // Data saving for sessions (session Data)
         val connection = networkConnection.isOnline(this.applicationContext)
         println("connection: $connection")
+
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.putBoolean("online", connection)
         prefs.apply()
+
+        checkPermissions()
 
         firestoreInst.activateSubscribers(this, email)
 
@@ -69,6 +77,34 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         moveTaskToBack(true)
+    }
+
+    private fun checkPermissions() {
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        var notificationPermission = ContextCompat.checkSelfPermission(this, permission)
+        if (notificationPermission == PackageManager.PERMISSION_DENIED) {
+            println("Permiso no garantizado")
+            //ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
+        } else {
+            println("Permiso garantizado")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, handle the action
+                Toast.makeText(this, "Permisos garantizados", Toast.LENGTH_SHORT).show()
+            } else {
+                // Permission denied, handle accordingly (e.g., show a message or disable functionality)
+                Toast.makeText(this, "Permisos no garantizados", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setup(email: String, provider: String) {
