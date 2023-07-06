@@ -124,7 +124,7 @@ class SignUpActivity : AppCompatActivity() {
                 "uid" to user.uid,
                 "verified" to false,
                 "name" to user.name,
-                "password" to user.password,
+                "password" to "",
                 "user_pic" to "",
                 "saved_posts" to emptyList<String>(),
                 "liked_posts" to emptyList<String>(),
