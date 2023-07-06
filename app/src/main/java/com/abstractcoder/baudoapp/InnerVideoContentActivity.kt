@@ -23,6 +23,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private var firestoreInst = Firestore()
 
+    private lateinit var userData: FirebaseUser
     private lateinit var postId: String
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var commentAdapter: CommentaryAdapter
@@ -46,7 +47,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
         firestoreInst.activateSubscribers(this, email!!)
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
-            val userName = user.name
+            userData = user
             println("currentUser in InnerImage: $user")
         })
 

@@ -15,6 +15,7 @@ class Firestore {
     private val db = FirebaseFirestore.getInstance()
 
     val userLiveData = MutableLiveData<FirebaseUser>()
+    val usersLiveData = MutableLiveData<List<FirebaseUser>>()
     val postsLiveData = MutableLiveData<List<PostData>>()
     val communitiesLiveData = MutableLiveData<List<CommunityData>>()
     val eventsLiveData = MutableLiveData<List<EventMain>>()
@@ -33,6 +34,7 @@ class Firestore {
         db.firestoreSettings = firestoreSettings {
             this.isPersistenceEnabled = true
         }
+        subscribeToUsersUpdates(context)
         subscribeToUserUpdates(context, email)
         subscribeToPostUpdates(context)
         subscribeToCommunityUpdates(context)
@@ -49,6 +51,24 @@ class Firestore {
             value?.let {
                 val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
                 userLiveData.value = myData
+            }
+        }
+    }
+
+    private fun subscribeToUsersUpdates(context: Context) {
+        userCollectionRef.addSnapshotListener { value, error ->
+            error?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                return@addSnapshotListener
+            }
+            value?.let {
+                val usersDataList = mutableListOf<FirebaseUser>()
+                for (document in it) {
+                    var userData = document.toObject(FirebaseUser::class.java)
+                    userData.id = document.id
+                    usersDataList.add(userData)
+                }
+                usersLiveData.value = usersDataList
             }
         }
     }

@@ -1,19 +1,21 @@
 package com.abstractcoder.baudoapp.recyclers
 
-import android.content.Context
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.Commentary
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.CommentListItemBinding
 import com.abstractcoder.baudoapp.utils.CommentaryDialog
+import com.abstractcoder.baudoapp.utils.Firestore
+import com.bumptech.glide.Glide
 
-class CommentaryAdapter(private val context: Context, private val fragmentManager: FragmentManager, private val postId: String, private val userId: String, private val commentaryList: ArrayList<Commentary>): RecyclerView.Adapter<CommentaryAdapter.CommentHolder>() {
+class CommentaryAdapter(private val context: AppCompatActivity, private val fragmentManager: FragmentManager, private val postId: String, private val userId: String, private val commentaryList: ArrayList<Commentary>): RecyclerView.Adapter<CommentaryAdapter.CommentHolder>() {
+    private var firestore = Firestore()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -25,7 +27,17 @@ class CommentaryAdapter(private val context: Context, private val fragmentManage
     override fun onBindViewHolder(holder: CommentHolder, position: Int) {
         val currentItem = commentaryList[position]
         if (currentItem != null) {
-            holder.commentAuthor.text = currentItem.author
+            firestore.activateSubscribers(context, userId)
+            firestore.usersLiveData.observe(context, Observer { users ->
+                val user = users.find { it.id == currentItem.author_email }
+                if (user != null) {
+                    val userImage = user.user_pic
+                    Glide.with(holder.commentAuthorImage)
+                        .load(userImage)
+                        .into(holder.commentAuthorImage)
+                    holder.commentAuthor.text = user.name
+                }
+            })
             holder.commentText.text = currentItem.text
         }
 
@@ -49,6 +61,7 @@ class CommentaryAdapter(private val context: Context, private val fragmentManage
 
         val binding = CommentListItemBinding.bind(itemView)
         val commentContainer = binding.commentContainer
+        val commentAuthorImage = binding.commentAuthorImage
         val commentAuthor = binding.commentAuthor
         val commentText = binding.commentText
 

@@ -18,12 +18,10 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="#181818"
-            android:scaleType="fitXY"
-            app:contentPadding="10dp"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/roundImage"
             app:srcCompat="@drawable/fui_ic_anonymous_white_24dp"
-            app:strokeColor="@null"
-            app:tint="@color/white" />
+            app:strokeColor="@null" />
 
         <LinearLayout
             android:id="@+id/comment_container"

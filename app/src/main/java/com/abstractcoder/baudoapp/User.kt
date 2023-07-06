@@ -7,6 +7,7 @@ data class User(val uid: String, val name: String, val email: String, val passwo
 data class GoogleUser(val name: String, val email: String, val user_pic: Uri)
 
 data class FirebaseUser(
+    var id: String = "",
     val name: String = "",
     val password: String = "",
     val provider: String = "",
