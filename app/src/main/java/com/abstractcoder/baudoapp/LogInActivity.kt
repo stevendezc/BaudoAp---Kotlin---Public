@@ -2,6 +2,7 @@ package com.abstractcoder.baudoapp
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -84,7 +85,7 @@ class LogInActivity : AppCompatActivity() {
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
-        binding.facebookButton.setOnClickListener {
+        /*binding.facebookButton.setOnClickListener {
             // Config
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
             LoginManager.getInstance().registerCallback(callbackManager,
@@ -115,7 +116,7 @@ class LogInActivity : AppCompatActivity() {
                     showAlert()
                 }
             })
-        }
+        }*/
 
         binding.logInButton.setOnClickListener {
             if (binding.emailEditText.text.isNotEmpty() && binding.passwordEditText.text.isNotEmpty()) {
@@ -165,10 +166,11 @@ class LogInActivity : AppCompatActivity() {
             if (!it.exists()) {
                 userCollectionRef.document(user.email).set(
                     mapOf("provider" to ProviderType.GOOGLE,
+                        "uid" to id,
                         "verified" to true,
                         "name" to user.name,
                         "password" to "",
-                        "user_pic" to "",
+                        "user_pic" to user.user_pic.toString(),
                         "saved_posts" to emptyList<String>(),
                         "liked_posts" to emptyList<String>(),
                         "disliked_posts" to emptyList<String>(),
@@ -223,7 +225,8 @@ class LogInActivity : AppCompatActivity() {
                             val id: String = it.result?.user?.uid ?: ""
                             val name: String = it.result?.user?.displayName ?: ""
                             val email: String = it.result?.user?.email ?: ""
-                            val user = GoogleUser(name, email)
+                            val userImage: Uri = it.result?.user?.photoUrl!!
+                            val user = GoogleUser(name, email, userImage)
                             registerUser(id, user)
                             showHome(account.email ?: "", ProviderType.GOOGLE)
                         } else {

@@ -57,12 +57,12 @@ class SignUpActivity : AppCompatActivity() {
             val rightsAccepted: Boolean = binding.rightsSwitch.isChecked
             if (validateForm(name, email, password)) {
                 if (rightsAccepted) {
-                    val user = User(name, email, password)
                     authInstance.createUserWithEmailAndPassword(
                         binding.registerEmailEditText.text.toString(),
                         binding.registerPasswordEditText.text.toString()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
+                            var user = User(it.result.user!!.uid, name, email, password)
                             val fireUser = authInstance.currentUser
                             fireUser?.sendEmailVerification()
                             registerUser(user, ProviderType.BASIC)
@@ -121,6 +121,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun registerUser(user: User, provider: ProviderType) {
         db.collection("users").document(user.email).set(
             mapOf("provider" to provider,
+                "uid" to user.uid,
                 "verified" to false,
                 "name" to user.name,
                 "password" to user.password,

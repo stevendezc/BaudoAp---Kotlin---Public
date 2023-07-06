@@ -2,12 +2,12 @@ package com.abstractcoder.baudoapp.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -21,14 +21,17 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import java.util.*
+// Image compression
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class UserImageDialog(
     private val userData: FirebaseUser,
     private val email: String
 ): DialogFragment() {
     private lateinit var binding: UserImageDialogBinding
-    private val db = FirebaseFirestore.getInstance()
     val storageReference = FirebaseStorage.getInstance().reference
 
     private var userImageUri: Uri? = null
@@ -88,10 +91,20 @@ class UserImageDialog(
                 binding.options.visibility = LinearLayout.GONE
                 binding.contentLoading.visibility = LinearLayout.VISIBLE
                 println("Email: $email")
-                val updatedName = userData.name.lowercase().replace(" ", "_")
-                println("updatedName: $updatedName")
+                val updatedName = userData.uid.lowercase().replace(" ", "_")
+                val contentResolver: ContentResolver = context?.contentResolver!!
+                // Get the input stream from the image URI
+                val inputStream: InputStream? = contentResolver.openInputStream(this.userImageUri!!)
+                // Decode the input stream into a bitmap
+                val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
+                // Create a byte array output stream to hold the compressed image data
+                val outputStream = ByteArrayOutputStream()
+                // Compress the bitmap to the output stream with the desired quality (40%)
+                bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
+                // Convert the compressed image data to a byte array
+                val compressedImageData: ByteArray = outputStream.toByteArray()
                 val imageRef = storageReference.child("UserImages/$updatedName.jpg")
-                imageRef.putFile(this.userImageUri!!)
+                imageRef.putBytes(compressedImageData)
                     .addOnSuccessListener {
                         // Get the download URL of the uploaded image
                         imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->

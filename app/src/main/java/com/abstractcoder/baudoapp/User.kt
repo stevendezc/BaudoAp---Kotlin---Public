@@ -1,13 +1,16 @@
 package com.abstractcoder.baudoapp
 
-data class User(val name: String, val email: String, val password: String)
+import android.net.Uri
 
-data class GoogleUser(val name: String, val email: String)
+data class User(val uid: String, val name: String, val email: String, val password: String)
+
+data class GoogleUser(val name: String, val email: String, val user_pic: Uri)
 
 data class FirebaseUser(
     val name: String = "",
     val password: String = "",
     val provider: String = "",
+    val uid: String = "",
     val commentaries: ArrayList<String> = arrayListOf<String>(),
     val saved_posts: ArrayList<String> = arrayListOf<String>(),
     val liked_posts: ArrayList<String> = arrayListOf<String>(),
