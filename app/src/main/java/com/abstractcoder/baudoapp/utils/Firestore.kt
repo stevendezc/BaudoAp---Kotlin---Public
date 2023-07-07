@@ -1,6 +1,7 @@
 package com.abstractcoder.baudoapp.utils
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.abstractcoder.baudoapp.*
@@ -8,11 +9,20 @@ import com.abstractcoder.baudoapp.recyclers.EventMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestoreSettings
 
 class Firestore {
-
     private val db = FirebaseFirestore.getInstance()
+
+    private lateinit var singleUserListener: ListenerRegistration
+    private lateinit var usersListener: ListenerRegistration
+    private lateinit var postsListener: ListenerRegistration
+    private lateinit var communitiesListener: ListenerRegistration
+    private lateinit var eventsListener: ListenerRegistration
+    private lateinit var commentsListener: ListenerRegistration
+    private lateinit var singlePostListener: ListenerRegistration
+    private lateinit var productsListener: ListenerRegistration
 
     val userLiveData = MutableLiveData<FirebaseUser>()
     val usersLiveData = MutableLiveData<List<FirebaseUser>>()
@@ -43,9 +53,10 @@ class Firestore {
     }
 
     private fun subscribeToUserUpdates(context: Context, email: String) {
-        userCollectionRef.document(email).addSnapshotListener { value, error ->
+        singleUserListener = userCollectionRef.document(email).addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -56,9 +67,10 @@ class Firestore {
     }
 
     private fun subscribeToUsersUpdates(context: Context) {
-        userCollectionRef.addSnapshotListener { value, error ->
+        usersListener = userCollectionRef.addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -74,9 +86,10 @@ class Firestore {
     }
 
     private fun subscribeToPostUpdates(context: Context) {
-        postsCollectionRef.addSnapshotListener { value, error ->
+        postsListener = postsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -92,9 +105,10 @@ class Firestore {
     }
 
     private fun subscribeToCommunityUpdates(context: Context) {
-        communitiesCollectionRef.addSnapshotListener { value, error ->
+        communitiesListener = communitiesCollectionRef.addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -109,9 +123,10 @@ class Firestore {
     }
 
     private fun subscribeToEventUpdates(context: Context) {
-        eventsCollectionRef.addSnapshotListener { value, error ->
+        eventsListener = eventsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -129,9 +144,10 @@ class Firestore {
 
     fun subscribeToPostCommentariesUpdates(context: Context, postId: String) {
         println("postId on subscribe: $postId")
-        commentariesCollectionRef.whereEqualTo("post", postId).addSnapshotListener { value, error ->
+        commentsListener = commentariesCollectionRef.whereEqualTo("post", postId).addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -148,9 +164,10 @@ class Firestore {
     }
 
     fun subscribeToSinglePostUpdates(context: Context, postId: String) {
-        postsCollectionRef.document(postId).addSnapshotListener { value, error ->
+        singlePostListener = postsCollectionRef.document(postId).addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -163,9 +180,10 @@ class Firestore {
     }
 
     private fun subscribeToProductsUpdates(context: Context) {
-        productsCollectionRef.addSnapshotListener { value, error ->
+        productsListener = productsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                it.message?.let { it1 -> Log.d("TAG", it1) }
+                //Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
             }
             value?.let {
@@ -178,5 +196,16 @@ class Firestore {
                 productsLiveData.value = productsDataList
             }
         }
+    }
+
+    fun clearListeners() {
+        if (::singleUserListener.isInitialized) singleUserListener.remove()
+        if (::usersListener.isInitialized) usersListener.remove()
+        if (::postsListener.isInitialized) postsListener.remove()
+        if (::communitiesListener.isInitialized) communitiesListener.remove()
+        if (::eventsListener.isInitialized) eventsListener.remove()
+        if (::commentsListener.isInitialized) commentsListener.remove()
+        if (::singlePostListener.isInitialized) singlePostListener.remove()
+        if (::productsListener.isInitialized) productsListener.remove()
     }
 }

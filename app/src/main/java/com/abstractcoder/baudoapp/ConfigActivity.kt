@@ -11,7 +11,7 @@ import com.abstractcoder.baudoapp.databinding.ActivityConfigBinding
 import com.abstractcoder.baudoapp.fragments.ContactFragment
 import com.abstractcoder.baudoapp.fragments.FaqFragment
 import com.abstractcoder.baudoapp.fragments.PrivacyFragment
-import com.facebook.login.LoginManager
+import com.abstractcoder.baudoapp.utils.Firestore
 import com.google.firebase.auth.FirebaseAuth
 
 interface FragmentButtonClickListener {
@@ -21,6 +21,7 @@ interface FragmentButtonClickListener {
 class ConfigActivity : AppCompatActivity(), FragmentButtonClickListener {
 
     private lateinit var binding: ActivityConfigBinding
+    private var firestore = Firestore()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class ConfigActivity : AppCompatActivity(), FragmentButtonClickListener {
             val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
             prefs.clear()
             prefs.apply()
+            firestore.clearListeners()
 
             /*if (provider == ProviderType.FACEBOOK.name) {
                 LoginManager.getInstance().logOut()
