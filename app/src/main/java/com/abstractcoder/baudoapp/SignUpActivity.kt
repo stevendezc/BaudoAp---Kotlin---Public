@@ -9,9 +9,12 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.abstractcoder.baudoapp.databinding.ActivitySignUpBinding
+import com.abstractcoder.baudoapp.fragments.PrivacyFragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,7 +23,7 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.regex.Pattern
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var binding: ActivitySignUpBinding
@@ -66,6 +69,16 @@ class SignUpActivity : AppCompatActivity() {
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
             startActivityForResult(intent, 1)
+        }
+
+        binding.displayPolicies.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.policiesFragmentWrapper, PrivacyFragment())
+                commit()
+            }
+            binding.policiesFragmentWrapper.visibility = FrameLayout.VISIBLE
+            binding.backButton.visibility = LinearLayout.GONE
+            binding.registerForm.visibility = LinearLayout.GONE
         }
 
         binding.signUpButton.setOnClickListener {
@@ -200,5 +213,12 @@ class SignUpActivity : AppCompatActivity() {
             // Set the selected image to the ImageView
             binding.userImage.setImageURI(this.userImageUri)
         }
+    }
+
+    override fun onButtonClicked() {
+        // Perform the desired action when the button is clicked in the fragment
+        binding.policiesFragmentWrapper.visibility = FrameLayout.GONE
+        binding.backButton.visibility = LinearLayout.VISIBLE
+        binding.registerForm.visibility = LinearLayout.VISIBLE
     }
 }
