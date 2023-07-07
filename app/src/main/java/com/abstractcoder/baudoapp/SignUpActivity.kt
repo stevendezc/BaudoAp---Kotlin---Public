@@ -1,6 +1,11 @@
 package com.abstractcoder.baudoapp
 
+import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
@@ -10,12 +15,18 @@ import com.abstractcoder.baudoapp.databinding.ActivitySignUpBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.util.regex.Pattern
 
 class SignUpActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var binding: ActivitySignUpBinding
+
+    val storageReference = FirebaseStorage.getInstance().reference
+    private var userImageUri: Uri? = null
 
     private val PASSWORD_PATTERN: Pattern =
         Pattern.compile("^" +
@@ -48,6 +59,13 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
+        }
+
+        binding.userImage.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            startActivityForResult(intent, 1)
         }
 
         binding.signUpButton.setOnClickListener {
@@ -94,6 +112,14 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun validateForm(name: String, email: String, password: String): Boolean {
         var validForm = true
+        if (this.userImageUri == null) {
+            Toast.makeText(
+                this,
+                "Debes seleccionar una imagen",
+                Toast.LENGTH_SHORT
+            ).show()
+            validForm = false
+        }
         if (name.isEmpty()) {
             binding.registerNameEditText.error = "El nombre de usuario no puede estar vacio"
             validForm = false
@@ -119,19 +145,38 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun registerUser(user: User, provider: ProviderType) {
-        db.collection("users").document(user.email).set(
-            mapOf("provider" to provider,
-                "uid" to user.uid,
-                "verified" to false,
-                "name" to user.name,
-                "password" to "",
-                "user_pic" to "",
-                "saved_posts" to emptyList<String>(),
-                "liked_posts" to emptyList<String>(),
-                "disliked_posts" to emptyList<String>(),
-                "indifferent_posts" to emptyList<String>()
-            )
-        )
+        val updatedName = user.uid.lowercase().replace(" ", "_")
+        val contentResolver: ContentResolver = this.contentResolver
+        // Get the input stream from the image URI
+        val inputStream: InputStream? = contentResolver.openInputStream(this.userImageUri!!)
+        // Decode the input stream into a bitmap
+        val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
+        // Create a byte array output stream to hold the compressed image data
+        val outputStream = ByteArrayOutputStream()
+        // Compress the bitmap to the output stream with the desired quality (40%)
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
+        // Convert the compressed image data to a byte array
+        val compressedImageData: ByteArray = outputStream.toByteArray()
+        val imageRef = storageReference.child("UserImages/$updatedName.jpg")
+        imageRef.putBytes(compressedImageData)
+            .addOnSuccessListener {
+                // Get the download URL of the uploaded image
+                imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    db.collection("users").document(user.email).set(
+                        mapOf("provider" to provider,
+                            "uid" to user.uid,
+                            "verified" to false,
+                            "name" to user.name,
+                            "password" to "",
+                            "user_pic" to downloadUrl.toString(),
+                            "saved_posts" to emptyList<String>(),
+                            "liked_posts" to emptyList<String>(),
+                            "disliked_posts" to emptyList<String>(),
+                            "indifferent_posts" to emptyList<String>()
+                        )
+                    )
+                }
+            }
     }
 
     private fun showAlert(exception: Exception?) {
@@ -145,5 +190,15 @@ class SignUpActivity : AppCompatActivity() {
     private fun showLogIn() {
         val registerIntent = Intent(this, LogInActivity::class.java)
         startActivity(registerIntent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1
+            && resultCode == Activity.RESULT_OK) {
+            this.userImageUri = data?.data
+            // Set the selected image to the ImageView
+            binding.userImage.setImageURI(this.userImageUri)
+        }
     }
 }
