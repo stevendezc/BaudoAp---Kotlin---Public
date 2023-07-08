@@ -76,14 +76,13 @@ Nulla facilisi. Proin et semper nulla. In ante nunc, facilisis at nunc ac, conse
     <string name="info_eventos_complementary_text">Si te interesa el medio ambiente, los temas de derechos humanos, la cultura y el periodismo, esta agenda te ayudará a encontrar actividades que se desarrollan en el país.</string>
     <string name="info_eventos_complementary_text2">\n¿Quieres compartir tu evento?  comunícate con nosotros a: comunidades.baudoap@gmail.com o el teléfono+57 321 7344601 </string>
     <!-- NAVEGANTES FRAGMENT Strings -->
-    <string name="navegantes_button_text">APORTAR</string>
-    <string name="navegantes_fuerza_title">Navega con fuerza</string>
-    <string name="navegantes_fuerza_price">$50.000 o 20USD</string>
-    <string name="navegantes_fuerza_description">• Recibes los beneficios de Navegantes.\n• No incluye la pieza editorial\n• Aporte único para Fábricas de Agua parte II</string>
-    <string name="navegantes_pasion_title">Navega con pasión</string>
-    <string name="navegantes_pasion_price">$100.000 o 40USD</string>
-    <string name="navegantes_pasion_description">• Recibes los beneficios de Navegantes.\n• Incluye pieza editorial y envío\n• No incluye envío fuera de Colombia\n• Aporte único para Fábricas de Agua parte II.</string>
-    <string name="navegantes_ritmo_title">Navega a tu ritmo</string>
-    <string name="navegantes_ritmo_price">$150.000 o Libre</string>
-    <string name="navegantes_ritmo_description">• Dona esta cantidad o más y recibirás los beneficios de Navegantes + Certificado de donación de nuestra fundación</string>
+    <string name="navegantes_monthly_payment_title">Pago mensual</string>
+    <string name="navegantes_monthly_payment_time">12 pagos durante un año</string>
+    <string name="navegantes_yearly_payment_title">Pago anual</string>
+    <string name="navegantes_yearly_payment_time">1 pago durante un año</string>
+    <string name="navegantes_support_text">Apoya nuestro trabajo y aparecerás en los créditos como financiador oficial de BaudoAp.</string>
+    <string name="navegantes_moreinfo_text">*Más información</string>
+    <string name="navegantes_terms_text">*Aplica términos y condiciones</string>
+    <string name="navegantes_libre_payment_text">Click para el pago\nde monto libre</string>
+    <string name="navegantes_libre_payment_hint">Introduce el monto</string>
 </resources>
