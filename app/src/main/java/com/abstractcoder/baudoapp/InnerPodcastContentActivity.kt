@@ -40,6 +40,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
     private lateinit var postId: String
     private lateinit var postStatus: String
     private var podcastCurrentPosition: Int = 0
+    private var podcastIsFinished: Boolean = false
+
     private lateinit var userData: FirebaseUser
     private lateinit var userEmail: String
     private lateinit var postData: PostData
@@ -55,20 +57,22 @@ class InnerPodcastContentActivity : AppCompatActivity() {
 
         layoutManager = LinearLayoutManager(this.baseContext)
         val podcastContent = intent.getParcelableExtra<PodcastPostMain>("podcast")
+        println("podcastContent: $podcastContent")
         postId = podcastContent?.id.toString()
         postStatus = podcastContent?.status.toString()
+        println("postStatus: $postStatus")
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
         userEmail = email!!
 
-        firestoreInst.activateSubscribers(this, email!!)
+        firestoreInst.activateSubscribers(this, userEmail)
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
             userData = user
             setReactionIcons(userData)
-            setup(podcastContent!!, name!!, email!!)
+            setup(podcastContent!!, name!!)
         })
 
         firestoreInst.subscribeToSinglePostUpdates(this, postId)
@@ -98,7 +102,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         commentRecyclerView.adapter = commentAdapter
     }
 
-    private fun getComments(userEmail: String) {
+    private fun getComments() {
         // Load Posts
         podcastCommentList.clear()
         firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
@@ -110,14 +114,14 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         })
     }
 
-    private fun addComment(userName: String, authorEmail: String) {
+    private fun addComment(userName: String) {
         val commentText = binding.podcastCommentary.text
         val timestamp = Timestamp.now()
 
         // Add comment
         db.collection("commentaries").add(
             hashMapOf("author" to userName,
-                "author_email" to authorEmail,
+                "author_email" to userEmail,
                 "text" to commentText.toString(),
                 "timestamp" to timestamp,
                 "post" to postId)
@@ -129,7 +133,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
                 "commentaries", FieldValue.arrayUnion(commentId)
             )
 
-            db.collection("users").document(authorEmail).update(
+            db.collection("users").document(userEmail).update(
                 "commentaries", FieldValue.arrayUnion(commentId)
             )
 
@@ -142,15 +146,15 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePost(email: String) {
+    private fun savePost() {
         val isSaved = userData.saved_posts.contains(postId)
         if (isSaved) {
-            db.collection("users").document(email!!).update(
+            db.collection("users").document(userEmail).update(
                 "saved_posts", FieldValue.arrayRemove(postId)
             )
             binding.podcastSave.setImageResource(R.drawable.save)
         } else {
-            db.collection("users").document(email!!).update(
+            db.collection("users").document(userEmail).update(
                 "saved_posts", FieldValue.arrayUnion(postId)
             )
             binding.podcastSave.setImageResource(R.drawable.save_selected)
@@ -176,7 +180,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         return String.format("%02d:%02d", minutes, remainingSeconds)
     }
 
-    private fun setup(podcastContent: PodcastPostMain, userName: String, email: String) {
+    private fun setup(podcastContent: PodcastPostMain, userName: String) {
         if (podcastContent.thumbnail != null) {
             val backgroundUrl = podcastContent.background
             val imageUrl = podcastContent.thumbnail
@@ -209,6 +213,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
 
         podcastMedia = MediaPlayer.create(this, podcastContent.media)
         getActivePodcastDuration(podcastContent!!)
+        println("podcastCurrentPosition: $podcastCurrentPosition")
         podcastMedia.currentPosition.plus(podcastCurrentPosition)
         podcastMedia.seekTo(podcastCurrentPosition)
 
@@ -223,16 +228,6 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         binding.innerPodcastPlay.setOnClickListener {
             if (!podcastMedia.isPlaying) {
                 podcastMedia.start()
-                if (postStatus == "No escuchado") {
-                    val newPodcastInfo = PodcastInfo(
-                        postId, false, 0
-                    )
-                    // Add reaction
-                    db.collection("users").document(email!!).update(
-                        "active_podcasts", FieldValue.arrayUnion(newPodcastInfo)
-                    )
-                    postStatus = "Iniciado"
-                }
                 binding.innerPodcastPlay.setImageResource(R.drawable.pause)
             } else {
                 podcastMedia.pause()
@@ -251,10 +246,8 @@ class InnerPodcastContentActivity : AppCompatActivity() {
                     podcastMedia.seekTo(position)
                 }
             }
-
             override fun onStartTrackingTouch(p0: SeekBar?) {
             }
-
             override fun onStopTrackingTouch(p0: SeekBar?) {
             }
         })
@@ -271,19 +264,20 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         podcastMedia.setOnCompletionListener {
             binding.innerPodcastPlay.setImageResource(R.drawable.play)
             binding.innerPodcastSeekbar.progress = 0
-            updatePodcastCurrentStatus()
-            updatePodcastCurrentDuration(true)
+            podcastIsFinished = true
+            podcastCurrentPosition = 0
+            podcastMedia.seekTo(0)
         }
 
         binding.podcastSave.setOnClickListener {
-            savePost(email)
+            savePost()
         }
 
         val reactionHandler = ReactionHandler()
 
         binding.podcastLike.setOnClickListener {
             reactionHandler.addReaction(
-                email,
+                userEmail,
                 postId,
                 "likes",
                 userData,
@@ -293,45 +287,49 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         }
 
         binding.sendPodcastCommentary.setOnClickListener {
-            addComment(userName, email)
+            addComment(userName)
         }
 
-        getComments(email)
+        getComments()
     }
 
-    private fun updatePodcastCurrentStatus() {
-        val userActivePodcasts = userData.active_podcasts
-        userActivePodcasts.forEach {
-            if (it.post == postId) {
-                it.finished = true
-            }
-        }
-        db.collection("users").document(userEmail!!).update("active_podcasts", userActivePodcasts.toList())
-            .addOnCompleteListener {
-                println("podcast $postId: Actualizado")
-            }.addOnFailureListener {
-                println("podcast $postId: No pudo ser actualizado")
-            }
+    private fun createPodcastRegistry() {
+        val newPodcastInfo = PodcastInfo(
+            postId, podcastIsFinished, podcastCurrentPosition
+        )
+        // Add reaction
+        db.collection("users").document(userEmail).update(
+            "active_podcasts", FieldValue.arrayUnion(newPodcastInfo)
+        )
     }
 
-    private fun updatePodcastCurrentDuration(finished: Boolean?) {
+    private fun updatePodcastInfo() {
         val userActivePodcasts = userData.active_podcasts
-        userActivePodcasts.forEach {
-            if (it.post == postId) {
-                it.duration = if (finished == true) 0 else podcastCurrentPosition
+        val currentActivePodcast = userActivePodcasts.find { it.post == postId }
+        println("podcastIsFinished: $podcastIsFinished")
+        if (currentActivePodcast == null) {
+            createPodcastRegistry()
+        } else {
+            userActivePodcasts.forEach {
+                if (it.post == postId) {
+                    if (postStatus == "No escuchado") {
+                        it.finished = if (podcastIsFinished == true) true else false
+                    }
+                    it.duration = if (podcastIsFinished == true) 0 else podcastCurrentPosition
+                }
             }
+            db.collection("users").document(userEmail!!).update("active_podcasts", userActivePodcasts.toList())
+                .addOnCompleteListener {
+                    println("podcast $postId: Actualizado")
+                }.addOnFailureListener {
+                    println("podcast $postId: No pudo ser actualizado")
+                }
         }
-        db.collection("users").document(userEmail!!).update("active_podcasts", userActivePodcasts.toList())
-            .addOnCompleteListener {
-                println("podcast $postId: Actualizado")
-            }.addOnFailureListener {
-                println("podcast $postId: No pudo ser actualizado")
-            }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        updatePodcastCurrentDuration(false)
+        updatePodcastInfo()
         podcastMedia.stop()
     }
 }
