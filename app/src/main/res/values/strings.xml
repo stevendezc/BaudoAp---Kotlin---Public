@@ -83,6 +83,7 @@ Nulla facilisi. Proin et semper nulla. In ante nunc, facilisis at nunc ac, conse
     <string name="navegantes_support_text">Apoya nuestro trabajo y aparecerás en los créditos como financiador oficial de BaudoAp.</string>
     <string name="navegantes_moreinfo_text">*Más información</string>
     <string name="navegantes_terms_text">*Aplica términos y condiciones</string>
-    <string name="navegantes_libre_payment_text">Click para el pago\nde monto libre</string>
-    <string name="navegantes_libre_payment_hint">Introduce el monto</string>
+    <string name="navegantes_libre_payment_title">Monto libre</string>
+    <string name="navegantes_libre_payment_time">1 solo aporte</string>
+    <string name="navegantes_libre_payment_extra">Elige el monto</string>
 </resources>

@@ -43,7 +43,6 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
         }
         holder.monthButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
         holder.yearButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
-        holder.paymentButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
         holder.paymentSubmit.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
 
         holder.monthlyPrice.text = currentItem.monthly_price
@@ -83,8 +82,6 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
         val yearButton = binding.yearButton
         val yearlyPrice = binding.yearlyPrice
         val inputButtonContainer = binding.inputButtons
-        val paymentButton = binding.paymentButton
-        val payment = binding.librePayment
         val navegantesMoreinfo = binding.navegantesMoreinfo
         val navegantesInfoContainer = binding.navegantesInfoContainer
         val paymentSubmit = binding.librePaymentSubmit
