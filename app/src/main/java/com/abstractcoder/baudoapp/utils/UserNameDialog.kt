@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.ContentResolver
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -21,22 +23,16 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-// Image compression
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.core.text.toSpannable
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-class UserImageDialog(
+class UserNameDialog(
     private val userData: FirebaseUser,
     private val email: String
-): DialogFragment() {
-    private lateinit var binding: UserImageDialogBinding
+): DialogFragment() {private lateinit var binding: UserImageDialogBinding
     val storageReference = FirebaseStorage.getInstance().reference
 
     private var userImageUri: Uri? = null
-    private var userName: String? = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreate(savedInstanceState)
@@ -58,14 +54,14 @@ class UserImageDialog(
     private fun setup(email: String) {
         println("UserPic: ${userData.user_pic}")
 
-        this.userName = userData.name
-        binding.editName.setText(userName)
         if (userData.user_pic != "") {
+            binding.loadButton.text = "Actualizar"
             binding.uploadText.text = "Actualizando imagen de usuario..."
             Glide.with(binding.userImage)
                 .load(userData.user_pic)
                 .into(binding.userImage)
         } else {
+            binding.loadButton.text = "Cargar"
             binding.uploadText.text = "Cargando imagen de usuario..."
         }
         binding.userImage.setOnClickListener {
@@ -93,7 +89,7 @@ class UserImageDialog(
                 binding.options.visibility = LinearLayout.GONE
                 binding.contentLoading.visibility = LinearLayout.VISIBLE
                 println("Email: $email")
-                val userid = userData.uid.lowercase().replace(" ", "_")
+                val updatedName = userData.uid.lowercase().replace(" ", "_")
                 val contentResolver: ContentResolver = context?.contentResolver!!
                 // Get the input stream from the image URI
                 val inputStream: InputStream? = contentResolver.openInputStream(this.userImageUri!!)
@@ -105,7 +101,7 @@ class UserImageDialog(
                 bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
                 // Convert the compressed image data to a byte array
                 val compressedImageData: ByteArray = outputStream.toByteArray()
-                val imageRef = storageReference.child("UserImages/$userid.jpg")
+                val imageRef = storageReference.child("UserImages/$updatedName.jpg")
                 imageRef.putBytes(compressedImageData)
                     .addOnSuccessListener {
                         // Get the download URL of the uploaded image
@@ -120,7 +116,10 @@ class UserImageDialog(
                                     binding.loadingSpinner.visibility = ProgressBar.GONE
                                     binding.uploadText.text = "Imagen de usuario Actualizada!"
                                     println("User image updated")
-                                    updateName(false)
+                                    Thread.sleep(5000)
+                                    dialog?.dismiss()
+                                    // Image URL updated successfully
+                                    // Perform any additional actions
                                 }
                                 .addOnFailureListener { exception ->
                                     // Handle the failure to update the image URL
@@ -130,44 +129,24 @@ class UserImageDialog(
                     .addOnFailureListener { exception ->
                         // Handle the failure to upload the image
                     }
+                //db.collection("users").document(email).update(
+                //    "user_pic", user_pic_path
+                //)
             } else {
-                updateName(true)
-            }
-        }
-    }
-
-    private fun updateName(onlyNameChange: Boolean) {
-        val fieldUserName = binding.editName.text.toString()
-        if (fieldUserName == "") {
-            binding.editName.setText(userName)
-            dialog?.dismiss()
-        } else {
-            if (onlyNameChange) {
-                binding.options.visibility = LinearLayout.GONE
-                binding.contentLoading.visibility = LinearLayout.VISIBLE
-                binding.uploadText.text = "Actualizando nombre de usuario..."
-            }
-            val firestore = FirebaseFirestore.getInstance()
-            val documentRef = firestore.collection("users").document(email)
-
-            documentRef.update("name", fieldUserName)
-                .addOnSuccessListener {
-                    if (onlyNameChange) {
-                        binding.loadingSpinner.visibility = ProgressBar.GONE
-                        binding.uploadText.text = "Nombre de usuario actualizado"
-                    } else {
-                        Toast.makeText(
-                            this.requireContext(),
-                            "Nombre de usuario actualizado",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    Thread.sleep(5000)
-                    dialog?.dismiss()
+                if (userData.user_pic != "") {
+                    Toast.makeText(
+                        this.requireContext(),
+                        "No hay imagen seleccionada para cargar",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this.requireContext(),
+                        "No hay imagen seleccionada para actualizar",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                .addOnFailureListener { exception ->
-                    // Handle the failure to update the image URL
-                }
+            }
         }
     }
 
@@ -194,5 +173,4 @@ class UserImageDialog(
             }
         }
     }
-
 }

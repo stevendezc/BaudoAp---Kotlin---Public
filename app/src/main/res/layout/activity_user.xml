@@ -43,12 +43,22 @@
                     app:strokeWidth="1dp"
                     app:srcCompat="@drawable/user" />
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/editUserImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:src="@drawable/camera" />
+                    android:padding="4dp"
+                    android:background="@drawable/round_card"
+                    android:backgroundTint="#FFAA00"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/settings" />
+                </LinearLayout>
+
             </FrameLayout>
 
             <LinearLayout
@@ -62,7 +72,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sofia"
-                    android:paddingStart="15dp"
                     android:text="@string/greeting"
                     android:textColor="@color/white"
                     android:textSize="20dp" />
@@ -72,12 +81,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/editNameButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/pencil" />
 
                     <TextView
                         android:id="@+id/userNameTextView"

@@ -245,7 +245,7 @@
             android:fontFamily="@font/sofia"
             android:text="@string/navegantes_moreinfo_text"
             android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/baudo_yellow" />
 
         <LinearLayout
             android:id="@+id/navegantes_info_container"
