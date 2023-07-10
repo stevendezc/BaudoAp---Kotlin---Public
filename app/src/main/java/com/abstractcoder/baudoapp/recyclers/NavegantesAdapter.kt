@@ -1,6 +1,7 @@
 package com.abstractcoder.baudoapp.recyclers
 
 import android.animation.LayoutTransition
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.BitmapFactory
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.RecyclerView
+import com.abstractcoder.baudoapp.BrowserActivity
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.NavegantesListItemBinding
 import kotlin.collections.ArrayList
@@ -25,6 +27,13 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
             R.layout.navegantes_list_item,
             parent, false)
         return NavegantesAdapter.NavegantesHolder(itemView)
+    }
+
+    private fun openLink(holder: NavegantesHolder, link: String) {
+        var browserIntent = Intent(holder.itemView.context, BrowserActivity::class.java).apply {
+            putExtra("incoming_url", link)
+        }
+        holder.itemView.context.startActivity(browserIntent)
     }
 
     override fun onBindViewHolder(holder: NavegantesHolder, position: Int) {
@@ -44,6 +53,10 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
         holder.monthButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
         holder.yearButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
         holder.paymentSubmit.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
+
+        holder.monthButton.setOnClickListener { openLink(holder, currentItem.link_1!!) }
+        holder.yearButton.setOnClickListener { openLink(holder, currentItem.link_2!!) }
+        holder.paymentSubmit.setOnClickListener { openLink(holder, currentItem.link_1!!) }
 
         holder.monthlyPrice.text = currentItem.monthly_price
         holder.yearlyPrice.text = currentItem.yearly_price

@@ -76,7 +76,7 @@ class EventAdapter(private val context: Context, private val parentFragment: Fra
         }
         holder.eventButton.setOnClickListener {
             var browserIntent = Intent(holder.itemView.context, BrowserActivity::class.java).apply {
-                putExtra("event_url", currentItem.event_url)
+                putExtra("incoming_url", currentItem.event_url)
             }
             holder.itemView.context.startActivity(browserIntent)
         }

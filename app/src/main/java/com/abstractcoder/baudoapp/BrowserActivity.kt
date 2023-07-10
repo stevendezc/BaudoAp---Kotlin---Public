@@ -16,11 +16,11 @@ class BrowserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val bundle = intent.extras
-        val event_url: String = bundle?.getString("event_url").toString()
+        val incoming_url: String = bundle?.getString("incoming_url").toString()
 
         webView = binding.webView
         webView.settings.javaScriptEnabled = true
-        loadUrl(event_url)
+        loadUrl(incoming_url)
     }
 
     private fun loadUrl(url: String) {

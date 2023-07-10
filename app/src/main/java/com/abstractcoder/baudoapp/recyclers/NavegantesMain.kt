@@ -9,6 +9,8 @@ data class NavegantesMain(
     var yearly_price: String? = "",
     var has_input: Boolean? = false,
     var image: Int? = 0,
+    var link_1: String? = "",
+    var link_2: String? = "",
     var btn_color: String? = "#FFFFFF",
     var info_1: String? = "",
     var info_2: String? = "",
@@ -23,6 +25,8 @@ data class NavegantesMain(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     ) {
     }
@@ -33,6 +37,8 @@ data class NavegantesMain(
         parcel.writeString(yearly_price)
         parcel.writeValue(has_input)
         parcel.writeValue(image)
+        parcel.writeString(link_1)
+        parcel.writeString(link_2)
         parcel.writeString(btn_color)
         parcel.writeString(info_1)
         parcel.writeString(info_2)
