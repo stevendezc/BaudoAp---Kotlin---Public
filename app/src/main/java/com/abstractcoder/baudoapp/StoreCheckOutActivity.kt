@@ -6,9 +6,15 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityStoreCheckOutBinding
+import com.abstractcoder.baudoapp.fragments.CheckoutContactFragment
+import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.google.gson.Gson
@@ -17,7 +23,11 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+interface OnFragmentInteractionListener {
+    fun onDataReceived(type: String)
+}
+
+class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener, OnFragmentInteractionListener {
 
     private lateinit var binding: ActivityStoreCheckOutBinding
 
@@ -41,7 +51,6 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         // Register the listener
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
-        setUpPurchaseSystem()
         getShoppingCartItems(sharedPreferences, "itemList")
         fillPurchases()
 
@@ -67,7 +76,13 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    private fun setUpPurchaseSystem() {
+    private fun makeCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.checkoutFragmentWrapper, fragment)
+            commit()
+        }
+        binding.checkoutFragmentWrapper.visibility = FrameLayout.VISIBLE
+        binding.purchaseItems.visibility = ScrollView.GONE
     }
 
     private fun fillPurchases() {
@@ -106,6 +121,9 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
             purchaseItemRecyclerView.adapter = purchaseItemAdapter
 
             binding.shoppingCartSubtotal.text = "Subtotal: $${getSubtotalFromShoppingCartItems(incomingPurchaseList)}"
+            binding.purchaseButton.setOnClickListener {
+                makeCurrentFragment(CheckoutContactFragment())
+            }
         }
     }
 
@@ -130,6 +148,23 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
             Gson().fromJson(itemListString, Array<PurchaseItemMain>::class.java).toMutableList()
         } else {
             mutableListOf<PurchaseItemMain>()
+        }
+    }
+
+    override fun onBackPressed() {
+    }
+
+    override fun onDataReceived(type: String) {
+        println("TYPE: $type")
+        if (type == "back") {
+            binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
+            binding.purchaseItems.visibility = LinearLayout.VISIBLE
+        }
+        if (type == "policy") {
+            makeCurrentFragment(CheckoutPolicyFragment())
+        }
+        if (type == "contact") {
+            makeCurrentFragment(CheckoutContactFragment())
         }
     }
 }

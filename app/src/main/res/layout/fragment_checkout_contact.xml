@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".fragments.ContactFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/sofia"
+            android:text="Información\nde contacto"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Email"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="@string/email_hint"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Nombre"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Nombre Apellido"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Documento de identidad"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactDocument"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Documento"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Dirección"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Dirección"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Apartamento"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactApartment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="• Apto, conjunto o local - opcional"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Ciudad"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Ciudad"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Teléfono"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/contactPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint="Teléfono"
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sofia"
+                        android:text="Gracias por apoyarnos."
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sofia"
+                        android:text="Recibirás la recompensa que escogiste"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/shippmentPolicyButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Ver política de envío"
+                        android:textColor="@color/baudo_yellow" />
+
+                    <Button
+                        android:id="@+id/contactSubmit"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="@drawable/yellow_border"
+                        android:fontFamily="@font/sofia"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Continuar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="16dp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back" />
+
+</FrameLayout>
