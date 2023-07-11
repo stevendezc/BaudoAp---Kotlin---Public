@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".fragments.CheckoutPaymentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/sofia"
+            android:text="Información\nde pago"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Titular de la tarjeta"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <com.braintreepayments.cardform.view.CardholderNameEditText
+                        android:id="@+id/card_form_card_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:drawablePadding="8dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Numero de tarjeta"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <com.braintreepayments.cardform.view.CardEditText
+                        android:id="@+id/card_form_card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:drawablePadding="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginRight="5dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/sofia"
+                                android:text="Vencimiento"
+                                android:textColor="@color/baudo_yellow"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
+
+                            <com.braintreepayments.cardform.view.ExpirationDateEditText
+                                android:id="@+id/card_form_card_expiration"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@android:color/white"
+                                android:background="@drawable/round_input"
+                                android:backgroundTint="#242424"
+                                android:drawablePadding="8dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/sofia"
+                                android:text="CVV"
+                                android:textColor="@color/baudo_yellow"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
+
+                            <com.braintreepayments.cardform.view.CvvEditText
+                                android:id="@+id/card_form_card_cvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@android:color/white"
+                                android:background="@drawable/round_input"
+                                android:backgroundTint="#242424"
+                                android:drawablePadding="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/paymentSubmit"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="@drawable/yellow_border"
+                        android:fontFamily="@font/sofia"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Continuar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="16dp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back" />
+
+</FrameLayout>

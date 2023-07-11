@@ -250,7 +250,7 @@
                         android:textColor="@color/baudo_yellow" />
 
                     <Button
-                        android:id="@+id/contactSubmit"
+                        android:id="@+id/checkputContactSubmit"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"

@@ -38,6 +38,10 @@ class CheckoutContactFragment : Fragment() {
         binding.shippmentPolicyButton.setOnClickListener {
             listener?.onDataReceived("policy")
         }
+
+        binding.checkputContactSubmit.setOnClickListener {
+            listener?.onDataReceived("payment")
+        }
     }
 
     override fun onAttach(context: Context) {

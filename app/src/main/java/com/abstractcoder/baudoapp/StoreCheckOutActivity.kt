@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityStoreCheckOutBinding
 import com.abstractcoder.baudoapp.fragments.CheckoutContactFragment
+import com.abstractcoder.baudoapp.fragments.CheckoutPaymentFragment
 import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
@@ -165,6 +166,9 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         }
         if (type == "contact") {
             makeCurrentFragment(CheckoutContactFragment())
+        }
+        if (type == "payment") {
+            makeCurrentFragment(CheckoutPaymentFragment())
         }
     }
 }
