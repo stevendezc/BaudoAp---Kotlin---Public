@@ -79,10 +79,10 @@ class EventsFragment : Fragment() {
             binding.month9, binding.month10, binding.month11, binding.month12
         )
 
-        this.subjectButtonArray = arrayListOf<Any>(
+        /*this.subjectButtonArray = arrayListOf<Any>(
             binding.periodismoButton, binding.memoriaButton,
             binding.generoButton, binding.ambienteButton
-        )
+        )*/
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("email", "")
@@ -204,7 +204,7 @@ class EventsFragment : Fragment() {
             applyFilters()
         }
 
-        binding.periodismoButton.setOnClickListener {
+        /*binding.periodismoButton.setOnClickListener {
             if (this.subjectFilter == 1) {
                 resetSubjectFilter()
                 applyFilters()
@@ -243,7 +243,7 @@ class EventsFragment : Fragment() {
                 activeSubjectFilter(4, binding.ambienteButton)
                 applyFilters()
             }
-        }
+        }*/
 
         binding.eventsInfo.setOnClickListener {
             InfoDialog("eventos").show(requireFragmentManager(), "info dialog")
@@ -262,7 +262,7 @@ class EventsFragment : Fragment() {
         this.monthFilter = filterMonth
     }
 
-    private fun resetSubjectFilter() {
+    /*private fun resetSubjectFilter() {
         for (subjectButton in subjectButtonArray) {
             when (subjectButton) {
                 is android.widget.LinearLayout -> {
@@ -299,7 +299,6 @@ class EventsFragment : Fragment() {
         }
         this.subjectFilter = 0
     }
-
     private fun activeSubjectFilter(filterSubject: Int, layoutButton: Any) {
         resetSubjectFilter()
         when (layoutButton) {
@@ -325,7 +324,7 @@ class EventsFragment : Fragment() {
             }
         }
         this.subjectFilter = filterSubject
-    }
+    }*/
 
     private fun applyFilters() {
         var filteredArrayList = arrayListOf<EventMain>()
