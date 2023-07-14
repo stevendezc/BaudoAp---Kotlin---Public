@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,23 +13,104 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/paymentMethods"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/sofia"
-            android:text="Información\nde pago"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/sofia"
+                android:text="Elige un medio\nde pago"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/pse_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yellow_border"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/pse_logo" />
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/baudo_yellow" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Transfiere con tu cuenta de ahorros o corriente"
+                    android:textColor="@color/baudo_yellow"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cc_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yellow_border"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
+                    android:src="@drawable/cards_logos"
+                    android:background="@drawable/round_card"
+                    android:backgroundTint="@color/bt_light_gray"/>
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/baudo_yellow" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Paga con tus tarjetas"
+                    android:textColor="@color/baudo_yellow"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/psePayment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="40dp"
-            android:paddingEnd="40dp">
+            android:paddingEnd="40dp"
+            android:visibility="gone">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -38,6 +120,153 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Información\nde pago"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/sample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Entidad financiera"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/entidad_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Tipo de persona"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/persona_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Tipo de documento"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/tipo_documento_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Documento de identificación"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/round_input"
+                        android:backgroundTint="#242424"
+                        android:ems="10"
+                        android:fontFamily="@font/sofia"
+                        android:hint=""
+                        android:inputType="textPersonName"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#848484"
+                        android:textSize="12dp" />
+
+                    <Button
+                        android:id="@+id/pseSubmit"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="@drawable/yellow_border"
+                        android:fontFamily="@font/sofia"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Pagar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/baudo_yellow"
+                        android:textSize="16dp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ccPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:visibility="gone">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/sofia"
+                        android:text="Información\nde pago"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -54,15 +283,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white"
                         android:background="@drawable/round_input"
                         android:backgroundTint="#242424"
-                        android:drawablePadding="8dp"/>
+                        android:drawablePadding="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -79,15 +308,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white"
                         android:background="@drawable/round_input"
                         android:backgroundTint="#242424"
-                        android:drawablePadding="8dp"/>
+                        android:drawablePadding="8dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -97,9 +326,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_marginRight="5dp"
+                            android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -115,15 +345,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textColor="@android:color/white"
-                                android:textColorHint="@android:color/white"
                                 android:background="@drawable/round_input"
                                 android:backgroundTint="#242424"
-                                android:drawablePadding="8dp"/>
+                                android:drawablePadding="8dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="8dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@android:color/white" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -131,6 +361,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -146,20 +377,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textColor="@android:color/white"
-                                android:textColorHint="@android:color/white"
                                 android:background="@drawable/round_input"
                                 android:backgroundTint="#242424"
-                                android:drawablePadding="8dp"/>
+                                android:drawablePadding="8dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="8dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@android:color/white" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/paymentSubmit"
+                        android:id="@+id/ccSubmit"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -167,7 +398,7 @@
                         android:fontFamily="@font/sofia"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:text="Continuar"
+                        android:text="Pagar"
                         android:textAllCaps="false"
                         android:textColor="@color/baudo_yellow"
                         android:textSize="16dp" />
