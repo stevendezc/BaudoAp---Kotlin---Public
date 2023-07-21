@@ -45,7 +45,8 @@
                 android:layout_weight="1"
                 android:text="Proyectos\nProductivos"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="10dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,7 +76,8 @@
                 android:layout_weight="1"
                 android:text="Cultura e\ninclusión"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="10dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,9 +104,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cultura\ncomunitario"
+                android:text="Turismo\ncomunitario"
                 android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textSize="10dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ImageView

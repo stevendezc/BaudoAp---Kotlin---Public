@@ -4,6 +4,7 @@ data class CommunityData(
     val id: String? = "",
     val category: String? = "",
     val description: String? = "",
+    val location: String? = "",
     val facebook: String? = "",
     val instagram: String? = "",
     val lastname: String? = "",

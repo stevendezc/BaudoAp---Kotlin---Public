@@ -124,11 +124,12 @@ class CommunityFragment : Fragment() {
             val name = community.name
             val lastname = community.lastname
             val description = community.description
+            val location = community.location
             val category = community.category
             val whatsapp = community.number
             val instagram = community.instagram
             val facebook = community.facebook
-            val imagePost = CommunityMain(uri, name!!, lastname!!, description!!, category!!, whatsapp!!, instagram!!, facebook!!)
+            val imagePost = CommunityMain(uri, name!!, lastname!!, description!!, location!!, category!!, whatsapp!!, instagram!!, facebook!!)
             communityMainList.add(imagePost)
         }
 

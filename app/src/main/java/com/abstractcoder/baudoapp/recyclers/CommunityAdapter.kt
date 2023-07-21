@@ -43,10 +43,22 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
                     R.color.productivos
                 )
             )
+            holder.communityLocation.setTextColor(
+                ContextCompat.getColor(
+                    holder.binding.root.context,
+                    R.color.productivos
+                )
+            )
         }
         if (currentItem.category == "cultura") {
             holder.communityThumbnail.setStrokeColorResource(R.color.cultura)
             holder.communityTitle.setTextColor(
+                ContextCompat.getColor(
+                    holder.binding.root.context,
+                    R.color.cultura
+                )
+            )
+            holder.communityLocation.setTextColor(
                 ContextCompat.getColor(
                     holder.binding.root.context,
                     R.color.cultura
@@ -61,9 +73,16 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
                     R.color.turismo
                 )
             )
+            holder.communityLocation.setTextColor(
+                ContextCompat.getColor(
+                    holder.binding.root.context,
+                    R.color.turismo
+                )
+            )
         }
         holder.communityTitle.text = currentItem.name + " " + currentItem.lastname
         holder.communityDescription.text = currentItem.description
+        holder.communityLocation.text = currentItem.location
 
         holder.communityFacebook.visibility = if (currentItem.facebook == "") Button.GONE else Button.VISIBLE
         holder.communityFacebook.setOnClickListener {
@@ -141,6 +160,7 @@ class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : Re
         val communityThumbnail = binding.communityThumbnail
         val communityTitle = binding.communityTitle
         val communityDescription = binding.communityDescription
+        val communityLocation = binding.communityLocation
 
         val communityFacebook = binding.facebookButton
         val communityInstagram = binding.instagramButton
