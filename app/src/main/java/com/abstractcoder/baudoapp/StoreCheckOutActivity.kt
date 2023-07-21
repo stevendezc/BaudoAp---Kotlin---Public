@@ -18,6 +18,9 @@ import com.abstractcoder.baudoapp.fragments.CheckoutPaymentFragment
 import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
+import com.abstractcoder.baudoapp.utils.CheckoutData
+import com.abstractcoder.baudoapp.utils.PaymentDialog
+import com.abstractcoder.baudoapp.utils.UserImageDialog
 import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -25,7 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 interface OnFragmentInteractionListener {
-    fun onDataReceived(type: String)
+    fun onDataReceived(checkout_data: CheckoutData)
 }
 
 class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener, OnFragmentInteractionListener {
@@ -80,6 +83,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
     private fun makeCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.checkoutFragmentWrapper, fragment)
+            addToBackStack(null)
             commit()
         }
         binding.checkoutFragmentWrapper.visibility = FrameLayout.VISIBLE
@@ -155,20 +159,34 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
     override fun onBackPressed() {
     }
 
-    override fun onDataReceived(type: String) {
-        println("TYPE: $type")
-        if (type == "back") {
+    override fun onDataReceived(checkout_data: CheckoutData) {
+        println("Activity checkout_data: $checkout_data")
+        println("Activity checkout_data type: ${checkout_data.type}")
+        if (checkout_data.type == "back") {
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
             binding.purchaseItems.visibility = LinearLayout.VISIBLE
         }
-        if (type == "policy") {
-            makeCurrentFragment(CheckoutPolicyFragment())
+        if (checkout_data.type == "policy") {
+            val fragment = CheckoutPolicyFragment.newInstance(checkout_data)
+            makeCurrentFragment(fragment)
         }
-        if (type == "contact") {
-            makeCurrentFragment(CheckoutContactFragment())
+        if (checkout_data.type == "contact") {
+            val fragment = CheckoutContactFragment.newInstance(checkout_data)
+            makeCurrentFragment(fragment)
         }
-        if (type == "payment") {
-            makeCurrentFragment(CheckoutPaymentFragment())
+        if (checkout_data.type == "payment") {
+            val fragment = CheckoutPaymentFragment.newInstance(checkout_data)
+            makeCurrentFragment(fragment)
+        }
+        if (checkout_data.type == "cc_submit") {
+            binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
+            binding.purchaseItems.visibility = ScrollView.VISIBLE
+            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
+        }
+        if (checkout_data.type == "pse_submit") {
+            binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
+            binding.purchaseItems.visibility = ScrollView.VISIBLE
+            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
         }
     }
 }

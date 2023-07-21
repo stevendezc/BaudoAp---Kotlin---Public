@@ -1,25 +1,29 @@
 package com.abstractcoder.baudoapp.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.OnFragmentInteractionListener
 import com.abstractcoder.baudoapp.databinding.FragmentCheckoutPaymentBinding
-import com.abstractcoder.baudoapp.utils.CustomArrayAdapter
-import com.abstractcoder.baudoapp.utils.JsonFile
-import com.abstractcoder.baudoapp.utils.wompi.FinancialInstitution
-import com.abstractcoder.baudoapp.utils.wompi.FinancialInstitutionsResponse
-import com.google.gson.Gson
-import okhttp3.*
+import com.abstractcoder.baudoapp.utils.*
+import com.abstractcoder.baudoapp.utils.API.PostsService
+import com.abstractcoder.baudoapp.utils.API.PostsServiceImpl
+import com.abstractcoder.baudoapp.utils.wompi.CcTokenRequestData
+import com.abstractcoder.baudoapp.utils.wompi.WompiKeys
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.IOException
+import retrofit2.awaitResponse
 
 class CheckoutPaymentFragment : Fragment() {
     private var _binding: FragmentCheckoutPaymentBinding? = null
@@ -29,6 +33,7 @@ class CheckoutPaymentFragment : Fragment() {
     private lateinit var entidadList: List<String>
 
     private var listener: OnFragmentInteractionListener? = null
+    private var sharedCheckoutData: CheckoutData = CheckoutData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,38 +44,56 @@ class CheckoutPaymentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCheckoutPaymentBinding.inflate(inflater, container, false)
+
+        val checkout_data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("checkout_data", CheckoutData::class.java)
+        } else {
+            arguments?.getParcelable("checkout_data") as? CheckoutData
+        }
+        if (checkout_data != null) {
+            sharedCheckoutData = checkout_data
+        }
+        println("checkout_data in payment: $checkout_data")
+
         return binding.root
     }
 
-    private fun getInstitutions() {
-        val client = OkHttpClient()
-        // Request
-        val request = Request.Builder()
-            .url("https://sandbox.wompi.co/v1/pse/financial_institutions")
-            .method("GET", null)
-            .addHeader("accept", "application/json")
-            .addHeader("Authorization", "Bearer pub_test_16jNk5Ea0ME5n2j1RLnOo28t0f1Fia0m")
-            .build()
-        // Enqueue request
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) {
-                        Log.e("HTTP Error", "Algo no cargo bien")
-                    } else {
-                        val body = response.body()?.string()
-                        val gson = Gson()
-                        val dataModel = gson.fromJson(body, FinancialInstitutionsResponse::class.java)
-                        entidadList = dataModel.data.map { it.financial_institution_name }
-                        println("entidadList: $entidadList")
-                        binding.sample.text = entidadList.toString()
-                    }
-                }
-            }
-        })
+    private fun fillContactData(entity_array: Array<String>, person_type_array: Array<String>, doc_type_array: Array<String>) {
+        val entity_selected_index = entity_array.indexOf(sharedCheckoutData.pse_payment_info?.banking_entity)
+        val person_selected_index = person_type_array.indexOf(sharedCheckoutData.pse_payment_info?.person)
+        val doctype_selected_index = doc_type_array.indexOf(sharedCheckoutData.pse_payment_info?.doc_type)
+        println("entity_selected_index: $entity_selected_index")
+        println("person_selected_index: $person_selected_index")
+        println("doctype_selected_index: $doctype_selected_index")
+        // PSE INPUTS
+        binding.entidadInput.setSelection(entity_selected_index)
+        binding.personaInput.setSelection(person_selected_index)
+        binding.tipoDocumentoInput.setSelection(doctype_selected_index)
+        binding.documentInput.setText(sharedCheckoutData.pse_payment_info?.doc)
+        // CC INPUTS
+        binding.cardFormCardHolder.setText(sharedCheckoutData.cc_payment_info?.card_holder)
+        sharedCheckoutData.cc_payment_info?.card_number?.let { binding.cardFormCardNumber.setText(it.toString()) }
+        binding.cardFormCardExpiration.setText(sharedCheckoutData.cc_payment_info?.card_expiration)
+        sharedCheckoutData.cc_payment_info?.card_cvv?.let { binding.cardFormCardCvv.setText(it) }
+    }
+
+    private fun fillCheckoutData(type: String):CheckoutData {
+        return CheckoutData(
+            type,
+            sharedCheckoutData.contact_info,
+            PsePaymentInfo(
+                binding.entidadInput.selectedItem.toString(),
+                binding.personaInput.selectedItem.toString(),
+                binding.tipoDocumentoInput.selectedItem.toString(),
+                binding.documentInput.text.toString()
+            ),
+            CcPaymentInfo(
+                binding.cardFormCardHolder.text.toString(),
+                if (binding.cardFormCardNumber.text.toString() == "") null else binding.cardFormCardNumber.text.toString(),
+                binding.cardFormCardExpiration.text.toString(),
+                if (binding.cardFormCardCvv.text.toString() == "") null else binding.cardFormCardCvv.text.toString()
+            )
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,7 +101,8 @@ class CheckoutPaymentFragment : Fragment() {
 
         binding.backButton.setOnClickListener {
             if (selectedMethod == 0) {
-                listener?.onDataReceived("contact")
+                val checkoutData = fillCheckoutData("contact")
+                listener?.onDataReceived(checkoutData)
             } else {
                 selectedMethod = 0
                 binding.paymentMethods.visibility = LinearLayout.VISIBLE
@@ -93,9 +117,9 @@ class CheckoutPaymentFragment : Fragment() {
 
         var entidadJson = parsedJsonData.get("entidades") as JSONObject
         var entidadJsonArray = entidadJson.get("data") as JSONArray
-        val entidadArray = Array(entidadJsonArray.length()) { entidadJsonArray.get(it) as JSONObject }
-        val arrayOfProperty1 = entidadArray.map { it.get("financial_institution_name").toString() }.toTypedArray()
-        val entidadInputAdapter = CustomArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrayOfProperty1)
+        val entidadJsonObjectArray = Array(entidadJsonArray.length()) { entidadJsonArray.get(it) as JSONObject }
+        val entidadArray = entidadJsonObjectArray.map { it.get("financial_institution_name").toString() }.toTypedArray()
+        val entidadInputAdapter = CustomArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, entidadArray)
         entidadInputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.entidadInput.adapter = entidadInputAdapter
 
@@ -114,6 +138,10 @@ class CheckoutPaymentFragment : Fragment() {
         documentoInputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.tipoDocumentoInput.adapter = documentoInputAdapter
 
+        if (sharedCheckoutData.pse_payment_info != null || sharedCheckoutData.cc_payment_info != null) {
+            fillContactData(entidadArray, tipoPersonaArray, tipoDocumentoArray)
+        }
+
         binding.pseButton.setOnClickListener {
             selectedMethod = 1
             binding.paymentMethods.visibility = LinearLayout.GONE
@@ -129,20 +157,41 @@ class CheckoutPaymentFragment : Fragment() {
         }
 
         binding.ccSubmit.setOnClickListener {
-            val validPaymentForm = checkPaymentForm()
+            val validPaymentForm = checkCcPaymentForm()
             if (validPaymentForm) {
                 Toast.makeText(requireContext(), "Informacion de pago valida", Toast.LENGTH_SHORT).show()
+                val checkoutData = fillCheckoutData("cc_submit")
+                listener?.onDataReceived(checkoutData)
+            } else {
+                Toast.makeText(requireContext(), "Informacion de pago invalida", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.pseSubmit.setOnClickListener {
+            val validPaymentForm = checkPsePaymentForm()
+            if (validPaymentForm) {
+                Toast.makeText(requireContext(), "Informacion de pago valida", Toast.LENGTH_SHORT).show()
+                val checkoutData = fillCheckoutData("pse_submit")
+                listener?.onDataReceived(checkoutData)
             } else {
                 Toast.makeText(requireContext(), "Informacion de pago invalida", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun checkPaymentForm(): Boolean {
+    private fun checkCcPaymentForm(): Boolean {
         if (!binding.cardFormCardHolder.isValid) return false
         if (!binding.cardFormCardNumber.isValid) return false
         if (!binding.cardFormCardExpiration.isValid) return false
         if (!binding.cardFormCardCvv.isValid) return false
+        return true
+    }
+
+    private fun checkPsePaymentForm(): Boolean {
+        if (binding.entidadInput.selectedItemId.toString() == "0") return false
+        if (binding.personaInput.selectedItemId.toString() == "0") return false
+        if (binding.tipoDocumentoInput.selectedItemId.toString() == "0") return false
+        if (binding.documentInput.text.toString() == "") return false
         return true
     }
 
@@ -152,6 +201,16 @@ class CheckoutPaymentFragment : Fragment() {
             listener = context
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
+
+    companion object {
+        fun newInstance(checkout_data: CheckoutData): CheckoutPaymentFragment {
+            val fragment = CheckoutPaymentFragment()
+            val args = Bundle()
+            args.putParcelable("checkout_data", checkout_data)
+            fragment.arguments = args
+            return fragment
         }
     }
 }
