@@ -7,6 +7,7 @@ import com.google.firebase.Timestamp
 data class StoreItemMain(
     var id: String? = "",
     var title: String? = "",
+    var type: String? = "",
     var thumbnail: String? = "",
     var price: String? = "",
     var description: String? = "",
@@ -18,6 +19,7 @@ data class StoreItemMain(
     var stock_xl: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -35,6 +37,7 @@ data class StoreItemMain(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(title)
+        parcel.writeString(type)
         parcel.writeString(thumbnail)
         parcel.writeString(price)
         parcel.writeString(description)
