@@ -71,8 +71,9 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/roundVideo"
-            app:srcCompat="@android:drawable/ic_menu_upload" />
+            app:shapeAppearanceOverlay="@style/roundUserImage"
+            app:srcCompat="@drawable/user"
+            app:tint="@color/white" />
 
         <TextView
             android:layout_width="match_parent"

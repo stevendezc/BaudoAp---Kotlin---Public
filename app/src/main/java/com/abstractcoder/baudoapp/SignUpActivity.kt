@@ -212,6 +212,7 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
             this.userImageUri = data?.data
             // Set the selected image to the ImageView
             binding.userImage.setImageURI(this.userImageUri)
+            binding.userImage.imageTintList = null
         }
     }
 
