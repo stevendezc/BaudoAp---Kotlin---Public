@@ -125,7 +125,7 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
 
     private fun validateForm(name: String, email: String, password: String): Boolean {
         var validForm = true
-        if (this.userImageUri == null) {
+        /*if (this.userImageUri == null) {
             Toast.makeText(
                 this,
                 "Debes seleccionar una imagen",
@@ -133,6 +133,7 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
             ).show()
             validForm = false
         }
+         */
         if (name.isEmpty()) {
             binding.registerNameEditText.error = "El nombre de usuario no puede estar vacio"
             validForm = false
@@ -159,37 +160,55 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
 
     private fun registerUser(user: User, provider: ProviderType) {
         val updatedName = user.uid.lowercase().replace(" ", "_")
-        val contentResolver: ContentResolver = this.contentResolver
-        // Get the input stream from the image URI
-        val inputStream: InputStream? = contentResolver.openInputStream(this.userImageUri!!)
-        // Decode the input stream into a bitmap
-        val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
-        // Create a byte array output stream to hold the compressed image data
-        val outputStream = ByteArrayOutputStream()
-        // Compress the bitmap to the output stream with the desired quality (40%)
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
-        // Convert the compressed image data to a byte array
-        val compressedImageData: ByteArray = outputStream.toByteArray()
-        val imageRef = storageReference.child("UserImages/$updatedName.jpg")
-        imageRef.putBytes(compressedImageData)
-            .addOnSuccessListener {
-                // Get the download URL of the uploaded image
-                imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                    db.collection("users").document(user.email).set(
-                        mapOf("provider" to provider,
-                            "uid" to user.uid,
-                            "verified" to false,
-                            "name" to user.name,
-                            "password" to "",
-                            "user_pic" to downloadUrl.toString(),
-                            "saved_posts" to emptyList<String>(),
-                            "liked_posts" to emptyList<String>(),
-                            "disliked_posts" to emptyList<String>(),
-                            "indifferent_posts" to emptyList<String>()
+        if (this.userImageUri != null) {
+            val contentResolver: ContentResolver = this.contentResolver
+            // Get the input stream from the image URI
+            val inputStream: InputStream? = contentResolver.openInputStream(this.userImageUri!!)
+            // Decode the input stream into a bitmap
+            val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
+            // Create a byte array output stream to hold the compressed image data
+            val outputStream = ByteArrayOutputStream()
+            // Compress the bitmap to the output stream with the desired quality (40%)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
+            // Convert the compressed image data to a byte array
+            val compressedImageData: ByteArray = outputStream.toByteArray()
+            val imageRef = storageReference.child("UserImages/$updatedName.jpg")
+            imageRef.putBytes(compressedImageData)
+                .addOnSuccessListener {
+                    // Get the download URL of the uploaded image
+                    imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                        db.collection("users").document(user.email).set(
+                            mapOf(
+                                "provider" to provider,
+                                "uid" to user.uid,
+                                "verified" to false,
+                                "name" to user.name,
+                                "password" to "",
+                                "user_pic" to downloadUrl.toString(),
+                                "saved_posts" to emptyList<String>(),
+                                "liked_posts" to emptyList<String>(),
+                                "disliked_posts" to emptyList<String>(),
+                                "indifferent_posts" to emptyList<String>()
+                            )
                         )
-                    )
+                    }
                 }
-            }
+        } else {
+            db.collection("users").document(user.email).set(
+                mapOf(
+                    "provider" to provider,
+                    "uid" to user.uid,
+                    "verified" to false,
+                    "name" to user.name,
+                    "password" to "",
+                    "user_pic" to "",
+                    "saved_posts" to emptyList<String>(),
+                    "liked_posts" to emptyList<String>(),
+                    "disliked_posts" to emptyList<String>(),
+                    "indifferent_posts" to emptyList<String>()
+                )
+            )
+        }
     }
 
     private fun showAlert(exception: Exception?) {
