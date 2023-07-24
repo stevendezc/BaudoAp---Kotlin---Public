@@ -48,7 +48,10 @@ class InnerVideoContentActivity : AppCompatActivity() {
         firestoreInst.userLiveData.observe(this, Observer { user ->
             // Update your UI with the new data
             userData = user
-            println("currentUser in InnerImage: $user")
+            val userImage = userData.user_pic
+            Glide.with(binding.userImageView2)
+                .load(userImage)
+                .into(binding.userImageView2)
         })
 
         setup(videoContent!!, name!!, email)

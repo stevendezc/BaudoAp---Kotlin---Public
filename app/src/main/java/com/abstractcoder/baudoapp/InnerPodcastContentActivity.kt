@@ -181,6 +181,10 @@ class InnerPodcastContentActivity : AppCompatActivity() {
     }
 
     private fun setup(podcastContent: PodcastPostMain, userName: String) {
+        val userImage = userData.user_pic
+        Glide.with(binding.userImageView2)
+            .load(userImage)
+            .into(binding.userImageView2)
         if (podcastContent.thumbnail != null) {
             val backgroundUrl = podcastContent.background
             val imageUrl = podcastContent.thumbnail
