@@ -12,6 +12,7 @@
         <item name="cornerSize">40dp</item>
     </style>
     <style name="homeRoundUserImage">
+        <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20dp</item>
     </style>
 

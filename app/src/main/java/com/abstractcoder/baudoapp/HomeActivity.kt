@@ -3,7 +3,6 @@ package com.abstractcoder.baudoapp
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,9 +20,6 @@ import com.abstractcoder.baudoapp.fragments.*
 import com.abstractcoder.baudoapp.utils.Connection
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
-import com.facebook.login.LoginManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 enum class ProviderType {
     BASIC,
@@ -182,7 +177,6 @@ class HomeActivity : AppCompatActivity() {
             prefs.apply()
 
             if (userData.user_pic != "") {
-                binding.userImage.setContentPadding(0,0,0,0)
                 Glide.with(binding.userImage)
                     .load(userData.user_pic)
                     .into(binding.userImage)

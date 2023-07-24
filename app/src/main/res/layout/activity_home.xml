@@ -28,7 +28,6 @@
             app:shapeAppearanceOverlay="@style/homeRoundUserImage"
             app:strokeColor="#FFAA00"
             app:strokeWidth="2dp"
-            app:contentPadding="8dp"
             app:srcCompat="@drawable/user" />
 
         <LinearLayout
