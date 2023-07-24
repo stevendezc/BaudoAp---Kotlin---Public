@@ -32,7 +32,7 @@
             android:paddingBottom="5dp">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/button_productivos_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,7 +63,7 @@
             android:paddingBottom="5dp">
 
             <ImageView
-                android:id="@+id/imageView24"
+                android:id="@+id/button_cultura_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -93,7 +93,7 @@
             android:paddingBottom="5dp">
 
             <ImageView
-                android:id="@+id/imageView27"
+                android:id="@+id/button_turismo_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -3,6 +3,7 @@ package com.abstractcoder.baudoapp.fragments
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -83,12 +85,14 @@ class CommunityFragment : Fragment() {
         })*/
     }
 
-    private fun applyFilter(filterNumber: Int, categoryName: String, buttonText: android.widget.TextView, categoryColor: Int) {
+    private fun applyFilter(filterNumber: Int, categoryName: String, button: LinearLayout, buttonIcon: ImageView, buttonText: TextView, categoryColor: Int) {
+        button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), categoryColor))
+        buttonIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
         buttonText.setTypeface(null, Typeface.BOLD)
         buttonText.setTextColor(
             ContextCompat.getColor(
                 this.requireContext(),
-                categoryColor
+                R.color.white
             )
         )
         this.filterApplied = filterNumber
@@ -98,8 +102,23 @@ class CommunityFragment : Fragment() {
         communityRecyclerView.adapter = communityAdapter
     }
 
-    private fun resetCommunityFilter(buttonTextArray: ArrayList<TextView>) {
-        for (buttonText in buttonTextArray) {
+    private fun resetCommunityFilter() {
+        binding.buttonProductivos.setBackgroundResource(R.drawable.productivos_button)
+        binding.buttonCultura.setBackgroundResource(R.drawable.cultura_button)
+        binding.buttonTurismo.setBackgroundResource(R.drawable.turismo_button)
+        binding.buttonProductivos.backgroundTintList = null
+        binding.buttonCultura.backgroundTintList = null
+        binding.buttonTurismo.backgroundTintList = null
+        val buttonArrayTexts = arrayListOf<TextView>(
+            binding.buttonProductivosText,
+            binding.buttonCulturaText,
+            binding.buttonTurismoText
+        )
+        binding.buttonProductivosIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.productivos))
+        binding.buttonCulturaIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.cultura))
+        binding.buttonTurismoIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.turismo))
+
+        for (buttonText in buttonArrayTexts) {
             buttonText.setTypeface(null, Typeface.NORMAL)
             buttonText.setTextColor(
                 ContextCompat.getColor(
@@ -139,18 +158,15 @@ class CommunityFragment : Fragment() {
         communityAdapter = CommunityAdapter(communityMainList)
         communityRecyclerView.adapter = communityAdapter
 
-        val buttonArray = arrayListOf<TextView>(
-            binding.buttonProductivosText,
-            binding.buttonCulturaText,
-            binding.buttonTurismoText
-        )
         binding.buttonProductivos.setOnClickListener {
-            if (this.filterApplied == 1) resetCommunityFilter(buttonArray)
+            if (this.filterApplied == 1) resetCommunityFilter()
             else {
-                resetCommunityFilter(buttonArray)
+                resetCommunityFilter()
                 applyFilter(
                     1,
                     "productivos",
+                    binding.buttonProductivos,
+                    binding.buttonProductivosIcon,
                     binding.buttonProductivosText,
                     R.color.productivos
                 )
@@ -158,12 +174,14 @@ class CommunityFragment : Fragment() {
         }
 
         binding.buttonCultura.setOnClickListener {
-            if (this.filterApplied == 2) resetCommunityFilter(buttonArray)
+            if (this.filterApplied == 2) resetCommunityFilter()
             else {
-                resetCommunityFilter(buttonArray)
+                resetCommunityFilter()
                 applyFilter(
                     2,
                     "cultura",
+                    binding.buttonCultura,
+                    binding.buttonCulturaIcon,
                     binding.buttonCulturaText,
                     R.color.cultura
                 )
@@ -171,12 +189,14 @@ class CommunityFragment : Fragment() {
         }
 
         binding.buttonTurismo.setOnClickListener {
-            if (this.filterApplied == 3) resetCommunityFilter(buttonArray)
+            if (this.filterApplied == 3) resetCommunityFilter()
             else {
-                resetCommunityFilter(buttonArray)
+                resetCommunityFilter()
                 applyFilter(
                     3,
                     "turismo",
+                    binding.buttonTurismo,
+                    binding.buttonTurismoIcon,
                     binding.buttonTurismoText,
                     R.color.turismo
                 )
