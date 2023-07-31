@@ -50,7 +50,7 @@
                 android:fontFamily="@font/sofia"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Editorial &amp; Impresos"
+                android:text="Editorial &amp; impresos"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textStyle="bold" />

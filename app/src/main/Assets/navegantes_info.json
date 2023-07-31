@@ -6,9 +6,9 @@
     "has_input": false,
     "type": 0,
     "btn_color": "#6396BD",
-    "info_1": "*Recibe nuestro newsletter, una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil  y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
-    "info_2": "*Cuando cumplas seis meses de pago o hagas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda (aplica para un artículo).",
-    "info_3": "*Recibirás la serigrafía que más te guste de nuestra tienda."
+    "info_1": "*Recibe nuestro newsletter + la serigrafía que más te guste de nuestra tienda +\nuna pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
+    "info_2": "*Cuando cumplas seis meses de pago o hagas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda.",
+    "info_3": ""
   },
   "riachuelo": {
     "title": "Navega el riachuelo",
@@ -17,8 +17,8 @@
     "has_input": false,
     "type": 1,
     "btn_color": "#FFFFFF",
-    "info_1": "*Recibe nuestro newsletter, una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil  y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
-    "info_2": "*Cuando cumplas seis meses de pago o hagas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda (aplica para un artículo).",
+    "info_1": "*Recibe nuestro newsletter + una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil  y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros)",
+    "info_2": "*Cuando cumplas seis meses de pago o si realizas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda.",
     "info_3": ""
   },
   "quebrada": {
@@ -28,7 +28,7 @@
     "has_input": false,
     "type": 2,
     "btn_color": "#FCCA2E",
-    "info_1": "*Recibe nuestro newsletter, una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
+    "info_1": "*Recibe nuestro newsletter + una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil y participa de espacios exclusivos de nuestra agencia (como conversaciones internas con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
     "info_2": "",
     "info_3": ""
   },
@@ -39,8 +39,8 @@
     "has_input": true,
     "type": 3,
     "btn_color": "#75B078",
-    "info_1": "Pago único de monto libre y recibirás una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil.",
-    "info_2": "",
+    "info_1": "Pago único de monto libre",
+    "info_2": "*Recibirás una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil.",
     "info_3": ""
   }
 }

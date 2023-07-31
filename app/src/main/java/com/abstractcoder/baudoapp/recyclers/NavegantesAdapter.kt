@@ -47,6 +47,7 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
         holder.title.text = currentItem.title
         if (currentItem.has_input == true) {
             holder.noInputButtonContainer.visibility = LinearLayout.GONE
+            holder.navegantesSubtitle.text = "Apoya nuestro trabajo y sé parte de nuestros financiadores."
         } else {
             holder.inputButtonContainer.visibility = LinearLayout.GONE
         }
@@ -95,6 +96,7 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
         val yearButton = binding.yearButton
         val yearlyPrice = binding.yearlyPrice
         val inputButtonContainer = binding.inputButtons
+        val navegantesSubtitle = binding.navegantesSubtitle
         val navegantesMoreinfo = binding.navegantesMoreinfo
         val navegantesInfoContainer = binding.navegantesInfoContainer
         val paymentSubmit = binding.librePaymentSubmit

@@ -204,7 +204,7 @@ class UserActivity : FragmentActivity() {
         binding.mainCategoryPercentage.setTextColor(Color.parseColor(mainColor))
         binding.mainCategoryTitle.text = renderParams.getString("mainCategoryTitle")
         binding.mainCategoryTitle.setTextColor(Color.parseColor(mainColor))
-        binding.mainCategoryStats.text = "Interacciones Totales: ${userMetrics.totalReactions}\n" +
+        binding.mainCategoryStats.text = "Interacciones totales: ${userMetrics.totalReactions}\n" +
                 "Reacciones positivas: ${userMetrics.totalPositiveReactions}\n" +
                 "Total comentarios: ${userMetrics.totalCommentaries}\n" +
                 "Total guardados: ${userMetrics.totalSavedPosts}"

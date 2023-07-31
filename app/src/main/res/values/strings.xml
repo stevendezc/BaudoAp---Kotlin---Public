@@ -35,9 +35,9 @@
     <string name="home_podcast">Podcast</string>
     <!-- USER UI Strings -->
     <string name="user_interests">Lo que te interesa</string>
-    <string name="user_saved_content">Guardados</string>
+    <string name="user_saved_content">Contenidos guardados</string>
     <string name="user_weekly_image">Imagen de la semana</string>
-    <string name="user_recommended_videos">Videos Recomendados</string>
+    <string name="user_recommended_videos">Videos que puedes ver</string>
     <string name="user_suggested_content">Contenido Sugerido</string>
     <!-- SETTINGS POPUP Strings -->
     <string name="settings_popup_baudo">¿Qué es Baudó?</string>
@@ -80,7 +80,7 @@ Nulla facilisi. Proin et semper nulla. In ante nunc, facilisis at nunc ac, conse
     <string name="navegantes_monthly_payment_time">12 pagos durante un año</string>
     <string name="navegantes_yearly_payment_title">Pago anual</string>
     <string name="navegantes_yearly_payment_time">1 pago durante un año</string>
-    <string name="navegantes_support_text">Apoya nuestro trabajo y aparecerás en los créditos como financiador oficial de BaudoAp.</string>
+    <string name="navegantes_support_text">Apoya nuestro trabajo y aparece en los créditos como financiador oficial de BaudoAp.</string>
     <string name="navegantes_moreinfo_text">*Más información</string>
     <string name="navegantes_terms_text">*Aplica términos y condiciones</string>
     <string name="navegantes_libre_payment_title">Monto libre</string>
