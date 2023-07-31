@@ -35,7 +35,6 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
     private lateinit var layoutManager: StaggeredGridLayoutManager
     private lateinit var storeItemAdapter: StoreItemAdapter
     private lateinit var storeRecyclerView: RecyclerView
-    private var storeItemMainList: ArrayList<StoreItemMain> = arrayListOf<StoreItemMain>()
 
     private var firestore = Firestore()
     private lateinit var sharedPreferences: SharedPreferences
@@ -75,7 +74,7 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
             val productsArrayList: ArrayList<StoreItemMain> = ArrayList()
             val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
             productsArrayList.addAll(organizedPosts)
-            setup(view, productsArrayList)
+            setup(productsArrayList)
         })
     }
 
@@ -87,14 +86,8 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
     }
 
     //private fun setup(view: View, incomingPosts: ArrayList<PostData>) {
-    private fun setup(view: View, productsArrayList: ArrayList<StoreItemMain>) {
-        switchProductsFilter(productsArrayList, "estren")
-
-        storeItemAdapter.onItemClick = {
-            val intent = Intent(this.context, innerStoreItemContentActivity::class.java)
-            intent.putExtra("item", it)
-            startActivity(intent)
-        }
+    private fun setup(productsArrayList: ArrayList<StoreItemMain>) {
+        switchProductsFilter(productsArrayList, "")
 
         binding.estrenButton.setOnClickListener {
             binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
@@ -126,13 +119,22 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
 
     private fun switchProductsFilter(productsArrayList: ArrayList<StoreItemMain>, filter: String) {
         var filteredProductsArrayList: ArrayList<StoreItemMain> = ArrayList()
-        val filteredProductsArray = productsArrayList.filter { it.type == filter }
         filteredProductsArrayList.clear()
-        filteredProductsArrayList.addAll(filteredProductsArray)
+        filteredProductsArrayList.addAll(productsArrayList)
+        if (filter != "") {
+            var filteredProductsArray = productsArrayList.filter { it.type == filter }
+            filteredProductsArrayList.clear()
+            filteredProductsArrayList.addAll(filteredProductsArray)
+        }
         storeRecyclerView = binding.storeListRecycler
         storeRecyclerView.layoutManager = layoutManager
         storeRecyclerView.setHasFixedSize(true)
         storeItemAdapter = StoreItemAdapter(filteredProductsArrayList)
+        storeItemAdapter.onItemClick = {
+            val intent = Intent(this.context, innerStoreItemContentActivity::class.java)
+            intent.putExtra("item", it)
+            startActivity(intent)
+        }
         storeRecyclerView.adapter = storeItemAdapter
     }
 

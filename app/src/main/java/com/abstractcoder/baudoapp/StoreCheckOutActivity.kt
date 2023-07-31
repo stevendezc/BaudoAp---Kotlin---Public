@@ -1,5 +1,6 @@
 package com.abstractcoder.baudoapp
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.SharedPreferences
@@ -37,6 +38,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
 
     private lateinit var sharedPreferences: SharedPreferences
     private var itemList: MutableList<PurchaseItemMain> = mutableListOf<PurchaseItemMain>()
+    private var generalSubtotal: Long = 0
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var purchaseItemAdapter: PurchaseItemAdapter
@@ -141,6 +143,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
                 subtotal += total.toLong()
             }
         }
+        generalSubtotal = subtotal
         val decimalFormatSymbols = DecimalFormatSymbols(Locale.getDefault())
         decimalFormatSymbols.groupingSeparator = '.'
         val decimalFormat = DecimalFormat("#,###", decimalFormatSymbols)
@@ -162,6 +165,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
     override fun onDataReceived(checkout_data: CheckoutData) {
         println("Activity checkout_data: $checkout_data")
         println("Activity checkout_data type: ${checkout_data.type}")
+        checkout_data.subtotal = generalSubtotal
         if (checkout_data.type == "back") {
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
             binding.purchaseItems.visibility = LinearLayout.VISIBLE
@@ -175,8 +179,11 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
             makeCurrentFragment(fragment)
         }
         if (checkout_data.type == "payment") {
-            val fragment = CheckoutPaymentFragment.newInstance(checkout_data)
-            makeCurrentFragment(fragment)
+            // val fragment = CheckoutPaymentFragment.newInstance(checkout_data)
+            // makeCurrentFragment(fragment)
+            binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
+            binding.purchaseItems.visibility = ScrollView.VISIBLE
+            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
         }
         if (checkout_data.type == "cc_submit") {
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE

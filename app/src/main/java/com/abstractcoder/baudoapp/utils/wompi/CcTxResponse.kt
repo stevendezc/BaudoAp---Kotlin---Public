@@ -13,7 +13,7 @@ data class ShippingAddressX(
     val region: String
 )
 
-data class DataX(
+data class CcData(
     val amount_in_cents: Int,
     val created_at: String,
     val currency: String,
@@ -29,5 +29,5 @@ data class DataX(
 )
 
 data class CcTxResponse(
-    val `data`: DataX
+    val `data`: CcData
 )

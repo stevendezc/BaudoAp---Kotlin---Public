@@ -1,12 +1,13 @@
 package com.abstractcoder.baudoapp.utils
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
 data class ContactInfo(
     val contact_email: String? = "",
     val contact_name: String? = "",
+    val contact_doc_type: String? = "",
+    val contact_doc: String? = "",
     val contact_address: String? = "",
     val contact_apartment: String? = "",
     val contact_city: String? = "",
@@ -29,6 +30,7 @@ data class CcPaymentInfo(
 
 data class CheckoutData(
     var type: String? = "",
+    var subtotal: Long? = 0,
     var contact_info: ContactInfo? = null,
     var pse_payment_info: PsePaymentInfo? = null,
     var cc_payment_info: CcPaymentInfo? = null

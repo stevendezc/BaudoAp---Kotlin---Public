@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
             android:orientation="vertical"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ScrollView
                 android:layout_width="match_parent"

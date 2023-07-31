@@ -6,13 +6,13 @@
   ],
   "tipo_documento": [
     "Elija el tipo de documento",
-    "C.C (Cédula de Ciudadanía)",
-    "C.E (Cédula de Extranjería)",
+    "CC (Cédula de Ciudadanía)",
+    "CE (Cédula de Extranjería)",
     "NIT (Número de Identificación Tributaria)",
-    "T.I (Tarjeta de Identidad)",
     "PP (Pasaporte)",
-    "R.C (Registro Civil)",
-    "D.E (Documento de Identificación Extranjero)",
-    "T.E (Tarjeta de Extranjería)"
+    "TI (Tarjeta de Identidad)",
+    "DNI (Documento Nacional de Identidad)",
+    "RG (Registro General)",
+    "Otro"
   ]
 }

@@ -1,5 +1,6 @@
 package com.abstractcoder.baudoapp.fragments
 
+import android.R
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -9,14 +10,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.abstractcoder.baudoapp.OnFragmentInteractionListener
 import com.abstractcoder.baudoapp.databinding.FragmentCheckoutContactBinding
 import com.abstractcoder.baudoapp.utils.API.PostsService
 import com.abstractcoder.baudoapp.utils.API.PostsServiceImpl
 import com.abstractcoder.baudoapp.utils.CheckoutData
 import com.abstractcoder.baudoapp.utils.ContactInfo
+import com.abstractcoder.baudoapp.utils.CustomArrayAdapter
+import com.abstractcoder.baudoapp.utils.JsonFile
 import com.abstractcoder.baudoapp.utils.wompi.WompiKeys
 import kotlinx.coroutines.*
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.awaitResponse
 
 class CheckoutContactFragment : Fragment() {
@@ -53,7 +59,7 @@ class CheckoutContactFragment : Fragment() {
     private fun validateForm(): Boolean {
         var validForm = true
         val inputFields = arrayOf(
-            binding.contactEmail, binding.contactName, binding.contactAddress,
+            binding.contactEmail, binding.contactName, binding.contactDocumentInput, binding.contactAddress,
             binding.contactApartment, binding.contactCity, binding.contactPhone
         )
         for (input in inputFields) {
@@ -66,6 +72,10 @@ class CheckoutContactFragment : Fragment() {
                 input.error = "El correo electronico no es valido"
                 validForm = false
             }
+        }
+        if (binding.contactTipoDocumentoInput.selectedItemId.toString() == "0") {
+            Toast.makeText(requireContext(), "Tipo de documento no seleccionado", Toast.LENGTH_SHORT).show()
+            validForm = false
         }
         return validForm
     }
@@ -80,11 +90,15 @@ class CheckoutContactFragment : Fragment() {
     }
 
     private fun fillCheckoutData(type: String):CheckoutData {
+        val docType = binding.contactTipoDocumentoInput.selectedItem.toString().take(3).replace(" ", "")
         return CheckoutData(
             type,
+            sharedCheckoutData.subtotal,
             ContactInfo(
                 binding.contactEmail.text.toString(),
                 binding.contactName.text.toString(),
+                docType,
+                binding.contactDocumentInput.text.toString(),
                 binding.contactAddress.text.toString(),
                 binding.contactApartment.text.toString(),
                 binding.contactCity.text.toString(),
@@ -108,10 +122,21 @@ class CheckoutContactFragment : Fragment() {
             listener?.onDataReceived(checkoutData)
         }
 
+        val jsonData = JsonFile().readJsonFile(requireContext(), "pse_inputs.json")
+        val parsedJsonData = JSONObject(jsonData)
+
+        var tipoDocumentoJson = parsedJsonData.get("tipo_documento") as JSONArray
+        var tipoDocumentoArray = Array(tipoDocumentoJson.length()) { tipoDocumentoJson.getString(it) }
+        val documentoInputAdapter = CustomArrayAdapter(requireContext(), R.layout.simple_spinner_item, tipoDocumentoArray)
+        documentoInputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.contactTipoDocumentoInput.adapter = documentoInputAdapter
+
         binding.checkputContactSubmit.setOnClickListener {
             if (validateForm()) {
                 val checkoutData = fillCheckoutData("payment")
                 listener?.onDataReceived(checkoutData)
+            } else {
+                Toast.makeText(requireContext(), "Informacion de contacto invalida", Toast.LENGTH_SHORT).show()
             }
         }
     }

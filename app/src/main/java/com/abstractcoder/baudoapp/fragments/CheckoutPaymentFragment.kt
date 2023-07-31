@@ -9,21 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import com.abstractcoder.baudoapp.OnFragmentInteractionListener
 import com.abstractcoder.baudoapp.databinding.FragmentCheckoutPaymentBinding
 import com.abstractcoder.baudoapp.utils.*
-import com.abstractcoder.baudoapp.utils.API.PostsService
-import com.abstractcoder.baudoapp.utils.API.PostsServiceImpl
-import com.abstractcoder.baudoapp.utils.wompi.CcTokenRequestData
-import com.abstractcoder.baudoapp.utils.wompi.WompiKeys
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
-import retrofit2.awaitResponse
 
 class CheckoutPaymentFragment : Fragment() {
     private var _binding: FragmentCheckoutPaymentBinding? = null
@@ -80,6 +70,7 @@ class CheckoutPaymentFragment : Fragment() {
     private fun fillCheckoutData(type: String):CheckoutData {
         return CheckoutData(
             type,
+            sharedCheckoutData.subtotal,
             sharedCheckoutData.contact_info,
             PsePaymentInfo(
                 binding.entidadInput.selectedItem.toString(),
