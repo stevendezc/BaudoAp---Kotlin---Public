@@ -11,8 +11,12 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.abstractcoder.baudoapp.databinding.ActivityInnerStoreItemContentBinding
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
+import com.abstractcoder.baudoapp.recyclers.StoreItemGalleryAdapter
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.abstractcoder.baudoapp.utils.DialogListener
 import com.abstractcoder.baudoapp.utils.StoreDialog
@@ -24,7 +28,11 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
     private lateinit var binding: ActivityInnerStoreItemContentBinding
 
     private lateinit var itemId: String
+
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var imageAdapter: StoreItemGalleryAdapter
+    private lateinit var imageRecyclerView: RecyclerView
+    private var imageGalleryList: ArrayList<String> = arrayListOf<String>()
 
     private lateinit var sharedPreferences: SharedPreferences
     private var shoppingCartItems: MutableList<PurchaseItemMain> = mutableListOf<PurchaseItemMain>()
@@ -37,7 +45,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
         binding = ActivityInnerStoreItemContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        layoutManager = LinearLayoutManager(this.baseContext)
+        layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
         val storeItemContent = intent.getParcelableExtra<StoreItemMain>("item")
         itemId = storeItemContent?.id.toString()
 
@@ -59,9 +67,15 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
     private fun setup(storeItemContent: StoreItemMain) {
         if (storeItemContent != null) {
             val imageMainMedia = storeItemContent.thumbnail
-            Glide.with(binding.storeItemImageView)
-                .load(imageMainMedia)
-                .into(binding.storeItemImageView)
+
+            storeItemContent.gallery?.let { imageGalleryList.addAll(it) }
+            imageRecyclerView = binding.singleImageListRecycler
+            imageRecyclerView.layoutManager = layoutManager
+            imageRecyclerView.setHasFixedSize(true)
+            imageAdapter = StoreItemGalleryAdapter(imageGalleryList)
+            imageRecyclerView.adapter = imageAdapter
+            val snapHelper: SnapHelper = LinearSnapHelper()
+            snapHelper.attachToRecyclerView(imageRecyclerView)
 
             binding.storeItemTitle.text = storeItemContent.title
             binding.storeItemPrice.text = "Precio $" + storeItemContent.price

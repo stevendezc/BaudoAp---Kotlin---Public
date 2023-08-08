@@ -9,6 +9,7 @@ data class StoreItemMain(
     var title: String? = "",
     var type: String? = "",
     var thumbnail: String? = "",
+    var gallery: List<String>? = listOf<String>(),
     var price: String? = "",
     var description: String? = "",
     var creation_date: Timestamp? = null,
@@ -23,6 +24,7 @@ data class StoreItemMain(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.createStringArrayList(),
         parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Timestamp::class.java.classLoader),
@@ -39,6 +41,7 @@ data class StoreItemMain(
         parcel.writeString(title)
         parcel.writeString(type)
         parcel.writeString(thumbnail)
+        parcel.writeStringList(gallery)
         parcel.writeString(price)
         parcel.writeString(description)
         parcel.writeParcelable(creation_date, flags)
