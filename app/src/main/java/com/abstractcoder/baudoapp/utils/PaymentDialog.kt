@@ -54,6 +54,7 @@ class PaymentDialog(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreate(savedInstanceState)
+        isCancelable = false
         binding = PaymentDialogBinding.inflate(layoutInflater)
         println("paymentData in dialog: ${paymentData}")
 
