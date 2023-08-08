@@ -2,8 +2,6 @@ package com.abstractcoder.baudoapp.utils
 
 import com.abstractcoder.baudoapp.FirebaseUser
 import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.Reaction
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -16,22 +14,18 @@ class ReactionHandler {
         userData: FirebaseUser,
         postData: PostData,
         db: FirebaseFirestore) {
-        val reactions = userData.reactions.filter { it.post == postId }
+        val reactions = userData.reactions.filter { it == postId }
         if (reactions.size > 0) {
             val reaction = reactions[0]
 
-            if (reactionType == reaction.type) {
+            val updatedReactions = userData.reactions.filter { it != postId }
+            if (updatedReactions.size == 0) {
                 removeSameReaction(email, postId, userData, postData, db)
-            } else {
-                switchReaction(email, postId, userData, postData, db)
             }
         } else {
-            val newReaction = Reaction(
-                postId, Timestamp.now(), reactionType
-            )
             // Add reaction
             db.collection("users").document(email!!).update(
-                "reactions", FieldValue.arrayUnion(newReaction)
+                "reactions", FieldValue.arrayUnion(postId)
             )
             increaseReactionCounter(postId, postData, db)
         }
@@ -60,36 +54,13 @@ class ReactionHandler {
         )
     }
 
-    fun switchReaction(
-        email: String,
-        postId: String,
-        userData: FirebaseUser,
-        postData: PostData,
-        db: FirebaseFirestore) {
-        // Switch reaction type on current Reaction object
-        var currentReaction = userData.reactions.find { it.post == postId }
-        var incomingReaction = Reaction(
-            currentReaction?.post,
-            currentReaction?.timestamp,
-            "likes"
-        )
-        val updatedReactions = userData.reactions.filter { it.post != postId }.toCollection(ArrayList())
-        updatedReactions.add(incomingReaction!!)
-        db.collection("users").document(email!!).update(
-            "reactions", updatedReactions)
-
-        decreaseReactionCounter(postId, postData, db)
-
-        increaseReactionCounter(postId, postData, db)
-    }
-
     fun removeSameReaction(
         email: String,
         postId: String,
         userData: FirebaseUser,
         postData: PostData,
         db:FirebaseFirestore) {
-        val updatedReactions = userData.reactions.filter { it.post != postId }
+        val updatedReactions = userData.reactions.filter { it != postId }
         db.collection("users").document(email!!).update(
             "reactions", updatedReactions)
         decreaseReactionCounter(postId, postData, db)

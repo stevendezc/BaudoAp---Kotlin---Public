@@ -1,7 +1,9 @@
 package com.abstractcoder.baudoapp
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
@@ -9,10 +11,12 @@ import android.webkit.WebViewClient
 import com.abstractcoder.baudoapp.databinding.ActivityBrowserBinding
 import com.abstractcoder.baudoapp.utils.CheckoutData
 import com.abstractcoder.baudoapp.utils.PaymentDialog
+import com.google.gson.Gson
 
 class BrowserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBrowserBinding
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +40,11 @@ class BrowserActivity : AppCompatActivity() {
 
                 // Check if the WebView has navigated to the target URL
                 println("URL: $url")
-                if (url == "https://www.baudoap.com/") {
+                if (url?.contains("baudoap.com/") == true) {
                     println("SHOULD BE CLOSED")
                     val resultIntent = Intent()
-                    resultIntent.putExtra("result_key", "payment_success")
+                    val payment_id = url.substringAfter("id=").substringBefore("&env")
+                    resultIntent.putExtra("payment_id", payment_id)
                     setResult(Activity.RESULT_OK, resultIntent)
                     // Close the Activity when the target URL is reached
                     finish()
@@ -56,6 +61,9 @@ class BrowserActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
             println("End webview back")
+            setResult(Activity.RESULT_CANCELED)
+            // Close the Activity when the target URL is reached
+            finish()
         }
     }
 }

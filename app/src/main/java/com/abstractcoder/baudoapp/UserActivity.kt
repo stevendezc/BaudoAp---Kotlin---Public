@@ -157,14 +157,14 @@ class UserActivity : FragmentActivity() {
             val postsArrayList: ArrayList<PostData> = ArrayList()
             val totalCommentaries = user.commentaries.size
             val totalReactions = user.reactions.size
-            val totalPositiveReactions = user.reactions.filter { reaction -> reaction.type == "likes" }.size
+            val totalPositiveReactions = user.reactions.size
             val totalSavedPosts = user.saved_posts.size
             var likedAmbientalPosts = 0
             var likedMemoryPosts = 0
             var likedGenderPosts = 0
             postsArrayList.addAll(posts)
             for (reaction in user.reactions) {
-                val postInfo = postsArrayList.find { post -> post.id == reaction.post }
+                val postInfo = postsArrayList.find { post -> post.id == reaction }
                 when (postInfo?.category) {
                     "medio_ambiente" -> likedAmbientalPosts += 1
                     "memoria" -> likedMemoryPosts += 1

@@ -8,15 +8,13 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:background="@drawable/settings_background"
-        android:backgroundTint="#80000000"
-        android:backgroundTintMode="src_over"
+        android:background="@color/black"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,6 +24,14 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/txError"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:tint="@color/white"
+                android:visibility="gone"
+                app:srcCompat="@drawable/warning" />
 
             <ImageView
                 android:id="@+id/txDone"
@@ -42,6 +48,12 @@
                 android:layout_height="50dp"
                 android:indeterminateTint="@color/orange_yellow" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/validationRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/validation_list_item"/>
+
             <TextView
                 android:id="@+id/loadingText"
                 android:layout_width="match_parent"
@@ -53,15 +65,21 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/payment_submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/round_input"
+                android:fontFamily="@font/sofia"
+                android:text="Salir"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
         </LinearLayout>
     </LinearLayout>
-
-    <WebView
-        android:id="@+id/paymentWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,28 +14,19 @@ data class Commentary(
     val replies: List<Commentary>? = null
 )
 
-data class Reaction(
-    val post: String? = "",
-    val timestamp: Timestamp? = null,
-    var type: String? = ""
-)
-
 data class PodcastInfo(
     val post: String? = "",
-    var finished: Boolean? = false,
-    var duration: Int? = 0
+    var finished: Boolean? = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Int::class.java.classLoader) as? Int
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(post)
         parcel.writeValue(finished)
-        parcel.writeValue(duration)
     }
 
     override fun describeContents(): Int {

@@ -45,6 +45,7 @@ class HomeImageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         layoutManager = LinearLayoutManager(context)
 
+        println("POSTS: ${arguments?.get("posts")}")
         val incomingPostList: ArrayList<PostData> = arguments?.get("posts") as ArrayList<PostData>
         Log.d(TAG, "incomingPostList on ImageFragment: ${incomingPostList.size}")
         // Load Posts

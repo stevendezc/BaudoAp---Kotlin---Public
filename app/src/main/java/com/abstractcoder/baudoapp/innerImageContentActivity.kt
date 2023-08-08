@@ -143,7 +143,7 @@ class innerImageContentActivity : AppCompatActivity() {
     private fun setReactionIcons(user: FirebaseUser) {
         val isSaved = user.saved_posts.contains(postId)
         binding.imageSave.setImageResource(if (isSaved) R.drawable.save_selected else R.drawable.save)
-        val reaction = user.reactions.find { it.post == postId }
+        val reaction = user.reactions.find { it == postId }
         println("reaction: $reaction")
         if (reaction == null) {
             binding.imageLike.setImageResource(R.drawable.like)

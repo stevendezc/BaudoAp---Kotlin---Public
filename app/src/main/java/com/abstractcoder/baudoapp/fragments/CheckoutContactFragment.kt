@@ -2,7 +2,6 @@ package com.abstractcoder.baudoapp.fragments
 
 import android.R
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
@@ -13,17 +12,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.abstractcoder.baudoapp.OnFragmentInteractionListener
 import com.abstractcoder.baudoapp.databinding.FragmentCheckoutContactBinding
-import com.abstractcoder.baudoapp.utils.API.PostsService
-import com.abstractcoder.baudoapp.utils.API.PostsServiceImpl
+import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.utils.CheckoutData
 import com.abstractcoder.baudoapp.utils.ContactInfo
 import com.abstractcoder.baudoapp.utils.CustomArrayAdapter
 import com.abstractcoder.baudoapp.utils.JsonFile
-import com.abstractcoder.baudoapp.utils.wompi.WompiKeys
-import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
-import retrofit2.awaitResponse
 
 class CheckoutContactFragment : Fragment() {
     private var _binding: FragmentCheckoutContactBinding? = null
@@ -92,9 +87,9 @@ class CheckoutContactFragment : Fragment() {
     private fun fillCheckoutData(type: String):CheckoutData {
         val docType = binding.contactTipoDocumentoInput.selectedItem.toString().take(3).replace(" ", "")
         return CheckoutData(
-            type,
-            sharedCheckoutData.subtotal,
-            ContactInfo(
+            type = type,
+            subtotal = sharedCheckoutData.subtotal,
+            contact_info = ContactInfo(
                 binding.contactEmail.text.toString(),
                 binding.contactName.text.toString(),
                 docType,
@@ -104,8 +99,9 @@ class CheckoutContactFragment : Fragment() {
                 binding.contactCity.text.toString(),
                 binding.contactPhone.text.toString()
             ),
-            sharedCheckoutData.pse_payment_info,
-            sharedCheckoutData.cc_payment_info
+            validItems = listOf<PurchaseItemMain>(),
+            pse_payment_info = sharedCheckoutData.pse_payment_info,
+            cc_payment_info = sharedCheckoutData.cc_payment_info
         )
     }
 
@@ -133,7 +129,7 @@ class CheckoutContactFragment : Fragment() {
 
         binding.checkputContactSubmit.setOnClickListener {
             if (validateForm()) {
-                val checkoutData = fillCheckoutData("payment")
+                val checkoutData = fillCheckoutData("validation")
                 listener?.onDataReceived(checkoutData)
             } else {
                 Toast.makeText(requireContext(), "Informacion de contacto invalida", Toast.LENGTH_SHORT).show()

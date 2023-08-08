@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.abstractcoder.baudoapp.OnFragmentInteractionListener
 import com.abstractcoder.baudoapp.databinding.FragmentCheckoutPaymentBinding
+import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.utils.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -72,6 +73,7 @@ class CheckoutPaymentFragment : Fragment() {
             type,
             sharedCheckoutData.subtotal,
             sharedCheckoutData.contact_info,
+            mutableListOf<PurchaseItemMain>(),
             PsePaymentInfo(
                 binding.entidadInput.selectedItem.toString(),
                 binding.personaInput.selectedItem.toString(),

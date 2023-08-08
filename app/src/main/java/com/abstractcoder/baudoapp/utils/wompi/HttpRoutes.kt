@@ -5,5 +5,5 @@ object HttpRoutes {
     const val MERCHANT_TOKEN = "merchants/{merchantPublicKey}"
     const val CC_TOKENIZE = "tokens/cards"
     const val PAYMENT_SOURCE = "payment_sources"
-    const val TRANSACTIONS = "transactions"
+    const val TRANSACTIONS = "transactions/{transaction_id}"
 }

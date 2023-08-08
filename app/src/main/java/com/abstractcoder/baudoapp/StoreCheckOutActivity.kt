@@ -1,32 +1,42 @@
 package com.abstractcoder.baudoapp
 
-import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityStoreCheckOutBinding
 import com.abstractcoder.baudoapp.fragments.CheckoutContactFragment
-import com.abstractcoder.baudoapp.fragments.CheckoutPaymentFragment
 import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.utils.CheckoutData
 import com.abstractcoder.baudoapp.utils.PaymentDialog
-import com.abstractcoder.baudoapp.utils.UserImageDialog
+import com.abstractcoder.baudoapp.utils.wompi.TransactionResponse
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 interface OnFragmentInteractionListener {
     fun onDataReceived(checkout_data: CheckoutData)
@@ -35,10 +45,13 @@ interface OnFragmentInteractionListener {
 class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener, OnFragmentInteractionListener {
 
     private lateinit var binding: ActivityStoreCheckOutBinding
+    private val db = FirebaseFirestore.getInstance()
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var userSharedPreferences: SharedPreferences
     private var itemList: MutableList<PurchaseItemMain> = mutableListOf<PurchaseItemMain>()
     private var generalSubtotal: Long = 0
+    private var email: String = ""
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var purchaseItemAdapter: PurchaseItemAdapter
@@ -51,6 +64,9 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         setContentView(binding.root)
 
         layoutManager = LinearLayoutManager(this.baseContext)
+
+        val userSharedPreferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        email = userSharedPreferences.getString("email", "")!!
 
         // Get reference to SharedPreferences
         sharedPreferences = getSharedPreferences("shopping_cart", MODE_PRIVATE)
@@ -134,6 +150,106 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         }
     }
 
+    private fun addPurchaseReceipt(checkout_data: CheckoutData) {
+        var transactionResponse = checkout_data.transactionResponse!!
+        var contactInfo = checkout_data.contact_info!!
+        var stringifiedProductList = arrayListOf<String>()
+        val context = this
+        val item_list = itemList
+        println("item_list: $item_list")
+        GlobalScope.launch(Dispatchers.IO) {
+            println("itemList: $item_list")
+            for (item in item_list) {
+                println("item id: ${item.id!!}")
+                val documentSnapshot = db.collection("productos").document(item.id!!).get().await()
+                println("documentSnapshot: $documentSnapshot")
+                println("exists: ${documentSnapshot.exists()}")
+                if (documentSnapshot.exists()) {
+                    var itemCurrentSize =
+                        documentSnapshot.get("stock_${item.size?.lowercase()}") as Long
+                    println("itemCurrentSize: $itemCurrentSize")
+                    val updatedQuantity = itemCurrentSize - item.quantity!!
+                    println("updatedQuantity: $updatedQuantity")
+                    if (updatedQuantity < 0) {
+                        stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size} Agotado")
+                    } else {
+                        stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size}")
+                        decreaseItemStock(item, updatedQuantity, transactionResponse.data.reference)
+                    }
+                }
+            }
+            println("stringifiedProductList: $stringifiedProductList")
+            val stringifiedProducts = stringifiedProductList.joinToString("; ")
+            //val stringifiedProducts = itemList.joinToString("; ") { item -> "${item.quantity}X ${item.name} ${item.size}" }
+            println("stringifiedProducts: $stringifiedProducts")
+            db.collection("compras").document(transactionResponse.data.reference).set(
+                hashMapOf(
+                    "transaction_id" to transactionResponse.data.id,
+                    "total_amount" to (transactionResponse.data.amount_in_cents / 100),
+                    "payment_method" to transactionResponse.data.payment_method_type,
+                    "transaction_date" to transactionResponse.data.created_at,
+                    "transaction_status" to transactionResponse.data.status,
+                    "products" to stringifiedProducts,
+                    "buyer_name" to contactInfo.contact_name,
+                    "buyer_address" to "${contactInfo.contact_address}, ${contactInfo.contact_city}",
+                    "buyer_phone" to contactInfo.contact_phone,
+                    "buyer_email" to contactInfo.contact_email
+                )
+            ).addOnSuccessListener {
+                Toast.makeText(context, "Pago exitoso", Toast.LENGTH_SHORT).show()
+            }
+        }
+        /*for (item in itemList) {
+            db.collection("productos").document(item.id!!).get().addOnCompleteListener {
+                var itemCurrentSize = it.result.get("stock_${item.size?.lowercase()}") as Long
+                println("itemCurrentSize: $itemCurrentSize")
+                val updatedQuantity = itemCurrentSize - item.quantity!!
+                println("updatedQuantity: $updatedQuantity")
+                if (updatedQuantity < 0) {
+                    stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size} Agotado")
+                } else {
+                    stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size}")
+                    decreaseItemStock(item, updatedQuantity, transactionResponse.data.reference)
+                }
+            }
+        }
+        println("stringifiedProductList: $stringifiedProductList")
+        val stringifiedProducts = stringifiedProductList.joinToString("; ")
+        //val stringifiedProducts = itemList.joinToString("; ") { item -> "${item.quantity}X ${item.name} ${item.size}" }
+        println("stringifiedProducts: $stringifiedProducts")
+        db.collection("compras").document(transactionResponse.data.reference).set(
+            hashMapOf(
+                "transaction_id" to transactionResponse.data.id,
+                "total_amount" to (transactionResponse.data.amount_in_cents / 100),
+                "payment_method" to transactionResponse.data.payment_method_type,
+                "transaction_date" to transactionResponse.data.created_at,
+                "transaction_status" to transactionResponse.data.status,
+                "products" to stringifiedProducts,
+                "buyer_name" to contactInfo.contact_name,
+                "buyer_address" to "${contactInfo.contact_address}, ${contactInfo.contact_city}",
+                "buyer_phone" to contactInfo.contact_phone,
+                "buyer_email" to contactInfo.contact_email
+            )
+        ).addOnSuccessListener {
+            Toast.makeText(this, "Pago exitoso", Toast.LENGTH_SHORT).show()
+        }*/
+    }
+
+    private fun decreaseItemStock(item: PurchaseItemMain, updatedQuantity: Long, transactionReference: String) {
+        db.collection("productos").document(item.id!!).update(
+            "stock_${item.size?.lowercase()}", updatedQuantity
+        )
+            .addOnSuccessListener {
+                println("Item ${item.id} ${item.name} actualizado")
+                db.collection("users").document(email).update(
+                    "compras", FieldValue.arrayUnion(transactionReference)
+                )
+            }
+            .addOnFailureListener { e ->
+                println("Item ${item.id} ${item.name} no pudo ser actualizado")
+            }
+    }
+
     private fun getSubtotalFromShoppingCartItems(incomingPurchaseList: MutableList<PurchaseItemMain>): String {
         var subtotal: Long = 0
         for (item in incomingPurchaseList) {
@@ -178,22 +294,49 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
             val fragment = CheckoutContactFragment.newInstance(checkout_data)
             makeCurrentFragment(fragment)
         }
+        if (checkout_data.type == "validation") {
+            println("contact info on validation: ${checkout_data.contact_info}")
+            var purchaseItems = arrayListOf<PurchaseItemMain>()
+            purchaseItems.addAll(itemList)
+            binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
+            binding.purchaseItems.visibility = ScrollView.VISIBLE
+            PaymentDialog(checkout_data, false, purchaseItems).show(supportFragmentManager, "user image dialog")
+        }
+        if (checkout_data.type == "valid_items") {
+            println("contact info post validation: ${checkout_data.contact_info}")
+            println("VALID ITEMS: ${checkout_data.validItems}")
+            val sharedPreferences = getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor?.putString("itemList", Gson().toJson(checkout_data.validItems.toTypedArray()))
+            editor?.apply()
+            itemList = mutableListOf<PurchaseItemMain>()
+            itemList.addAll(checkout_data.validItems)
+            println("ITEM LIST: $itemList")
+            Toast.makeText(this, "Items actualizados", Toast.LENGTH_SHORT).show()
+            fillPurchases()
+        }
         if (checkout_data.type == "payment") {
-            // val fragment = CheckoutPaymentFragment.newInstance(checkout_data)
-            // makeCurrentFragment(fragment)
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
             binding.purchaseItems.visibility = ScrollView.VISIBLE
-            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
+            println("contact info pre payment: ${checkout_data.contact_info}")
+            PaymentDialog(checkout_data, true).show(supportFragmentManager, "user image dialog")
         }
-        if (checkout_data.type == "cc_submit") {
+        if (checkout_data.type == "payment_approved") {
+            println("Transaction response on payment_approved: ${checkout_data.transactionResponse}")
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
             binding.purchaseItems.visibility = ScrollView.VISIBLE
-            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
+            addPurchaseReceipt(checkout_data)
+            val sharedPreferences = getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.remove("itemList")
+            editor.apply()
+            itemList = mutableListOf<PurchaseItemMain>()
+            fillPurchases()
         }
-        if (checkout_data.type == "pse_submit") {
+        if (checkout_data.type == "payment_declined") {
+            println("Transaction response on payment_declined: ${checkout_data.transactionResponse}")
             binding.checkoutFragmentWrapper.visibility = FrameLayout.GONE
             binding.purchaseItems.visibility = ScrollView.VISIBLE
-            PaymentDialog(checkout_data).show(supportFragmentManager, "user image dialog")
         }
     }
 }
