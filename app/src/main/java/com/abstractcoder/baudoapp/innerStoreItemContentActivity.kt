@@ -27,6 +27,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
 
     private lateinit var binding: ActivityInnerStoreItemContentBinding
 
+    private lateinit var storeItem: StoreItemMain
     private lateinit var itemId: String
 
     private lateinit var layoutManager: LinearLayoutManager
@@ -47,6 +48,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
 
         layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
         val storeItemContent = intent.getParcelableExtra<StoreItemMain>("item")
+        storeItem = storeItemContent!!
         itemId = storeItemContent?.id.toString()
 
         // Get reference to SharedPreferences
@@ -87,47 +89,60 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
             if (storeItemContent.stock_l == 0) { binding.lBadge.visibility = TextView.GONE }
             if (storeItemContent.stock_xl == 0) { binding.xlBadge.visibility = TextView.GONE }
 
-            if (storeItemContent.stock_xs == 0 &&
+            if ((storeItemContent.stock_xs == 0 &&
                 storeItemContent.stock_s == 0 &&
                 storeItemContent.stock_m == 0 &&
                 storeItemContent.stock_l == 0 &&
-                storeItemContent.stock_xl == 0) {
+                storeItemContent.stock_xl == 0) && storeItemContent.stock == 0) {
                 binding.sizeLabel.visibility = TextView.GONE
                 binding.purchaseButton.visibility = TextView.GONE
                 binding.addToCart.visibility = TextView.GONE
                 binding.nonPurchaseableButton.visibility = TextView.VISIBLE
             }
 
-            if (this.selectedSize == "") {
+            if (storeItemContent.type == "estren") {
+                binding.sizeLabel.text = "Talla"
+            }
+            if (storeItemContent.type != "estren") {
+                binding.sizeLabel.text = "Cantidad"
+            }
+
+            if ((storeItemContent.type == "estren" && this.selectedSize == "") ||
+                (storeItemContent.type != "estren" && storeItemContent.stock == 0)) {
                 binding.quantityContainer.visibility = LinearLayout.GONE
+            }
+
+            if (storeItemContent.type != "estren" && storeItemContent.stock > 0) {
+                println("NO ESTREN")
+                setMaxQuantityLimit(storeItemContent, false)
             }
             binding.xsBadge.setOnClickListener {
                 this.selectedSize = "XS"
-                setMaxQuantityLimit(storeItemContent)
+                setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
                 switchBottomMenuColor(0)
             }
             binding.sBadge.setOnClickListener {
                 this.selectedSize = "S"
-                setMaxQuantityLimit(storeItemContent)
+                setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
                 switchBottomMenuColor(1)
             }
             binding.mBadge.setOnClickListener {
                 this.selectedSize = "M"
-                setMaxQuantityLimit(storeItemContent)
+                setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
                 switchBottomMenuColor(2)
             }
             binding.lBadge.setOnClickListener {
                 this.selectedSize = "L"
-                setMaxQuantityLimit(storeItemContent)
+                setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
                 switchBottomMenuColor(3)
             }
             binding.xlBadge.setOnClickListener {
                 this.selectedSize = "XL"
-                setMaxQuantityLimit(storeItemContent)
+                setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
                 switchBottomMenuColor(4)
             }
@@ -138,6 +153,8 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
 
             binding.quantity.text = this.productQuantity.toString()
             binding.quantityIncreaser.setOnClickListener {
+                println("productQuantity: ${this.productQuantity}")
+                println("maxQuantityLimit: $maxQuantityLimit")
                 if (this.productQuantity < maxQuantityLimit!!) {
                     this.productQuantity = this.productQuantity + 1
                     binding.quantity.text = this.productQuantity.toString()
@@ -151,42 +168,82 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
             }
 
             binding.purchaseButton.setOnClickListener {
-                if (selectedSize != "" && productQuantity != 0) {
-                    StoreDialog(
-                        true,
-                        itemId,
-                        imageMainMedia!!,
-                        storeItemContent.title!!,
-                        storeItemContent.price!!,
-                        this.productQuantity,
-                        this.selectedSize
-                    ).show(this.supportFragmentManager, "purchase dialog")
+                if (storeItemContent.type == "estren") {
+                    if (selectedSize != "" && productQuantity != 0) {
+                        StoreDialog(
+                            true,
+                            itemId,
+                            imageMainMedia!!,
+                            storeItemContent.title!!,
+                            storeItemContent.price!!,
+                            this.productQuantity,
+                            this.selectedSize
+                        ).show(this.supportFragmentManager, "purchase dialog")
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No hay productos activos para la compra",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 } else {
-                    Toast.makeText(
-                        this,
-                        "No hay productos activos para la compra",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (productQuantity != 0) {
+                        StoreDialog(
+                            true,
+                            itemId,
+                            imageMainMedia!!,
+                            storeItemContent.title!!,
+                            storeItemContent.price!!,
+                            this.productQuantity,
+                            this.selectedSize
+                        ).show(this.supportFragmentManager, "purchase dialog")
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No hay productos activos para la compra",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
 
             binding.addToCart.setOnClickListener {
-                if (selectedSize != "" && productQuantity != 0) {
-                    StoreDialog(
-                        false,
-                        itemId,
-                        imageMainMedia!!,
-                        storeItemContent.title!!,
-                        storeItemContent.price!!,
-                        this.productQuantity,
-                        this.selectedSize
-                    ).show(this.supportFragmentManager, "purchase dialog")
+                if (storeItemContent.type == "estren") {
+                    if (selectedSize != "" && productQuantity != 0) {
+                        StoreDialog(
+                            false,
+                            itemId,
+                            imageMainMedia!!,
+                            storeItemContent.title!!,
+                            storeItemContent.price!!,
+                            this.productQuantity,
+                            this.selectedSize
+                        ).show(this.supportFragmentManager, "purchase dialog")
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No hay productos activos para la compra",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 } else {
-                    Toast.makeText(
-                        this,
-                        "No hay productos activos para la compra",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (productQuantity != 0) {
+                        StoreDialog(
+                            false,
+                            itemId,
+                            imageMainMedia!!,
+                            storeItemContent.title!!,
+                            storeItemContent.price!!,
+                            this.productQuantity,
+                            this.selectedSize
+                        ).show(this.supportFragmentManager, "purchase dialog")
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No hay productos activos para la compra",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
 
@@ -200,11 +257,15 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        println("requestCode: $requestCode")
+        println("resultCode: $resultCode")
         if (requestCode == 1) {
             if (resultCode == 2) {
                 productQuantity = 0
                 binding.quantity.text = productQuantity.toString()
-                resetSizeSelection()
+                if (storeItem.type == "estren") {
+                    resetSizeSelection()
+                }
             }
         }
     }
@@ -213,7 +274,12 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
         if (success) {
             productQuantity = 0
             binding.quantity.text = productQuantity.toString()
-            resetSizeSelection()
+            if (storeItem.type == "estren") {
+                resetSizeSelection()
+            } else {
+                setMaxQuantityLimit(storeItem, false)
+                resetProductQuantity()
+            }
         }
     }
 
@@ -240,19 +306,31 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
         binding.quantity.text = this.productQuantity.toString()
     }
 
-    private fun setMaxQuantityLimit(storeItemContent: StoreItemMain) {
-        val sizeMap = mapOf(
-            "XS" to storeItemContent.stock_xs,
-            "S" to storeItemContent.stock_s,
-            "M" to storeItemContent.stock_m,
-            "L" to storeItemContent.stock_l,
-            "XL" to storeItemContent.stock_xl
-        )
-        val baseSize = sizeMap[selectedSize]
-        getShoppingCartItems("itemList")
-        val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
-        if (baseSize != null) {
-            maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+    private fun setMaxQuantityLimit(storeItemContent: StoreItemMain, isClothes: Boolean) {
+        if (isClothes) {
+            val sizeMap = mapOf(
+                "XS" to storeItemContent.stock_xs,
+                "S" to storeItemContent.stock_s,
+                "M" to storeItemContent.stock_m,
+                "L" to storeItemContent.stock_l,
+                "XL" to storeItemContent.stock_xl
+            )
+            val baseSize = sizeMap[selectedSize]
+            getShoppingCartItems("itemList")
+            val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+            if (baseSize != null) {
+                maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+            }
+        } else {
+            getShoppingCartItems("itemList")
+            println("shoppingCartItems: $shoppingCartItems")
+            val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+            println("similarPurchase: $shoppingCartItems")
+            println("storeItemContent.stock: ${storeItemContent.stock}")
+            if (storeItemContent.stock != 0) {
+                maxQuantityLimit = storeItemContent.stock - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+                println("maxQuantityLimit: $maxQuantityLimit")
+            }
         }
     }
 

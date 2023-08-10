@@ -13,6 +13,7 @@ data class StoreItemMain(
     var price: String? = "",
     var description: String? = "",
     var creation_date: Timestamp? = null,
+    var stock: Int = 0,
     var stock_xs: Int = 0,
     var stock_s: Int = 0,
     var stock_m: Int = 0,
@@ -32,6 +33,7 @@ data class StoreItemMain(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
         parcel.readInt()
     ) {
     }
@@ -45,6 +47,7 @@ data class StoreItemMain(
         parcel.writeString(price)
         parcel.writeString(description)
         parcel.writeParcelable(creation_date, flags)
+        parcel.writeInt(stock)
         parcel.writeInt(stock_xs)
         parcel.writeInt(stock_s)
         parcel.writeInt(stock_m)

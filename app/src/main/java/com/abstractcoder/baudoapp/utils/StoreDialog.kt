@@ -105,6 +105,7 @@ class StoreDialog(
     }
 
     private fun addItemToShoppingCart(newItem: PurchaseItemMain) {
+        println("newItem: $newItem")
         val sharedPreferences = activity?.getSharedPreferences("shopping_cart", Context.MODE_PRIVATE)
         var itemListString = sharedPreferences?.getString("itemList", "") ?: ""
         var itemList = if (itemListString.isNotEmpty()) {
@@ -114,19 +115,29 @@ class StoreDialog(
         }
 
         val shoppingCartItems = getShoppingCartItems()
+        println("itemId: $itemId")
+        println("itemSize: $itemSize")
         val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == itemSize }
-        if (similarPurchase.size != 0) {
-            val updatedItemList = itemList.map {
-                if (it.id == itemId) {
-                    it.copy(quantity = it.quantity?.plus(similarPurchase[0].quantity!!))
-                } else {
-                    it
-                }
+        println("similarPurchase: $similarPurchase")
+        println("itemList 0: $itemList")
+        itemList.add(newItem)
+        println("itemList 2: $itemList")
+
+        val reducedItems = itemList.groupBy { it.id to it.size }
+            .map { (key, group) ->
+                val (id, size) = key
+                val totalQuantity = group.sumBy { it.quantity!! }
+                PurchaseItemMain(
+                    id,
+                    group.first().name,
+                    group.first().thumbnail,
+                    group.first().price,
+                    totalQuantity,
+                    size)
             }
-            itemList = updatedItemList.toMutableList()
-        } else {
-            itemList.add(newItem)
-        }
+        println("reducedItems: $reducedItems")
+        itemList = reducedItems.toMutableList()
+        println("itemList 3: $itemList")
         val editor = sharedPreferences?.edit()
         itemListString = Gson().toJson(itemList.toTypedArray())
         editor?.putString("itemList", itemListString)

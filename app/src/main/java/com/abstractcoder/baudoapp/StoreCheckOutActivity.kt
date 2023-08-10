@@ -199,55 +199,36 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
                 Toast.makeText(context, "Pago exitoso", Toast.LENGTH_SHORT).show()
             }
         }
-        /*for (item in itemList) {
-            db.collection("productos").document(item.id!!).get().addOnCompleteListener {
-                var itemCurrentSize = it.result.get("stock_${item.size?.lowercase()}") as Long
-                println("itemCurrentSize: $itemCurrentSize")
-                val updatedQuantity = itemCurrentSize - item.quantity!!
-                println("updatedQuantity: $updatedQuantity")
-                if (updatedQuantity < 0) {
-                    stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size} Agotado")
-                } else {
-                    stringifiedProductList.add("${item.quantity}X ${item.name} ${item.size}")
-                    decreaseItemStock(item, updatedQuantity, transactionResponse.data.reference)
-                }
-            }
-        }
-        println("stringifiedProductList: $stringifiedProductList")
-        val stringifiedProducts = stringifiedProductList.joinToString("; ")
-        //val stringifiedProducts = itemList.joinToString("; ") { item -> "${item.quantity}X ${item.name} ${item.size}" }
-        println("stringifiedProducts: $stringifiedProducts")
-        db.collection("compras").document(transactionResponse.data.reference).set(
-            hashMapOf(
-                "transaction_id" to transactionResponse.data.id,
-                "total_amount" to (transactionResponse.data.amount_in_cents / 100),
-                "payment_method" to transactionResponse.data.payment_method_type,
-                "transaction_date" to transactionResponse.data.created_at,
-                "transaction_status" to transactionResponse.data.status,
-                "products" to stringifiedProducts,
-                "buyer_name" to contactInfo.contact_name,
-                "buyer_address" to "${contactInfo.contact_address}, ${contactInfo.contact_city}",
-                "buyer_phone" to contactInfo.contact_phone,
-                "buyer_email" to contactInfo.contact_email
-            )
-        ).addOnSuccessListener {
-            Toast.makeText(this, "Pago exitoso", Toast.LENGTH_SHORT).show()
-        }*/
     }
 
     private fun decreaseItemStock(item: PurchaseItemMain, updatedQuantity: Long, transactionReference: String) {
-        db.collection("productos").document(item.id!!).update(
-            "stock_${item.size?.lowercase()}", updatedQuantity
-        )
-            .addOnSuccessListener {
-                println("Item ${item.id} ${item.name} actualizado")
-                db.collection("users").document(email).update(
-                    "compras", FieldValue.arrayUnion(transactionReference)
-                )
-            }
-            .addOnFailureListener { e ->
-                println("Item ${item.id} ${item.name} no pudo ser actualizado")
-            }
+        if (item.size != "") {
+            db.collection("productos").document(item.id!!).update(
+                "stock_${item.size?.lowercase()}", updatedQuantity
+            )
+                .addOnSuccessListener {
+                    println("Item ${item.id} ${item.name} actualizado")
+                    db.collection("users").document(email).update(
+                        "compras", FieldValue.arrayUnion(transactionReference)
+                    )
+                }
+                .addOnFailureListener { e ->
+                    println("Item ${item.id} ${item.name} no pudo ser actualizado")
+                }
+        } else {
+            db.collection("productos").document(item.id!!).update(
+                "stock", updatedQuantity
+            )
+                .addOnSuccessListener {
+                    println("Item ${item.id} ${item.name} actualizado")
+                    db.collection("users").document(email).update(
+                        "compras", FieldValue.arrayUnion(transactionReference)
+                    )
+                }
+                .addOnFailureListener { e ->
+                    println("Item ${item.id} ${item.name} no pudo ser actualizado")
+                }
+        }
     }
 
     private fun getSubtotalFromShoppingCartItems(incomingPurchaseList: MutableList<PurchaseItemMain>): String {

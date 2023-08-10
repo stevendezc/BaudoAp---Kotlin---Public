@@ -46,7 +46,10 @@ class PurchaseItemAdapter(private val storeList: ArrayList<PurchaseItemMain>, pr
         val decimalFormat = DecimalFormat("#,###", decimalFormatSymbols)
         val formattedTotal = decimalFormat.format(total?.toLong())
         holder.purchaseItemTotal.text = "$$formattedTotal"
-        holder.purchaseItemSize.text = "Talla: ${currentItem.size}"
+        if (currentItem.size != "") {
+            holder.purchaseItemSize.text = "Talla: ${currentItem.size}"
+        }
+
 
         holder.purchaseItemDelete.setOnClickListener {
             storeList.remove(currentItem)
