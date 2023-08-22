@@ -1,34 +1,28 @@
 package com.abstractcoder.baudoapp
 
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.ItemSpacingDecoration
 import com.abstractcoder.baudoapp.utils.UserImageDialog
 import com.bumptech.glide.Glide
-import com.facebook.login.LoginManager
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
 
 class UserActivity : FragmentActivity() {
-    private val firestore = Firestore()
+    private val db = FirebaseFirestore.getInstance()
 
     private lateinit var binding: ActivityUserBinding
     private lateinit var userData: FirebaseUser
@@ -62,48 +56,19 @@ class UserActivity : FragmentActivity() {
         val provider: String = bundle?.getString("provider").toString()
         val name: String = bundle?.getString("name").toString()
 
-        firestore.activateSubscribers(this, email!!)
-        firestore.userLiveData.observe(this, Observer { user ->
+        db.collection("users").document(email).get().addOnSuccessListener { user ->
+            val myData = user.toObject(FirebaseUser::class.java) ?: FirebaseUser()
             // Update your UI with the new data
-            println("userData in User activity: ${user}")
-            userData = user
+            userData = myData
+            setRecommendedContent()
             obtainMetrics(userData)
             // Setup incoming data
             setup(email, name, provider)
-        })
+        }
 
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         weekImagelayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recommendedVideosLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        firestore.postsLiveData.observe(this, Observer { posts ->
-            Log.d(ContentValues.TAG, "posts on User activity: $posts")
-            // Setup subfragments
-            var savedPosts = posts.filter { item -> userData.saved_posts.contains(item.id) }
-            val parsedSavedPosts = savedPosts.map { SavedPostMain(
-                it.id,
-                it.thumbnail,
-                if (it.title != "") it.title else it.location,
-                userData.liked_posts.contains(it.id)
-            ) }
-            if (parsedSavedPosts.size == 0) {
-                binding.savedContent.visibility = LinearLayout.GONE
-            }
-            userSavedPosts.addAll(parsedSavedPosts)
-            val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
-            lastImagePost = organizedPosts.filter { it.type == "image" }[0]
-            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail),
-                Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author,
-                lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!,
-                lastImagePost.creation_date))
-            lastlyRecommendedVideos = organizedPosts.filter { it.type == "video" }.subList(0, 3)
-            for (video in lastlyRecommendedVideos) {
-                recommendedVideoPosts.add(
-                    VideoPostMain(video.id, Uri.parse(video.main_media),
-                    Uri.parse(video.thumbnail), video.title.toString(), video.description.toString(),
-                    video.category.toString()))
-            }
-        })
-
     }
 
     private fun setup(email: String, name: String, provider: String) {
@@ -152,8 +117,55 @@ class UserActivity : FragmentActivity() {
         recommendedVideoRecyclerView.adapter = recommendedVideosAdapter
     }
 
+    private fun setRecommendedContent() {
+        db.collection("posts").get().addOnSuccessListener { posts ->
+            val postDataList = mutableListOf<PostData>()
+            for (document in posts) {
+                val postData = document.toObject(PostData::class.java)
+                postData.id = document.id
+                postDataList.add(postData)
+            }
+            // Setup subfragments
+            println("postDataList: $postDataList")
+            var savedPosts = postDataList.filter { item -> userData.saved_posts.contains(item.id) }
+            val parsedSavedPosts = savedPosts.map { savedPost ->
+                SavedPostMain(
+                    savedPost.id,
+                    savedPost.thumbnail,
+                    if (savedPost.title != "") savedPost.title else savedPost.location,
+                    userData.liked_posts.contains(savedPost.id)
+                ) }
+            if (parsedSavedPosts.size == 0) {
+                binding.savedContent.visibility = LinearLayout.GONE
+            }
+            userSavedPosts.addAll(parsedSavedPosts)
+            val organizedPosts = postDataList.sortedByDescending { post -> post.creation_date }.toCollection(ArrayList())
+            println("organizedPosts: $organizedPosts")
+            println("image posts: ${organizedPosts.filter { organizedPost -> organizedPost.type == "image" }.size}")
+            lastImagePost = organizedPosts.filter { organizedPost -> organizedPost.type == "image" }[0]
+            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail),
+                Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author,
+                lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!,
+                lastImagePost.creation_date))
+            println("video posts: ${organizedPosts.filter { organizedPost -> organizedPost.type == "video" }.size}")
+            val videoPosts = organizedPosts.filter { organizedPost -> organizedPost.type == "video" }
+            lastlyRecommendedVideos = if (videoPosts.size == 3) videoPosts.subList(0, 3) else listOf<PostData>()
+            for (video in lastlyRecommendedVideos) {
+                recommendedVideoPosts.add(
+                    VideoPostMain(video.id, Uri.parse(video.main_media),
+                        Uri.parse(video.thumbnail), video.title.toString(), video.description.toString(),
+                        video.category.toString()))
+            }
+        }
+    }
     private fun obtainMetrics(user: FirebaseUser) {
-        firestore.postsLiveData.observe(this, Observer { posts ->
+        db.collection("posts").get().addOnSuccessListener {
+            val postDataList = mutableListOf<PostData>()
+            for (document in it) {
+                val postData = document.toObject(PostData::class.java)
+                postData.id = document.id
+                postDataList.add(postData)
+            }
             val postsArrayList: ArrayList<PostData> = ArrayList()
             val totalCommentaries = user.commentaries.size
             val totalReactions = user.reactions.size
@@ -162,7 +174,7 @@ class UserActivity : FragmentActivity() {
             var likedAmbientalPosts = 0
             var likedMemoryPosts = 0
             var likedGenderPosts = 0
-            postsArrayList.addAll(posts)
+            postsArrayList.addAll(postDataList)
             for (reaction in user.reactions) {
                 val postInfo = postsArrayList.find { post -> post.id == reaction }
                 when (postInfo?.category) {
@@ -171,7 +183,6 @@ class UserActivity : FragmentActivity() {
                     "genero" -> likedGenderPosts += 1
                 }
             }
-
             setMetrics(UserMetrics(
                 totalCommentaries,
                 totalReactions,
@@ -181,7 +192,7 @@ class UserActivity : FragmentActivity() {
                 likedMemoryPosts,
                 likedGenderPosts
             ))
-        })
+        }
     }
 
     private fun renderCategoryMetrics(renderParams: JSONObject, userMetrics: UserMetrics, mainCategoryPercentage: Int, secondaryCategoryPercentage: Int, thirdCategoryPercentage: Int) {

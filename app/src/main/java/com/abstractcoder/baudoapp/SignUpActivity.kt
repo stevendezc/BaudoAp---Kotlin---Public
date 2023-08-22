@@ -91,9 +91,9 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
                     authInstance.createUserWithEmailAndPassword(
                         binding.registerEmailEditText.text.toString(),
                         binding.registerPasswordEditText.text.toString()
-                    ).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            var user = User(it.result.user!!.uid, name, email, password)
+                    ).addOnCompleteListener { authResult ->
+                        if (authResult.isSuccessful) {
+                            var user = User(authResult.result.user!!.uid, name, email, password)
                             val fireUser = authInstance.currentUser
                             fireUser?.sendEmailVerification()
                             registerUser(user, ProviderType.BASIC)
@@ -104,7 +104,7 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
                             ).show()
                             showLogIn()
                         } else {
-                            val exception = it.exception
+                            val exception = authResult.exception
                             showAlert(exception)
                         }
                     }

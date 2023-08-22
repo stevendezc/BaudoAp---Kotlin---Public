@@ -21,7 +21,6 @@ class InnerVideoContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInnerVideoContentBinding
     private val db = FirebaseFirestore.getInstance()
-    private var firestoreInst = Firestore()
 
     private lateinit var userData: FirebaseUser
     private lateinit var postId: String
@@ -44,15 +43,15 @@ class InnerVideoContentActivity : AppCompatActivity() {
         val email = sharedPref.getString("email", "")
         println("Name on innerVideoContentActivity $name")
 
-        firestoreInst.activateSubscribers(this, email!!)
-        firestoreInst.userLiveData.observe(this, Observer { user ->
+        db.collection("users").document(email!!).get().addOnSuccessListener {
+            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
             // Update your UI with the new data
-            userData = user
+            userData = myData
             val userImage = userData.user_pic
             Glide.with(binding.userImageView2)
                 .load(userImage)
                 .into(binding.userImageView2)
-        })
+        }
 
         setup(videoContent!!, name!!, email)
     }
@@ -69,13 +68,18 @@ class InnerVideoContentActivity : AppCompatActivity() {
     private fun getComments(userEmail: String) {
         // Load Posts
         videoCommentList.clear()
-        firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
-        firestoreInst.postCommentsLiveData.observe(this, Observer { commentaries ->
+        db.collection("commentaries").whereEqualTo("post", postId).get().addOnSuccessListener {
+            val commentariesList = mutableListOf<Commentary>()
+            for (commentary in it) {
+                var commentaryData = commentary.toObject(Commentary::class.java)
+                commentaryData.id = commentary.id
+                commentariesList.add(commentaryData)
+            }
             // Update your UI with the new data
-            val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
+            val organizedCommentaries = commentariesList.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             println("organizedCommentaries: $organizedCommentaries")
             setCommentsOnRecycler(organizedCommentaries, userEmail)
-        })
+        }
     }
 
     private fun addComment(userName: String, authorEmail: String) {

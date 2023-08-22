@@ -20,6 +20,8 @@ import com.abstractcoder.baudoapp.fragments.*
 import com.abstractcoder.baudoapp.utils.Connection
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 enum class ProviderType {
     BASIC,
@@ -30,7 +32,7 @@ data class BottomMenuOption(val icon: ImageView, val label: TextView)
 
 class HomeActivity : AppCompatActivity() {
     lateinit var topMenu: LinearLayout
-    val firestoreInst = Firestore()
+    private val db = FirebaseFirestore.getInstance()
     val networkConnection = Connection()
 
     private lateinit var userData: FirebaseUser
@@ -62,8 +64,6 @@ class HomeActivity : AppCompatActivity() {
         prefs.apply()
 
         checkPermissions()
-
-        firestoreInst.activateSubscribers(this, email)
 
         // Setup fragments
         fragmentSetup()
@@ -167,12 +167,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getUser(email: String) {
-        firestoreInst.userLiveData.observe(this, Observer { user ->
-            // Update your UI with the new data
-            userData = user
+        db.collection("users").document(email!!).get().addOnSuccessListener {
+            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+            userData = myData
             val userName = userData.name
             println("currentUser: $userData")
-            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+            val prefs = getSharedPreferences(
+                getString(R.string.prefs_file),
+                Context.MODE_PRIVATE
+            ).edit()
             prefs.putString("name", userName)
             prefs.apply()
 
@@ -182,7 +185,15 @@ class HomeActivity : AppCompatActivity() {
                     .into(binding.userImage)
             }
             binding.nameTextView.text = userName
-        })
+        }.addOnFailureListener {
+            println("User not found")
+            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+            prefs.clear()
+            prefs.apply()
+            FirebaseAuth.getInstance().signOut()
+            val logInIntent = Intent(this, LogInActivity::class.java)
+            startActivity(logInIntent)
+        }
     }
 
     private fun makeCurrentFragment(fragment: Fragment) {

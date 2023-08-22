@@ -27,7 +27,6 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
     private lateinit var gestureDetector: GestureDetectorCompat
 
     private val db = FirebaseFirestore.getInstance()
-    private var firestoreInst = Firestore()
 
     private lateinit var postId: String
     private lateinit var userData: FirebaseUser
@@ -45,18 +44,16 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
-        firestoreInst.activateSubscribers(this, email!!)
-        firestoreInst.userLiveData.observe(this, Observer { user ->
-            // Update your UI with the new data
-            userData = user
+        db.collection("users").document(email!!).get().addOnSuccessListener {
+            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+            userData = myData
             setReactionIcons(userData)
-        })
-
-        firestoreInst.subscribeToSinglePostUpdates(this, postId)
-        firestoreInst.singlePostLiveData.observe(this, Observer { post ->
-            // Update your UI with the new data
+        }
+        db.collection("posts").document(postId).get().addOnSuccessListener {
+            var post = it.toObject(PostData::class.java) ?: PostData()
+            post.id = it.id
             postData = post
-        })
+        }
         setup(videoContent!!, name!!, email!!)
     }
 

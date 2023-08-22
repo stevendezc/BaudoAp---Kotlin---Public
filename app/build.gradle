@@ -56,6 +56,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.2.1'
     // Auth
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'

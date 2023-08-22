@@ -25,14 +25,14 @@ import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentCommunityBinding
 import com.abstractcoder.baudoapp.recyclers.CommunityAdapter
 import com.abstractcoder.baudoapp.recyclers.CommunityMain
-import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CommunityFragment : Fragment() {
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
-    private var firestore = Firestore()
+    private val db = FirebaseFirestore.getInstance()
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var layoutManager: LinearLayoutManager
@@ -60,29 +60,22 @@ class CommunityFragment : Fragment() {
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("email", "")
-        firestore.activateSubscribers(requireContext(), email!!)
         // Load Communities
-        firestore.communitiesLiveData.observe(viewLifecycleOwner, Observer { communities ->
+        db.collection("communities").get().addOnSuccessListener {
+            val communityDataList = mutableListOf<CommunityData>()
+            for (document in it) {
+                val myData = document.toObject(CommunityData::class.java)
+                communityDataList.add(myData)
+            }
             // Update your UI with the new data
             binding.contentLoading.visibility = ProgressBar.GONE
             binding.filterButtons.visibility = LinearLayout.VISIBLE
             binding.imageListRecycler.visibility = RecyclerView.VISIBLE
-            Log.d(ContentValues.TAG, "communities on HomeFragment: $communities")
             // Setup subfragments
             val communitiesArrayList: ArrayList<CommunityData> = ArrayList()
-            communitiesArrayList.addAll(communities)
+            communitiesArrayList.addAll(communityDataList)
             initData(communitiesArrayList)
-        })
-        /*val community = firestore.retrieveCommunities(object : CommunitiesCallback {
-            override fun onSuccess(incomingPostList: ArrayList<CommunityData>) {
-                binding.contentLoading.visibility = ProgressBar.GONE
-                binding.filterButtons.visibility = LinearLayout.VISIBLE
-                binding.imageListRecycler.visibility = RecyclerView.VISIBLE
-                Log.d(ContentValues.TAG, "posts on HomeFragment: $incomingPostList")
-                // Setup subfragments
-                initData(incomingPostList)
-            }
-        })*/
+        }
     }
 
     private fun applyFilter(filterNumber: Int, categoryName: String, button: LinearLayout, buttonIcon: ImageView, buttonText: TextView, categoryColor: Int) {

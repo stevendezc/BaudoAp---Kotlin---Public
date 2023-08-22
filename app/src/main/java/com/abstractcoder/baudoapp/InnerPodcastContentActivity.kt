@@ -10,13 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityInnerPodcastContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
-import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -35,7 +33,6 @@ class InnerPodcastContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInnerPodcastContentBinding
     private val db = FirebaseFirestore.getInstance()
-    private var firestoreInst = Firestore()
 
     private lateinit var postId: String
     private lateinit var postStatus: String
@@ -67,19 +64,19 @@ class InnerPodcastContentActivity : AppCompatActivity() {
         val email = sharedPref.getString("email", "")
         userEmail = email!!
 
-        firestoreInst.activateSubscribers(this, userEmail)
-        firestoreInst.userLiveData.observe(this, Observer { user ->
+        db.collection("users").document(email).get().addOnSuccessListener {
+            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
             // Update your UI with the new data
-            userData = user
+            userData = myData
             setReactionIcons(userData)
             setup(podcastContent!!, name!!)
-        })
-
-        firestoreInst.subscribeToSinglePostUpdates(this, postId)
-        firestoreInst.singlePostLiveData.observe(this, Observer { post ->
+        }
+        db.collection("posts").document(postId).get().addOnSuccessListener {
+            var documentData = it.toObject(PostData::class.java) ?: PostData()
+            documentData.id = it.id
             // Update your UI with the new data
-            postData = post
-        })
+            postData = documentData
+        }
     }
 
     private fun setCommentsOnRecycler(commentaryList: ArrayList<Commentary>, userEmail: String) {
@@ -94,13 +91,18 @@ class InnerPodcastContentActivity : AppCompatActivity() {
     private fun getComments() {
         // Load Posts
         podcastCommentList.clear()
-        firestoreInst.subscribeToPostCommentariesUpdates(this, postId)
-        firestoreInst.postCommentsLiveData.observe(this, Observer { commentaries ->
+        db.collection("commentaries").whereEqualTo("post", postId).get().addOnSuccessListener { commentaries ->
+            val commentariesList = mutableListOf<Commentary>()
+            for (commentary in commentaries) {
+                var commentaryData = commentary.toObject(Commentary::class.java)
+                commentaryData.id = commentary.id
+                commentariesList.add(commentaryData)
+            }
             // Update your UI with the new data
-            val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
+            val organizedCommentaries = commentariesList.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             println("organizedCommentaries: $organizedCommentaries")
             setCommentsOnRecycler(organizedCommentaries, userEmail)
-        })
+        }
     }
 
     private fun addComment(userName: String) {

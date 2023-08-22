@@ -25,6 +25,7 @@ import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.abstractcoder.baudoapp.recyclers.StoreItemAdapter
 import com.abstractcoder.baudoapp.utils.Firestore
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 
 class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,7 +37,7 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
     private lateinit var storeItemAdapter: StoreItemAdapter
     private lateinit var storeRecyclerView: RecyclerView
 
-    private var firestore = Firestore()
+    private val db = FirebaseFirestore.getInstance()
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var shoppingCartSharedPreferences: SharedPreferences
@@ -65,17 +66,19 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
         shoppingCartSharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val email = sharedPreferences.getString("email", "")
-        firestore.activateSubscribers(requireContext(), email!!)
-
-        firestore.productsLiveData.observe(viewLifecycleOwner, Observer { posts ->
-            Log.d(ContentValues.TAG, "items on StoreFragment: $posts")
+        db.collection("productos").get().addOnSuccessListener {
+            val productsDataList = mutableListOf<StoreItemMain>()
+            for (document in it) {
+                val myData = document.toObject(StoreItemMain::class.java)
+                myData.id = document.id.toString()
+                productsDataList.add(myData)
+            }
             // Setup subfragments
             val productsArrayList: ArrayList<StoreItemMain> = ArrayList()
-            val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
+            val organizedPosts = productsDataList.sortedByDescending { post -> post.creation_date }.toCollection(ArrayList())
             productsArrayList.addAll(organizedPosts)
             setup(productsArrayList)
-        })
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -122,7 +125,7 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
         filteredProductsArrayList.clear()
         filteredProductsArrayList.addAll(productsArrayList)
         if (filter != "") {
-            var filteredProductsArray = productsArrayList.filter { it.type == filter }
+            var filteredProductsArray = productsArrayList.filter { product -> product.type == filter }
             filteredProductsArrayList.clear()
             filteredProductsArrayList.addAll(filteredProductsArray)
         }

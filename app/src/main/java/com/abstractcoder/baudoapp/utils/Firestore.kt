@@ -10,10 +10,11 @@ import com.abstractcoder.baudoapp.recyclers.StoreItemMain
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestoreSettings
 
 class Firestore {
-    private val db = FirebaseFirestore.getInstance()
+    private var db = FirebaseFirestore.getInstance()
 
     private lateinit var singleUserListener: ListenerRegistration
     private lateinit var usersListener: ListenerRegistration
@@ -33,16 +34,15 @@ class Firestore {
     val productsLiveData = MutableLiveData<List<StoreItemMain>>()
     val singlePostLiveData = MutableLiveData<PostData>()
 
-    val userCollectionRef = db.collection("users")
-    val postsCollectionRef = db.collection("posts")
-    val communitiesCollectionRef = db.collection("communities")
-    val eventsCollectionRef = db.collection("events")
-    val commentariesCollectionRef = db.collection("commentaries")
-    val productsCollectionRef = db.collection("productos")
-
-    fun activateSubscribers(context: Context, email: String) {
+    fun activateSubscribers(context: Context, email: String): Boolean {
+        /*db.terminate()
+        db = FirebaseFirestore.getInstance()
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(false) // Change to true or false as needed
+            .build()
+        db.firestoreSettings = settings*/
         db.firestoreSettings = firestoreSettings {
-            this.isPersistenceEnabled = true
+            this.isPersistenceEnabled = false
         }
         subscribeToUsersUpdates(context)
         subscribeToUserUpdates(context, email)
@@ -50,9 +50,11 @@ class Firestore {
         subscribeToCommunityUpdates(context)
         subscribeToEventUpdates(context)
         subscribeToProductsUpdates(context)
+        return true
     }
 
     private fun subscribeToUserUpdates(context: Context, email: String) {
+        val userCollectionRef = db.collection("users")
         singleUserListener = userCollectionRef.document(email).addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -67,6 +69,7 @@ class Firestore {
     }
 
     private fun subscribeToUsersUpdates(context: Context) {
+        val userCollectionRef = db.collection("users")
         usersListener = userCollectionRef.addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -76,6 +79,7 @@ class Firestore {
             value?.let {
                 val usersDataList = mutableListOf<FirebaseUser>()
                 for (document in it) {
+                    println("DOCUMENT: $document")
                     var userData = document.toObject(FirebaseUser::class.java)
                     userData.id = document.id
                     usersDataList.add(userData)
@@ -86,6 +90,7 @@ class Firestore {
     }
 
     private fun subscribeToPostUpdates(context: Context) {
+        val postsCollectionRef = db.collection("posts")
         postsListener = postsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -105,6 +110,7 @@ class Firestore {
     }
 
     private fun subscribeToCommunityUpdates(context: Context) {
+        val communitiesCollectionRef = db.collection("communities")
         communitiesListener = communitiesCollectionRef.addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -123,6 +129,7 @@ class Firestore {
     }
 
     private fun subscribeToEventUpdates(context: Context) {
+        val eventsCollectionRef = db.collection("events")
         eventsListener = eventsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -143,7 +150,7 @@ class Firestore {
     }
 
     fun subscribeToPostCommentariesUpdates(context: Context, postId: String) {
-        println("postId on subscribe: $postId")
+        val commentariesCollectionRef = db.collection("commentaries")
         commentsListener = commentariesCollectionRef.whereEqualTo("post", postId).addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -164,6 +171,7 @@ class Firestore {
     }
 
     fun subscribeToSinglePostUpdates(context: Context, postId: String) {
+        val postsCollectionRef = db.collection("posts")
         singlePostListener = postsCollectionRef.document(postId).addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }
@@ -180,6 +188,7 @@ class Firestore {
     }
 
     private fun subscribeToProductsUpdates(context: Context) {
+        val productsCollectionRef = db.collection("productos")
         productsListener = productsCollectionRef.addSnapshotListener { value, error ->
             error?.let {
                 it.message?.let { it1 -> Log.d("TAG", it1) }

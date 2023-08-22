@@ -8,14 +8,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.Commentary
+import com.abstractcoder.baudoapp.FirebaseUser
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.CommentListItemBinding
 import com.abstractcoder.baudoapp.utils.CommentaryDialog
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CommentaryAdapter(private val context: AppCompatActivity, private val fragmentManager: FragmentManager, private val postId: String, private val userId: String, private val commentaryList: ArrayList<Commentary>): RecyclerView.Adapter<CommentaryAdapter.CommentHolder>() {
-    private var firestore = Firestore()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -27,9 +29,15 @@ class CommentaryAdapter(private val context: AppCompatActivity, private val frag
     override fun onBindViewHolder(holder: CommentHolder, position: Int) {
         val currentItem = commentaryList[position]
         if (currentItem != null) {
-            firestore.activateSubscribers(context, userId)
-            firestore.usersLiveData.observe(context, Observer { users ->
-                val user = users.find { it.id == currentItem.author_email }
+            db.collection("users").get().addOnSuccessListener {
+                val usersDataList = mutableListOf<FirebaseUser>()
+                for (document in it) {
+                    println("DOCUMENT: $document")
+                    var userData = document.toObject(FirebaseUser::class.java)
+                    userData.id = document.id
+                    usersDataList.add(userData)
+                }
+                val user = usersDataList.find { it.id == currentItem.author_email }
                 if (user != null) {
                     val userImage = user.user_pic
                     Glide.with(holder.commentAuthorImage)
@@ -37,7 +45,7 @@ class CommentaryAdapter(private val context: AppCompatActivity, private val frag
                         .into(holder.commentAuthorImage)
                     holder.commentAuthor.text = user.name
                 }
-            })
+            }
             holder.commentText.text = currentItem.text
         }
 

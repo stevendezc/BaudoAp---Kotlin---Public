@@ -1,31 +1,24 @@
 package com.abstractcoder.baudoapp.fragments
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.CommunityData
 import com.abstractcoder.baudoapp.R
 import com.abstractcoder.baudoapp.databinding.FragmentEventsBinding
 import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -36,7 +29,7 @@ class EventsFragment : Fragment() {
 
     private var _binding: FragmentEventsBinding? = null
     private val binding get() = _binding!!
-    private var firestore = Firestore()
+    private val db = FirebaseFirestore.getInstance()
     private lateinit var sharedPreferences: SharedPreferences
 
     private var currentYear = 0
@@ -50,7 +43,6 @@ class EventsFragment : Fragment() {
     private var eventsMainList: ArrayList<EventMain> = arrayListOf<EventMain>()
 
     private var monthButtonArray = arrayListOf<Button>()
-    private var subjectButtonArray = arrayListOf<Any>()
 
     private val subjectList = arrayListOf<String>(
         "periodismo", "memoria", "genero", "ambiente"
@@ -78,21 +70,18 @@ class EventsFragment : Fragment() {
             binding.month5, binding.month6, binding.month7, binding.month8,
             binding.month9, binding.month10, binding.month11, binding.month12
         )
-
-        /*this.subjectButtonArray = arrayListOf<Any>(
-            binding.periodismoButton, binding.memoriaButton,
-            binding.generoButton, binding.ambienteButton
-        )*/
-
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val email = sharedPreferences.getString("email", "")
-        firestore.activateSubscribers(requireContext(), email!!)
-        firestore.eventsLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer { events ->
-            // Update your UI with the new data
-            Log.d(ContentValues.TAG, "events on EventsFragment: $events")
-            eventsMainList.addAll(events)
+        db.collection("events").get().addOnSuccessListener {
+            val eventDataList = mutableListOf<EventMain>()
+            for (document in it) {
+                println("DOCUMENT: $document")
+                val myData = document.toObject(EventMain::class.java)
+                myData.id = document.id
+                eventDataList.add(myData)
+            }
+            eventsMainList.addAll(eventDataList)
             initEvents(eventsMainList)
-        })
+        }
     }
 
     private fun getCurrentDateValues() {
@@ -209,47 +198,6 @@ class EventsFragment : Fragment() {
             applyFilters()
         }
 
-        /*binding.periodismoButton.setOnClickListener {
-            if (this.subjectFilter == 1) {
-                resetSubjectFilter()
-                applyFilters()
-            }
-            else {
-                activeSubjectFilter(1, binding.periodismoButton)
-                applyFilters()
-            }
-        }
-        binding.memoriaButton.setOnClickListener {
-            if (this.subjectFilter == 2) {
-                resetSubjectFilter()
-                applyFilters()
-            }
-            else {
-                activeSubjectFilter(2, binding.memoriaButton)
-                applyFilters()
-            }
-        }
-        binding.generoButton.setOnClickListener {
-            if (this.subjectFilter == 3) {
-                resetSubjectFilter()
-                applyFilters()
-            }
-            else {
-                activeSubjectFilter(3, binding.generoButton)
-                applyFilters()
-            }
-        }
-        binding.ambienteButton.setOnClickListener {
-            if (this.subjectFilter == 4) {
-                resetSubjectFilter()
-                applyFilters()
-            }
-            else {
-                activeSubjectFilter(4, binding.ambienteButton)
-                applyFilters()
-            }
-        }*/
-
         binding.eventsInfo.setOnClickListener {
             InfoDialog("eventos").show(requireFragmentManager(), "info dialog")
         }
@@ -267,75 +215,11 @@ class EventsFragment : Fragment() {
         this.monthFilter = filterMonth
     }
 
-    /*private fun resetSubjectFilter() {
-        for (subjectButton in subjectButtonArray) {
-            when (subjectButton) {
-                is android.widget.LinearLayout -> {
-                    subjectButton.backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.baudo_grey
-                        )
-                    )
-                    binding.memoriaButtonLabel1.setTextColor(ContextCompat.getColor(
-                        this.requireContext(),
-                        R.color.white
-                    ))
-                    binding.memoriaButtonLabel2.setTextColor(ContextCompat.getColor(
-                        this.requireContext(),
-                        R.color.white
-                    ))
-                }
-                is android.widget.Button -> {
-                    subjectButton.backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.baudo_grey
-                        )
-                    )
-                    subjectButton.setTextColor(
-                        ContextCompat.getColor(
-                            this.requireContext(),
-                            R.color.white
-                        )
-                    )
-                }
-            }
-        }
-        this.subjectFilter = 0
-    }
-    private fun activeSubjectFilter(filterSubject: Int, layoutButton: Any) {
-        resetSubjectFilter()
-        when (layoutButton) {
-            is android.widget.LinearLayout -> {
-                layoutButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
-                binding.memoriaButtonLabel1.setTextColor(ContextCompat.getColor(
-                    this.requireContext(),
-                    R.color.baudo_grey
-                ))
-                binding.memoriaButtonLabel2.setTextColor(ContextCompat.getColor(
-                    this.requireContext(),
-                    R.color.baudo_grey
-                ))
-            }
-            is android.widget.Button -> {
-                layoutButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
-                layoutButton.setTextColor(
-                    ContextCompat.getColor(
-                        this.requireContext(),
-                        R.color.baudo_grey
-                    )
-                )
-            }
-        }
-        this.subjectFilter = filterSubject
-    }*/
-
     private fun applyFilters() {
         var filteredArrayList = arrayListOf<EventMain>()
-        filteredArrayList = eventsMainList.filter { it.year == yearFilter && it.month == monthFilter } as ArrayList<EventMain>
+        filteredArrayList = eventsMainList.filter { event -> event.year == yearFilter && event.month == monthFilter } as ArrayList<EventMain>
         if (subjectFilter != 0) {
-            filteredArrayList = eventsMainList.filter { it.year == yearFilter && it.month == monthFilter && it.subject == subjectList[subjectFilter-1] } as ArrayList<EventMain>
+            filteredArrayList = eventsMainList.filter { event -> event.year == yearFilter && event.month == monthFilter && event.subject == subjectList[subjectFilter-1] } as ArrayList<EventMain>
         }
         val nonDuplicatedList = filteredArrayList.distinct()
         val nonDuplicatedArrayList = arrayListOf<EventMain>()

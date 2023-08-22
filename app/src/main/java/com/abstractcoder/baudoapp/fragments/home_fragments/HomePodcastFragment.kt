@@ -11,21 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.*
 import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
 import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
 import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
-import com.abstractcoder.baudoapp.utils.Firestore
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomePodcastFragment : Fragment() {
 
     private var _binding: FragmentHomePodcastBinding? = null
     private val binding get() = _binding!!
-    private var firestoreInst = Firestore()
+    private val db = FirebaseFirestore.getInstance()
     private lateinit var userData: FirebaseUser
 
     private lateinit var layoutManager: LinearLayoutManager
@@ -61,12 +59,12 @@ class HomePodcastFragment : Fragment() {
         val email = sharedPref?.getString("email", "")
         isOnline = sharedPref?.getBoolean("online", false)!!
         // Load Posts
-        firestoreInst.activateSubscribers(requireContext(), email!!)
-        firestoreInst.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+        db.collection("users").document(email!!).get().addOnSuccessListener {
+            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
             // Update your UI with the new data
-            userData = user
+            userData = myData
             initData(view,incomingPostList, incomingActivePodcastList)
-        })
+        }
     }
 
     private fun getPodcastStatus(podcastId: String?): String? {

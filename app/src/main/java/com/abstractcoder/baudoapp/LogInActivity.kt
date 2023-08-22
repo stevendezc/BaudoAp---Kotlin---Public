@@ -85,53 +85,20 @@ class LogInActivity : AppCompatActivity() {
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
-        /*binding.facebookButton.setOnClickListener {
-            // Config
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
-            LoginManager.getInstance().registerCallback(callbackManager,
-            object: FacebookCallback<LoginResult>{
-                override fun onSuccess(result: LoginResult?) {
-                    result?.let {
-                        val token = it.accessToken
-                        val credential = FacebookAuthProvider.getCredential(token.token)
-                        authInstance.signInWithCredential(credential).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                val id: String = it.result?.user?.uid ?: ""
-                                val name: String = it.result?.user?.displayName ?: ""
-                                val email: String = it.result?.user?.email ?: ""
-                                val user = GoogleUser(name, email)
-                                registerUser(id, user)
-                                showHome(email, ProviderType.FACEBOOK)
-                            } else {
-                                showAlert()
-                            }
-                        }
-                    }
-                }
-
-                override fun onCancel() {
-                }
-
-                override fun onError(error: FacebookException?) {
-                    showAlert()
-                }
-            })
-        }*/
-
         binding.logInButton.setOnClickListener {
             if (binding.emailEditText.text.isNotEmpty() && binding.passwordEditText.text.isNotEmpty()) {
                 authInstance.signInWithEmailAndPassword(binding.emailEditText.text.toString(),
-                    binding.passwordEditText.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) {
+                    binding.passwordEditText.text.toString()).addOnCompleteListener { authResult ->
+                    if (authResult.isSuccessful) {
                         val user = authInstance.currentUser
                         if (user != null) {
                             Log.d("Email Verified", user.isEmailVerified.toString())
                             if (!user.isEmailVerified) {
                                 Toast.makeText(this, "Correo electronico no verificado", Toast.LENGTH_SHORT).show()
                             } else {
-                                val email = it.result?.user?.email ?: ""
-                                db.collection("users").document(binding.emailEditText.text.toString()).get().addOnSuccessListener {
-                                    val savedVerifiedState = it.get("verified").toString().toBoolean()
+                                val email = authResult.result?.user?.email ?: ""
+                                db.collection("users").document(binding.emailEditText.text.toString()).get().addOnSuccessListener { user ->
+                                    val savedVerifiedState = user.get("verified").toString().toBoolean()
                                     Log.d("savedVerified", savedVerifiedState.toString())
                                     if (!savedVerifiedState) {
                                         db.collection("users").document(binding.emailEditText.text.toString()).update(
