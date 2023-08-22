@@ -202,6 +202,13 @@ class innerImageContentActivity : AppCompatActivity() {
                 }
             }
 
+            binding.imageMainImage.setOnClickListener {
+                Intent(this, resizedImageActivity::class.java).apply {
+                    putExtra("image", imageMainMedia)
+                    startActivity(this)
+                }
+            }
+
             binding.imageSave.setOnClickListener {
                 savePost(email)
             }
