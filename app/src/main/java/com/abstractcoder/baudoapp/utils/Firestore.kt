@@ -16,14 +16,14 @@ import com.google.firebase.firestore.ktx.firestoreSettings
 class Firestore {
     private var db = FirebaseFirestore.getInstance()
 
-    private lateinit var singleUserListener: ListenerRegistration
-    private lateinit var usersListener: ListenerRegistration
-    private lateinit var postsListener: ListenerRegistration
-    private lateinit var communitiesListener: ListenerRegistration
-    private lateinit var eventsListener: ListenerRegistration
-    private lateinit var commentsListener: ListenerRegistration
-    private lateinit var singlePostListener: ListenerRegistration
-    private lateinit var productsListener: ListenerRegistration
+    lateinit var singleUserListener: ListenerRegistration
+    lateinit var usersListener: ListenerRegistration
+    lateinit var postsListener: ListenerRegistration
+    lateinit var communitiesListener: ListenerRegistration
+    lateinit var eventsListener: ListenerRegistration
+    lateinit var commentsListener: ListenerRegistration
+    lateinit var singlePostListener: ListenerRegistration
+     lateinit var productsListener: ListenerRegistration
 
     val userLiveData = MutableLiveData<FirebaseUser>()
     val usersLiveData = MutableLiveData<List<FirebaseUser>>()
@@ -34,26 +34,7 @@ class Firestore {
     val productsLiveData = MutableLiveData<List<StoreItemMain>>()
     val singlePostLiveData = MutableLiveData<PostData>()
 
-    fun activateSubscribers(context: Context, email: String): Boolean {
-        /*db.terminate()
-        db = FirebaseFirestore.getInstance()
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setPersistenceEnabled(false) // Change to true or false as needed
-            .build()
-        db.firestoreSettings = settings*/
-        db.firestoreSettings = firestoreSettings {
-            this.isPersistenceEnabled = false
-        }
-        subscribeToUsersUpdates(context)
-        subscribeToUserUpdates(context, email)
-        subscribeToPostUpdates(context)
-        subscribeToCommunityUpdates(context)
-        subscribeToEventUpdates(context)
-        subscribeToProductsUpdates(context)
-        return true
-    }
-
-    private fun subscribeToUserUpdates(context: Context, email: String) {
+    fun subscribeToUserUpdates(context: Context, email: String) {
         val userCollectionRef = db.collection("users")
         singleUserListener = userCollectionRef.document(email).addSnapshotListener { value, error ->
             error?.let {
@@ -89,7 +70,7 @@ class Firestore {
         }
     }
 
-    private fun subscribeToPostUpdates(context: Context) {
+    fun subscribeToPostUpdates(context: Context) {
         val postsCollectionRef = db.collection("posts")
         postsListener = postsCollectionRef.addSnapshotListener { value, error ->
             error?.let {

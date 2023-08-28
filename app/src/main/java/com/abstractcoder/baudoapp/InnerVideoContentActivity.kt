@@ -21,6 +21,7 @@ class InnerVideoContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInnerVideoContentBinding
     private val db = FirebaseFirestore.getInstance()
+    val firestore = Firestore()
 
     private lateinit var userData: FirebaseUser
     private lateinit var postId: String
@@ -43,15 +44,16 @@ class InnerVideoContentActivity : AppCompatActivity() {
         val email = sharedPref.getString("email", "")
         println("Name on innerVideoContentActivity $name")
 
-        db.collection("users").document(email!!).get().addOnSuccessListener {
-            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+        firestore.subscribeToUserUpdates(this, email!!)
+        firestore.userLiveData.observe(this, androidx.lifecycle.Observer { user ->
             // Update your UI with the new data
-            userData = myData
+            userData = user
+            println("Updated userData: $userData")
             val userImage = userData.user_pic
             Glide.with(binding.userImageView2)
                 .load(userImage)
                 .into(binding.userImageView2)
-        }
+        })
 
         setup(videoContent!!, name!!, email)
     }
@@ -68,18 +70,12 @@ class InnerVideoContentActivity : AppCompatActivity() {
     private fun getComments(userEmail: String) {
         // Load Posts
         videoCommentList.clear()
-        db.collection("commentaries").whereEqualTo("post", postId).get().addOnSuccessListener {
-            val commentariesList = mutableListOf<Commentary>()
-            for (commentary in it) {
-                var commentaryData = commentary.toObject(Commentary::class.java)
-                commentaryData.id = commentary.id
-                commentariesList.add(commentaryData)
-            }
+        firestore.subscribeToPostCommentariesUpdates(this, postId)
+        firestore.postCommentsLiveData.observe(this, androidx.lifecycle.Observer { commentaries ->
             // Update your UI with the new data
-            val organizedCommentaries = commentariesList.sortedByDescending { it.timestamp }.toCollection(ArrayList())
-            println("organizedCommentaries: $organizedCommentaries")
+            val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             setCommentsOnRecycler(organizedCommentaries, userEmail)
-        }
+        })
     }
 
     private fun addComment(userName: String, authorEmail: String) {
@@ -137,5 +133,10 @@ class InnerVideoContentActivity : AppCompatActivity() {
 
             getComments(authorEmail)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        firestore.clearListeners()
     }
 }

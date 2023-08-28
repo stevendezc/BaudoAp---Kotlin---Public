@@ -10,18 +10,21 @@ class ReactionHandler {
     fun addReaction(
         email: String,
         postId: String,
-        reactionType: String,
         userData: FirebaseUser,
         postData: PostData,
         db: FirebaseFirestore) {
+        println("postId: $postId")
+        println("userData: $userData")
+        println("postData: $postData")
         val reactions = userData.reactions.filter { it == postId }
-        if (reactions.size > 0) {
-            val reaction = reactions[0]
-
+        println("reactions.size: ${reactions.size}")
+        if (reactions.isNotEmpty()) {
             val updatedReactions = userData.reactions.filter { it != postId }
-            if (updatedReactions.size == 0) {
+            println("updatedReactions: $updatedReactions")
+            removeSameReaction(email, postId, userData, postData, db)
+            /*if (updatedReactions.isEmpty()) {
                 removeSameReaction(email, postId, userData, postData, db)
-            }
+            }*/
         } else {
             // Add reaction
             db.collection("users").document(email!!).update(
@@ -61,6 +64,8 @@ class ReactionHandler {
         postData: PostData,
         db:FirebaseFirestore) {
         val updatedReactions = userData.reactions.filter { it != postId }
+        println("updatedReactions: $updatedReactions")
+        println("Email of document to remove reactions: $email")
         db.collection("users").document(email!!).update(
             "reactions", updatedReactions)
         decreaseReactionCounter(postId, postData, db)

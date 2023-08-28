@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
 import com.abstractcoder.baudoapp.recyclers.*
+import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.InfoDialog
 import com.abstractcoder.baudoapp.utils.ItemSpacingDecoration
 import com.abstractcoder.baudoapp.utils.UserImageDialog
@@ -22,7 +23,7 @@ import java.io.IOException
 import java.io.InputStream
 
 class UserActivity : FragmentActivity() {
-    private val db = FirebaseFirestore.getInstance()
+    val firestore = Firestore()
 
     private lateinit var binding: ActivityUserBinding
     private lateinit var userData: FirebaseUser
@@ -56,19 +57,47 @@ class UserActivity : FragmentActivity() {
         val provider: String = bundle?.getString("provider").toString()
         val name: String = bundle?.getString("name").toString()
 
-        db.collection("users").document(email).get().addOnSuccessListener { user ->
-            val myData = user.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+        firestore.subscribeToUserUpdates(this, email!!)
+        firestore.subscribeToPostUpdates(this)
+        firestore.userLiveData.observe(this, androidx.lifecycle.Observer { user ->
             // Update your UI with the new data
-            userData = myData
-            setRecommendedContent()
+            userData = user
             obtainMetrics(userData)
             // Setup incoming data
             setup(email, name, provider)
-        }
+        })
 
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         weekImagelayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recommendedVideosLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        firestore.postsLiveData.observe(this, androidx.lifecycle.Observer { posts ->
+            // Setup subfragments
+            var savedPosts = posts.filter { item -> userData.saved_posts.contains(item.id) }
+            val parsedSavedPosts = savedPosts.map { SavedPostMain(
+                it.id,
+                it.thumbnail,
+                if (it.title != "") it.title else it.location,
+                userData.liked_posts.contains(it.id)
+            ) }
+            if (parsedSavedPosts.size == 0) {
+                binding.savedContent.visibility = LinearLayout.GONE
+            }
+            userSavedPosts.addAll(parsedSavedPosts)
+            val organizedPosts = posts.sortedByDescending { it.creation_date }.toCollection(ArrayList())
+            lastImagePost = organizedPosts.filter { it.type == "image" }[0]
+            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail),
+                Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author,
+                lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!,
+                lastImagePost.creation_date))
+            lastlyRecommendedVideos = organizedPosts.filter { it.type == "video" }.subList(0, 3)
+            for (video in lastlyRecommendedVideos) {
+                recommendedVideoPosts.add(
+                    VideoPostMain(video.id, Uri.parse(video.main_media),
+                        Uri.parse(video.thumbnail), video.title.toString(), video.description.toString(),
+                        video.category.toString()))
+            }
+        })
     }
 
     private fun setup(email: String, name: String, provider: String) {
@@ -117,56 +146,9 @@ class UserActivity : FragmentActivity() {
         recommendedVideoRecyclerView.adapter = recommendedVideosAdapter
     }
 
-    private fun setRecommendedContent() {
-        db.collection("posts").get().addOnSuccessListener { posts ->
-            val postDataList = mutableListOf<PostData>()
-            for (document in posts) {
-                val postData = document.toObject(PostData::class.java)
-                postData.id = document.id
-                postDataList.add(postData)
-            }
-            // Setup subfragments
-            println("postDataList: $postDataList")
-            var savedPosts = postDataList.filter { item -> userData.saved_posts.contains(item.id) }
-            val parsedSavedPosts = savedPosts.map { savedPost ->
-                SavedPostMain(
-                    savedPost.id,
-                    savedPost.thumbnail,
-                    if (savedPost.title != "") savedPost.title else savedPost.location,
-                    userData.liked_posts.contains(savedPost.id)
-                ) }
-            if (parsedSavedPosts.size == 0) {
-                binding.savedContent.visibility = LinearLayout.GONE
-            }
-            userSavedPosts.addAll(parsedSavedPosts)
-            val organizedPosts = postDataList.sortedByDescending { post -> post.creation_date }.toCollection(ArrayList())
-            println("organizedPosts: $organizedPosts")
-            println("image posts: ${organizedPosts.filter { organizedPost -> organizedPost.type == "image" }.size}")
-            lastImagePost = organizedPosts.filter { organizedPost -> organizedPost.type == "image" }[0]
-            weekImagePosts.add(ImagePostMain(lastImagePost.id, Uri.parse(lastImagePost.thumbnail),
-                Uri.parse(lastImagePost.main_media), lastImagePost.title, lastImagePost.author,
-                lastImagePost.location, lastImagePost.description, lastImagePost.commentaries!!,
-                lastImagePost.creation_date))
-            println("video posts: ${organizedPosts.filter { organizedPost -> organizedPost.type == "video" }.size}")
-            val videoPosts = organizedPosts.filter { organizedPost -> organizedPost.type == "video" }
-            lastlyRecommendedVideos = if (videoPosts.size == 3) videoPosts.subList(0, 3) else listOf<PostData>()
-            for (video in lastlyRecommendedVideos) {
-                recommendedVideoPosts.add(
-                    VideoPostMain(video.id, Uri.parse(video.main_media),
-                        Uri.parse(video.thumbnail), video.title.toString(), video.description.toString(),
-                        video.category.toString()))
-            }
-        }
-    }
     private fun obtainMetrics(user: FirebaseUser) {
-        db.collection("posts").get().addOnSuccessListener {
-            val postDataList = mutableListOf<PostData>()
-            for (document in it) {
-                val postData = document.toObject(PostData::class.java)
-                postData.id = document.id
-                postDataList.add(postData)
-            }
-            val postsArrayList: ArrayList<PostData> = ArrayList()
+        firestore.postsLiveData.observe(this, androidx.lifecycle.Observer { posts ->
+            val postsArrayList = mutableListOf<PostData>()
             val totalCommentaries = user.commentaries.size
             val totalReactions = user.reactions.size
             val totalPositiveReactions = user.reactions.size
@@ -174,7 +156,7 @@ class UserActivity : FragmentActivity() {
             var likedAmbientalPosts = 0
             var likedMemoryPosts = 0
             var likedGenderPosts = 0
-            postsArrayList.addAll(postDataList)
+            postsArrayList.addAll(posts)
             for (reaction in user.reactions) {
                 val postInfo = postsArrayList.find { post -> post.id == reaction }
                 when (postInfo?.category) {
@@ -192,7 +174,7 @@ class UserActivity : FragmentActivity() {
                 likedMemoryPosts,
                 likedGenderPosts
             ))
-        }
+        })
     }
 
     private fun renderCategoryMetrics(renderParams: JSONObject, userMetrics: UserMetrics, mainCategoryPercentage: Int, secondaryCategoryPercentage: Int, thirdCategoryPercentage: Int) {

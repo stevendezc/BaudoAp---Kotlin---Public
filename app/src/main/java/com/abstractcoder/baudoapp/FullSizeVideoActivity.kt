@@ -15,6 +15,7 @@ import com.abstractcoder.baudoapp.databinding.ActivityFullSizeVideoBinding
 import com.abstractcoder.baudoapp.recyclers.VideoPostMain
 import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.ReactionHandler
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -27,6 +28,7 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
     private lateinit var gestureDetector: GestureDetectorCompat
 
     private val db = FirebaseFirestore.getInstance()
+    val firestore = Firestore()
 
     private lateinit var postId: String
     private lateinit var userData: FirebaseUser
@@ -44,16 +46,17 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
         val sharedPref = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
-        db.collection("users").document(email!!).get().addOnSuccessListener {
-            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
-            userData = myData
+
+        firestore.subscribeToUserUpdates(this, email!!)
+        firestore.subscribeToSinglePostUpdates(this, postId)
+        firestore.userLiveData.observe(this, androidx.lifecycle.Observer { user ->
+            // Update your UI with the new data
+            userData = user
             setReactionIcons(userData)
-        }
-        db.collection("posts").document(postId).get().addOnSuccessListener {
-            var post = it.toObject(PostData::class.java) ?: PostData()
-            post.id = it.id
+        })
+        firestore.singlePostLiveData.observe(this, androidx.lifecycle.Observer { post ->
             postData = post
-        }
+        })
         setup(videoContent!!, name!!, email!!)
     }
 
@@ -167,7 +170,6 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
                 reactionHandler.addReaction(
                     email,
                     postId,
-                    "likes",
                     userData,
                     postData,
                     db
@@ -218,6 +220,11 @@ class FullSizeVideoActivity : AppCompatActivity(), GestureDetector.OnGestureList
             return true
         }
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        firestore.clearListeners()
     }
 
 }

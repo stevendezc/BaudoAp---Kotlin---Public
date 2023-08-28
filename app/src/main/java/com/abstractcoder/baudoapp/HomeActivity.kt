@@ -32,7 +32,7 @@ data class BottomMenuOption(val icon: ImageView, val label: TextView)
 
 class HomeActivity : AppCompatActivity() {
     lateinit var topMenu: LinearLayout
-    private val db = FirebaseFirestore.getInstance()
+    val firestore = Firestore()
     val networkConnection = Connection()
 
     private lateinit var userData: FirebaseUser
@@ -167,9 +167,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getUser(email: String) {
-        db.collection("users").document(email!!).get().addOnSuccessListener {
-            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
-            userData = myData
+        firestore.subscribeToUserUpdates(this, email)
+        firestore.userLiveData.observe(this, androidx.lifecycle.Observer { user ->
+            // Update your UI with the new data
+            userData = user
             val userName = userData.name
             println("currentUser: $userData")
             val prefs = getSharedPreferences(
@@ -185,15 +186,7 @@ class HomeActivity : AppCompatActivity() {
                     .into(binding.userImage)
             }
             binding.nameTextView.text = userName
-        }.addOnFailureListener {
-            println("User not found")
-            val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-            prefs.clear()
-            prefs.apply()
-            FirebaseAuth.getInstance().signOut()
-            val logInIntent = Intent(this, LogInActivity::class.java)
-            startActivity(logInIntent)
-        }
+        })
     }
 
     private fun makeCurrentFragment(fragment: Fragment) {

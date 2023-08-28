@@ -7,19 +7,23 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abstractcoder.baudoapp.databinding.ActivityInnerImageContentBinding
 import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
 import com.abstractcoder.baudoapp.recyclers.ImagePostMain
+import com.abstractcoder.baudoapp.utils.Firestore
 import com.abstractcoder.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,6 +32,7 @@ class innerImageContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInnerImageContentBinding
     private val db = FirebaseFirestore.getInstance()
+    val firestore = Firestore()
 
     private lateinit var postId: String
     private lateinit var userData: FirebaseUser
@@ -50,22 +55,21 @@ class innerImageContentActivity : AppCompatActivity() {
         val name = sharedPref.getString("name", "")
         val email = sharedPref.getString("email", "")
 
-        db.collection("users").document(email!!).get().addOnSuccessListener {
-            val myData = it.toObject(FirebaseUser::class.java) ?: FirebaseUser()
+        firestore.subscribeToUserUpdates(this, email!!)
+        firestore.subscribeToSinglePostUpdates(this, postId)
+        firestore.userLiveData.observe(this, androidx.lifecycle.Observer { user ->
             // Update your UI with the new data
-            userData = myData
+            userData = user
+            println("Updated userData: $userData")
             val userImage = userData.user_pic
             Glide.with(binding.userImageView2)
                 .load(userImage)
                 .into(binding.userImageView2)
             setReactionIcons(userData)
-        }
-        db.collection("posts").document(postId).get().addOnSuccessListener {
-            var documentData = it.toObject(PostData::class.java) ?: PostData()
-            documentData.id = it.id
-            // Update your UI with the new data
-            postData = documentData
-        }
+        })
+        firestore.singlePostLiveData.observe(this, androidx.lifecycle.Observer { post ->
+            postData = post
+        })
         setup(imageContent!!, name!!, email!!)
     }
 
@@ -81,17 +85,12 @@ class innerImageContentActivity : AppCompatActivity() {
     private fun getComments(userEmail: String) {
         // Load Posts
         imageCommentList.clear()
-        db.collection("commentaries").whereEqualTo("post", postId).get().addOnSuccessListener { commentaries ->
-            val commentariesList = mutableListOf<Commentary>()
-            for (commentary in commentaries) {
-                var commentaryData = commentary.toObject(Commentary::class.java)
-                commentaryData.id = commentary.id
-                commentariesList.add(commentaryData)
-            }
+        firestore.subscribeToPostCommentariesUpdates(this, postId)
+        firestore.postCommentsLiveData.observe(this, androidx.lifecycle.Observer { commentaries ->
             // Update your UI with the new data
-            val organizedCommentaries = commentariesList.sortedByDescending { it.timestamp }.toCollection(ArrayList())
+            val organizedCommentaries = commentaries.sortedByDescending { it.timestamp }.toCollection(ArrayList())
             setCommentsOnRecycler(organizedCommentaries, userEmail)
-        }
+        })
     }
 
     private fun addComment(userName: String, authorEmail: String) {
@@ -219,7 +218,6 @@ class innerImageContentActivity : AppCompatActivity() {
                 reactionHandler.addReaction(
                     email,
                     postId,
-                    "likes",
                     userData,
                     postData,
                     db
@@ -232,5 +230,10 @@ class innerImageContentActivity : AppCompatActivity() {
 
             getComments(email)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        firestore.clearListeners()
     }
 }
