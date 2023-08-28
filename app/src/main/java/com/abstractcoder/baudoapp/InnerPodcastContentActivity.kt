@@ -229,9 +229,7 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             }
         }
         // Seekbar functionalities
-        binding.innerPodcastSeekbar.setProgress(0);
-        binding.innerPodcastSeekbar.setMax(0);
-        binding.innerPodcastSeekbar.setPadding(0, 0, 0, 0);
+        binding.innerPodcastSeekbar.visibility = SeekBar.VISIBLE
         binding.innerPodcastSeekbar.progress = 0
         binding.innerPodcastSeekbar.max = podcastMedia.duration
         binding.innerPodcastSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
@@ -246,7 +244,6 @@ class InnerPodcastContentActivity : AppCompatActivity() {
             }
         })
 
-        binding.innerPodcastSeekbar.visibility = SeekBar.VISIBLE
         runnable = Runnable {
             podcastCurrentPosition = podcastMedia.currentPosition
             binding.innerPodcastSeekbar.progress = podcastMedia.currentPosition
