@@ -207,6 +207,7 @@ class UserActivity : FragmentActivity() {
         val thirdIconDrawableId = resources.getIdentifier(renderParams.getString("thirdCategoryIcon"), "drawable", packageName)
 
         // Main Liked Category
+        println("mainCategoryTitle: ${renderParams.getString("mainCategoryTitle")}")
         binding.mainCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(mainColor))
         binding.mainCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, mainProgressDrawableId)
         binding.mainCategoryProgress.progress = 100 - mainCategoryPercentage
@@ -221,6 +222,7 @@ class UserActivity : FragmentActivity() {
                 "Total guardados: ${userMetrics.totalSavedPosts}"
         binding.mainCategoryStats.setTextColor(Color.parseColor(mainColor))
         // Secondary Liked Category
+        println("secondaryCategoryTitle: ${renderParams.getString("secondaryCategoryTitle")}")
         binding.secondaryCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(secondaryColor))
         binding.secondaryCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, secondaryProgressDrawableId)
         binding.secondaryCategoryProgress.progress = 100 - secondaryCategoryPercentage
@@ -230,6 +232,7 @@ class UserActivity : FragmentActivity() {
         binding.secondaryCategoryTitle.text = renderParams.getString("secondaryCategoryTitle")
         binding.secondaryCategoryTitle.setTextColor(Color.parseColor(secondaryColor))
         // Tertiary Liked Category
+        println("thirdCategoryTitle: ${renderParams.getString("thirdCategoryTitle")}")
         binding.thirdCategoryContainer.backgroundTintList = ColorStateList.valueOf(Color.parseColor(thirdColor))
         binding.thirdCategoryProgress.progressDrawable = ContextCompat.getDrawable(this, thirdProgressDrawableId)
         binding.thirdCategoryProgress.progress = 100 - thirdCategoryPercentage
@@ -247,7 +250,9 @@ class UserActivity : FragmentActivity() {
             val inputStream: InputStream = assets.open("userLikedCategories.json")
             json = inputStream.bufferedReader().use { it.readText() }
             jsonObject = JSONObject(json)
+            println("variant: $variant")
             val outputJson = jsonObject.getJSONObject(variant)
+            println(outputJson)
             renderCategoryMetrics(
                 outputJson,
                 userMetrics,
@@ -266,14 +271,19 @@ class UserActivity : FragmentActivity() {
             likedAmbientalPosts > likedGenderPosts) {
             if (likedMemoryPosts > likedGenderPosts) obtainCategoryOpts("1", userMetrics, likedAmbientalPosts, likedMemoryPosts, likedGenderPosts)
             else obtainCategoryOpts("2", userMetrics, likedAmbientalPosts, likedGenderPosts, likedMemoryPosts)
+            return
         }
         if (likedMemoryPosts > likedAmbientalPosts &&
             likedMemoryPosts > likedGenderPosts) {
             if (likedAmbientalPosts > likedGenderPosts) obtainCategoryOpts("3", userMetrics, likedMemoryPosts, likedAmbientalPosts, likedGenderPosts)
             else obtainCategoryOpts("4", userMetrics, likedMemoryPosts, likedGenderPosts, likedAmbientalPosts)
-        } else {
+            return
+        }
+        if (likedGenderPosts > likedMemoryPosts &&
+            likedGenderPosts > likedAmbientalPosts) {
             if (likedAmbientalPosts > likedMemoryPosts) obtainCategoryOpts("5", userMetrics, likedGenderPosts, likedAmbientalPosts, likedMemoryPosts)
             else obtainCategoryOpts("6", userMetrics, likedGenderPosts, likedMemoryPosts, likedAmbientalPosts)
+            return
         }
     }
 
