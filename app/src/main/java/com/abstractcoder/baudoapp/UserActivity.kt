@@ -165,6 +165,7 @@ class UserActivity : FragmentActivity() {
                     "genero" -> likedGenderPosts += 1
                 }
             }
+            println("totalReactions: $totalReactions")
             setMetrics(UserMetrics(
                 totalCommentaries,
                 totalReactions,
@@ -265,6 +266,10 @@ class UserActivity : FragmentActivity() {
             likedGenderPosts > likedAmbientalPosts) {
             if (likedAmbientalPosts > likedMemoryPosts) obtainCategoryOpts("5", userMetrics, likedGenderPosts, likedAmbientalPosts, likedMemoryPosts)
             else obtainCategoryOpts("6", userMetrics, likedGenderPosts, likedMemoryPosts, likedAmbientalPosts)
+            return
+        }
+        else {
+            obtainCategoryOpts("6", userMetrics, likedGenderPosts, likedMemoryPosts, likedAmbientalPosts)
             return
         }
     }
