@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
 import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
 import com.abstractcoder.baudoapp.utils.CheckoutData
+import com.abstractcoder.baudoapp.utils.EmailMessage
 import com.abstractcoder.baudoapp.utils.PaymentDialog
 import com.abstractcoder.baudoapp.utils.wompi.TransactionResponse
 import com.google.android.gms.tasks.Tasks
@@ -34,6 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
@@ -151,6 +154,22 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
         }
     }
 
+    private fun getCurrentDateTime(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val timeZone = TimeZone.getTimeZone("America/Bogota") // Colombia's time zone
+            dateFormat.timeZone = timeZone
+        }
+
+        return dateFormat.format(Date())
+    }
+
+    private fun addPrefixAndSuffixToProducts(inputList: List<String>, prefix: String, suffix: String): String {
+        val modifiedList = inputList.map { "$prefix$it$suffix" }
+        return modifiedList.joinToString("")
+    }
+
     private fun addPurchaseReceipt(checkout_data: CheckoutData) {
         var transactionResponse = checkout_data.transactionResponse!!
         var contactInfo = checkout_data.contact_info!!
@@ -198,6 +217,32 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
                 )
             ).addOnSuccessListener {
                 Toast.makeText(context, "Pago exitoso", Toast.LENGTH_SHORT).show()
+            }
+
+            val currentDate = getCurrentDateTime()
+            val documentName = "${email}-$currentDate"
+            val receivers = listOf<String>(email)
+            val productsListItems = addPrefixAndSuffixToProducts(stringifiedProductList, "<li>", "</li>")
+            val emailMessage = EmailMessage(
+                subject = "Recibo de compra ${transactionResponse.data.id}",
+                html = "<h2>Recibo de compra ${transactionResponse.data.id}</h2><br>" +
+                        "<p>Estimado ${contactInfo.contact_name} la siguiente lista detalla los articulos que fueron solicitados a su nombre:</p><br>" +
+                        "<ul>" +
+                        productsListItems +
+                        "</ul><br>" +
+                        "<p>Por un valor total de <b>${(transactionResponse.data.amount_in_cents / 100)}</b></p><br><br>" +
+                        "<p>Quedamos atentos ante cualquier inquietud</p><br>" +
+                        "<img src='https://baudoap.com/wp-content/uploads/2017/10/logo.png'></img>"
+            )
+            db.collection("mail").document(documentName).set(
+                mapOf(
+                    "to" to receivers,
+                    "message" to emailMessage
+                )
+            ).addOnSuccessListener {
+                Toast.makeText(context, "Email de recibo enviado", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(context, "El email de recibo no se pudo enviar correctamente", Toast.LENGTH_SHORT).show()
             }
         }
     }
