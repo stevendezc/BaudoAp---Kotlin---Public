@@ -31,6 +31,7 @@ class StoreDialog(
     private val itemName: String,
     private val itemPrice: String,
     private val itemQuantity: Int,
+    private val subtype: String,
     private val itemSize: String
 ): DialogFragment() {
     private lateinit var binding: StoreSingleItemDialogBinding
@@ -85,13 +86,13 @@ class StoreDialog(
 
         binding.purchaseButton.setOnClickListener {
             if (directPurchase) {
-                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
+                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, subtype, itemSize)
                 addItemToShoppingCart(newItem)
                 val intent = Intent(activity, StoreCheckOutActivity::class.java)
                 dismiss()
                 startActivity(intent)
             } else {
-                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, itemSize)
+                val newItem = PurchaseItemMain(itemId, itemName, itemThumbnail, itemPrice, itemQuantity, subtype, itemSize)
                 addItemToShoppingCart(newItem)
                 listener.onDialogSubmit(true)
                 dismiss()
@@ -117,7 +118,7 @@ class StoreDialog(
         val shoppingCartItems = getShoppingCartItems()
         println("itemId: $itemId")
         println("itemSize: $itemSize")
-        val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == itemSize }
+        val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.subtype == subtype && it.size == itemSize }
         println("similarPurchase: $similarPurchase")
         println("itemList 0: $itemList")
         itemList.add(newItem)

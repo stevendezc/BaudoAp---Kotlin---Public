@@ -94,13 +94,14 @@ class PaymentDialog(
             println("item.quantity: ${item.quantity}")
             db.collection("productos").document(item.id!!).get()
                 .addOnCompleteListener {
-                    val currentStock = it.result.get("stock_${item.size?.lowercase()}")
+                    val currentStock = it.result.get("stock_${item.subtype?.lowercase()}_${item.size?.lowercase()}")
                     println("currentStock: $currentStock")
                     if ((currentStock as Long) - item.quantity!! < 0) {
                         println("No hay stock para ${item.name}")
                         validationMainList.add(ValidationResultMain(
                             item.id,
                             false,
+                            item.subtype,
                             item.size
                         ))
                     } else {
@@ -109,6 +110,7 @@ class PaymentDialog(
                             ValidationResultMain(
                             item.id,
                             true,
+                                item.subtype,
                             item.size
                         ))
                     }

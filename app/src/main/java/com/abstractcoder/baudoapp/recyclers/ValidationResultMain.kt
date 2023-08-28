@@ -6,11 +6,13 @@ import android.os.Parcelable
 data class ValidationResultMain(
     var item_id: String?,
     var item_in_stock: Boolean?,
+    var item_subtype: String?,
     var item_size: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readString(),
         parcel.readString()
     ) {
     }
@@ -18,6 +20,7 @@ data class ValidationResultMain(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(item_id)
         parcel.writeValue(item_in_stock)
+        parcel.writeString(item_subtype)
         parcel.writeString(item_size)
     }
 

@@ -121,6 +121,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
                 item.thumbnail,
                 item.price,
                 item.quantity,
+                item.subtype,
                 item.size
             )
             purchaseItemMainList.add(storeItem)
@@ -204,7 +205,7 @@ class StoreCheckOutActivity : AppCompatActivity(), SharedPreferences.OnSharedPre
     private fun decreaseItemStock(item: PurchaseItemMain, updatedQuantity: Long, transactionReference: String) {
         if (item.size != "") {
             db.collection("productos").document(item.id!!).update(
-                "stock_${item.size?.lowercase()}", updatedQuantity
+                "stock_${item.subtype?.lowercase()}_${item.size?.lowercase()}", updatedQuantity
             )
                 .addOnSuccessListener {
                     println("Item ${item.id} ${item.name} actualizado")

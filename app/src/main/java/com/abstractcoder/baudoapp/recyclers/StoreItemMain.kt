@@ -8,19 +8,26 @@ data class StoreItemMain(
     var id: String? = "",
     var title: String? = "",
     var type: String? = "",
+    var subtype: String? = "",
     var thumbnail: String? = "",
     var gallery: List<String>? = listOf<String>(),
     var price: String? = "",
     var description: String? = "",
     var creation_date: Timestamp? = null,
-    var stock: Int = 0,
-    var stock_xs: Int = 0,
-    var stock_s: Int = 0,
-    var stock_m: Int = 0,
-    var stock_l: Int = 0,
-    var stock_xl: Int = 0
+    var stock: Int? = 0,
+    var stock_regular_xs: Int? = 0,
+    var stock_cenido_xs: Int? = 0,
+    var stock_regular_s: Int? = 0,
+    var stock_cenido_s: Int? = 0,
+    var stock_regular_m: Int? = 0,
+    var stock_cenido_m: Int? = 0,
+    var stock_regular_l: Int? = 0,
+    var stock_cenido_l: Int? = 0,
+    var stock_regular_xl: Int? = 0,
+    var stock_cenido_xl: Int? = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -34,6 +41,11 @@ data class StoreItemMain(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
         parcel.readInt()
     ) {
     }
@@ -42,17 +54,23 @@ data class StoreItemMain(
         parcel.writeString(id)
         parcel.writeString(title)
         parcel.writeString(type)
+        parcel.writeString(subtype)
         parcel.writeString(thumbnail)
         parcel.writeStringList(gallery)
         parcel.writeString(price)
         parcel.writeString(description)
         parcel.writeParcelable(creation_date, flags)
-        parcel.writeInt(stock)
-        parcel.writeInt(stock_xs)
-        parcel.writeInt(stock_s)
-        parcel.writeInt(stock_m)
-        parcel.writeInt(stock_l)
-        parcel.writeInt(stock_xl)
+        parcel.writeInt(stock!!)
+        parcel.writeInt(stock_regular_xs!!)
+        parcel.writeInt(stock_cenido_xs!!)
+        parcel.writeInt(stock_regular_s!!)
+        parcel.writeInt(stock_cenido_s!!)
+        parcel.writeInt(stock_regular_m!!)
+        parcel.writeInt(stock_cenido_m!!)
+        parcel.writeInt(stock_regular_l!!)
+        parcel.writeInt(stock_cenido_l!!)
+        parcel.writeInt(stock_regular_xl!!)
+        parcel.writeInt(stock_cenido_xl!!)
     }
 
     override fun describeContents(): Int {

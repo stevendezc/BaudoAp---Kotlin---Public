@@ -2,6 +2,8 @@ package com.abstractcoder.baudoapp
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -38,6 +40,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
     private lateinit var sharedPreferences: SharedPreferences
     private var shoppingCartItems: MutableList<PurchaseItemMain> = mutableListOf<PurchaseItemMain>()
     private var selectedSize: String = ""
+    private var selectedSubtype: String = ""
     private var productQuantity: Int = 0
     private var maxQuantityLimit: Int = 0
 
@@ -83,28 +86,85 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
             binding.storeItemPrice.text = "Precio $" + storeItemContent.price
             binding.storeItemDescription.text = "Descripcion del producto, " + storeItemContent.description
 
-            if (storeItemContent.stock_xs == 0) { binding.xsBadge.visibility = TextView.GONE }
-            if (storeItemContent.stock_s == 0) { binding.sBadge.visibility = TextView.GONE }
-            if (storeItemContent.stock_m == 0) { binding.mBadge.visibility = TextView.GONE }
-            if (storeItemContent.stock_l == 0) { binding.lBadge.visibility = TextView.GONE }
-            if (storeItemContent.stock_xl == 0) { binding.xlBadge.visibility = TextView.GONE }
-
-            if ((storeItemContent.stock_xs == 0 &&
-                storeItemContent.stock_s == 0 &&
-                storeItemContent.stock_m == 0 &&
-                storeItemContent.stock_l == 0 &&
-                storeItemContent.stock_xl == 0) && storeItemContent.stock == 0) {
-                binding.sizeLabel.visibility = TextView.GONE
-                binding.purchaseButton.visibility = TextView.GONE
-                binding.addToCart.visibility = TextView.GONE
-                binding.nonPurchaseableButton.visibility = TextView.VISIBLE
+            binding.cenidoButton.setOnClickListener {
+                println("CENIDO SET")
+                println("xs: ${storeItemContent.stock_cenido_xs}")
+                println("s: ${storeItemContent.stock_cenido_s}")
+                println("m: ${storeItemContent.stock_cenido_m}")
+                println("l: ${storeItemContent.stock_cenido_l}")
+                println("xl: ${storeItemContent.stock_cenido_xl}")
+                selectedSubtype = "cenido"
+                binding.sizeLabel.visibility = TextView.VISIBLE
+                binding.sizesContainer.visibility = LinearLayout.VISIBLE
+                resetSizesVisibility()
+                resetProductQuantity()
+                switchBottomMenuColor(false,0)
+                if (storeItemContent.stock_cenido_xs == 0) { binding.xsBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_cenido_s == 0) { binding.sBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_cenido_m == 0) { binding.mBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_cenido_l == 0) { binding.lBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_cenido_xl == 0) { binding.xlBadge.visibility = TextView.GONE }
+            }
+            binding.regularButton.setOnClickListener {
+                println("REGULAR SET")
+                println("xs: ${storeItemContent.stock_regular_xs}")
+                println("s: ${storeItemContent.stock_regular_s}")
+                println("m: ${storeItemContent.stock_regular_m}")
+                println("l: ${storeItemContent.stock_regular_l}")
+                println("xl: ${storeItemContent.stock_regular_xl}")
+                selectedSubtype = "regular"
+                binding.sizeLabel.visibility = TextView.VISIBLE
+                binding.sizesContainer.visibility = LinearLayout.VISIBLE
+                resetSizesVisibility()
+                resetProductQuantity()
+                switchBottomMenuColor(false,1)
+                if (storeItemContent.stock_regular_xs == 0) { binding.xsBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_regular_s == 0) { binding.sBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_regular_m == 0) { binding.mBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_regular_l == 0) { binding.lBadge.visibility = TextView.GONE }
+                if (storeItemContent.stock_regular_xl == 0) { binding.xlBadge.visibility = TextView.GONE }
             }
 
             if (storeItemContent.type == "estren") {
                 binding.sizeLabel.text = "Talla"
+                binding.sizeLabel.visibility = TextView.GONE
+                binding.sizesContainer.visibility = LinearLayout.GONE
+                /*if (storeItemContent.subtype == "tshirt") {
+                    if (storeItemContent.stock_regular_xs == 0 && storeItemContent.stock_regular_s == 0 &&
+                        storeItemContent.stock_regular_m == 0 && storeItemContent.stock_regular_l == 0 &&
+                        storeItemContent.stock_regular_xl == 0 && storeItemContent.stock_cenido_xs == 0 &&
+                        storeItemContent.stock_cenido_xs == 0 && storeItemContent.stock_cenido_s == 0 &&
+                        storeItemContent.stock_cenido_m == 0 && storeItemContent.stock_cenido_l == 0) {
+                        binding.sizeLabel.visibility = TextView.GONE
+                        binding.purchaseButton.visibility = TextView.GONE
+                        binding.addToCart.visibility = TextView.GONE
+                        binding.nonPurchaseableButton.visibility = TextView.VISIBLE
+                    }
+                } else {
+                    binding.cenidoButton.visibility = TextView.GONE
+                    if (storeItemContent.stock_regular_xs == 0 &&
+                        storeItemContent.stock_regular_s == 0 &&
+                        storeItemContent.stock_regular_m == 0 &&
+                        storeItemContent.stock_regular_l == 0 &&
+                        storeItemContent.stock_regular_xl == 0) {
+                        binding.sizeLabel.visibility = TextView.GONE
+                        binding.purchaseButton.visibility = TextView.GONE
+                        binding.addToCart.visibility = TextView.GONE
+                        binding.nonPurchaseableButton.visibility = TextView.VISIBLE
+                    }
+                }*/
             }
             if (storeItemContent.type != "estren") {
                 binding.sizeLabel.text = "Cantidad"
+                binding.sizesContainer.visibility = LinearLayout.GONE
+                binding.styleLabel.visibility = TextView.GONE
+                binding.stylesContainer.visibility = LinearLayout.GONE
+                if (storeItemContent.stock == 0) {
+                    binding.sizeLabel.visibility = TextView.GONE
+                    binding.purchaseButton.visibility = TextView.GONE
+                    binding.addToCart.visibility = TextView.GONE
+                    binding.nonPurchaseableButton.visibility = TextView.VISIBLE
+                }
             }
 
             if ((storeItemContent.type == "estren" && this.selectedSize == "") ||
@@ -112,7 +172,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                 binding.quantityContainer.visibility = LinearLayout.GONE
             }
 
-            if (storeItemContent.type != "estren" && storeItemContent.stock > 0) {
+            if (storeItemContent.type != "estren" && storeItemContent.stock!! > 0) {
                 println("NO ESTREN")
                 setMaxQuantityLimit(storeItemContent, false)
             }
@@ -120,31 +180,31 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                 this.selectedSize = "XS"
                 setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
-                switchBottomMenuColor(0)
+                switchBottomMenuColor(true,0)
             }
             binding.sBadge.setOnClickListener {
                 this.selectedSize = "S"
                 setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
-                switchBottomMenuColor(1)
+                switchBottomMenuColor(true,1)
             }
             binding.mBadge.setOnClickListener {
                 this.selectedSize = "M"
                 setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
-                switchBottomMenuColor(2)
+                switchBottomMenuColor(true,2)
             }
             binding.lBadge.setOnClickListener {
                 this.selectedSize = "L"
                 setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
-                switchBottomMenuColor(3)
+                switchBottomMenuColor(true,3)
             }
             binding.xlBadge.setOnClickListener {
                 this.selectedSize = "XL"
                 setMaxQuantityLimit(storeItemContent, true)
                 resetProductQuantity()
-                switchBottomMenuColor(4)
+                switchBottomMenuColor(true,4)
             }
 
             binding.backButton.setOnClickListener {
@@ -177,6 +237,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                             storeItemContent.title!!,
                             storeItemContent.price!!,
                             this.productQuantity,
+                            this.selectedSubtype,
                             this.selectedSize
                         ).show(this.supportFragmentManager, "purchase dialog")
                     } else {
@@ -195,6 +256,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                             storeItemContent.title!!,
                             storeItemContent.price!!,
                             this.productQuantity,
+                            this.selectedSubtype,
                             this.selectedSize
                         ).show(this.supportFragmentManager, "purchase dialog")
                     } else {
@@ -217,6 +279,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                             storeItemContent.title!!,
                             storeItemContent.price!!,
                             this.productQuantity,
+                            this.selectedSubtype,
                             this.selectedSize
                         ).show(this.supportFragmentManager, "purchase dialog")
                     } else {
@@ -235,6 +298,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
                             storeItemContent.title!!,
                             storeItemContent.price!!,
                             this.productQuantity,
+                            this.selectedSubtype,
                             this.selectedSize
                         ).show(this.supportFragmentManager, "purchase dialog")
                     } else {
@@ -305,21 +369,66 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
         this.productQuantity = 0
         binding.quantity.text = this.productQuantity.toString()
     }
+    private fun resetSizesVisibility() {
+        binding.xsBadge.visibility = TextView.VISIBLE
+        binding.sBadge.visibility = TextView.VISIBLE
+        binding.mBadge.visibility = TextView.VISIBLE
+        binding.lBadge.visibility = TextView.VISIBLE
+        binding.xlBadge.visibility = TextView.VISIBLE
+    }
 
     private fun setMaxQuantityLimit(storeItemContent: StoreItemMain, isClothes: Boolean) {
+        println("isClothes: $isClothes")
+        println("storeItemContent subtype: ${storeItemContent.subtype}")
+        println("selectedSubtype: $selectedSubtype")
+        println(storeItemContent)
         if (isClothes) {
-            val sizeMap = mapOf(
-                "XS" to storeItemContent.stock_xs,
-                "S" to storeItemContent.stock_s,
-                "M" to storeItemContent.stock_m,
-                "L" to storeItemContent.stock_l,
-                "XL" to storeItemContent.stock_xl
-            )
-            val baseSize = sizeMap[selectedSize]
-            getShoppingCartItems("itemList")
-            val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
-            if (baseSize != null) {
-                maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+            if (storeItemContent.subtype == "tshirt") {
+                if (selectedSubtype == "cenido") {
+                    val sizeMap = mapOf(
+                        "XS" to storeItemContent.stock_cenido_xs,
+                        "S" to storeItemContent.stock_cenido_s,
+                        "M" to storeItemContent.stock_cenido_m,
+                        "L" to storeItemContent.stock_cenido_l,
+                        "XL" to storeItemContent.stock_cenido_xl
+                    )
+                    val baseSize = sizeMap[selectedSize]
+                    getShoppingCartItems("itemList")
+                    val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+                    if (baseSize != null) {
+                        maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+                    }
+                } else {
+                    // Tshirt regular & hoodie
+                    val sizeMap = mapOf(
+                        "XS" to storeItemContent.stock_regular_xs,
+                        "S" to storeItemContent.stock_regular_s,
+                        "M" to storeItemContent.stock_regular_m,
+                        "L" to storeItemContent.stock_regular_l,
+                        "XL" to storeItemContent.stock_regular_xl
+                    )
+                    val baseSize = sizeMap[selectedSize]
+                    getShoppingCartItems("itemList")
+                    val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+                    if (baseSize != null) {
+                        maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+                    }
+                }
+            } else {
+                // Tshirt regular & hoodie
+                val sizeMap = mapOf(
+                    "XS" to storeItemContent.stock_regular_xs,
+                    "S" to storeItemContent.stock_regular_s,
+                    "M" to storeItemContent.stock_regular_m,
+                    "L" to storeItemContent.stock_regular_l,
+                    "XL" to storeItemContent.stock_regular_xl
+                )
+                val baseSize = sizeMap[selectedSize]
+                getShoppingCartItems("itemList")
+                val similarPurchase = shoppingCartItems.filter { it.id == itemId && it.size == selectedSize }
+                if (baseSize != null) {
+                    maxQuantityLimit = baseSize - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+                }
             }
         } else {
             getShoppingCartItems("itemList")
@@ -328,7 +437,7 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
             println("similarPurchase: $shoppingCartItems")
             println("storeItemContent.stock: ${storeItemContent.stock}")
             if (storeItemContent.stock != 0) {
-                maxQuantityLimit = storeItemContent.stock - if (similarPurchase.size != 0) similarPurchase[0].quantity!! else 0
+                maxQuantityLimit = storeItemContent.stock?.minus(if (similarPurchase.isNotEmpty()) similarPurchase[0].quantity!! else 0)!!
                 println("maxQuantityLimit: $maxQuantityLimit")
             }
         }
@@ -348,28 +457,47 @@ class innerStoreItemContentActivity : AppCompatActivity(), DialogListener, Share
         }
     }
 
-    private fun switchBottomMenuColor(pos: Int) {
-        binding.quantityContainer.visibility = LinearLayout.VISIBLE
-        binding.quantityLabel.visibility = TextView.VISIBLE
-        val selectedColor = ContextCompat.getColor(this, R.color.white)
-        val unselectedColor = ContextCompat.getColor(this, R.color.gray_85)
-        val optionsItems = arrayOf(
-            binding.xsBadge,
-            binding.sBadge,
-            binding.mBadge,
-            binding.lBadge,
-            binding.xlBadge,
-        )
-        for (index in optionsItems.indices) {
-            val option = optionsItems[index]
-            println(pos)
-            println(option)
-            if (index == pos) {
-                option.background = selectedColor.toDrawable()
-                option.setTypeface(null, Typeface.BOLD)
-            } else {
-                option.background = unselectedColor.toDrawable()
-                option.setTypeface(null, Typeface.NORMAL)
+    private fun switchBottomMenuColor(isSize: Boolean, pos: Int) {
+        if (isSize) {
+            binding.quantityContainer.visibility = LinearLayout.VISIBLE
+            binding.quantityLabel.visibility = TextView.VISIBLE
+            val selectedColor = ContextCompat.getColor(this, R.color.white)
+            val unselectedColor = ContextCompat.getColor(this, R.color.gray_85)
+            val optionsItems = arrayOf(
+                binding.xsBadge,
+                binding.sBadge,
+                binding.mBadge,
+                binding.lBadge,
+                binding.xlBadge,
+            )
+            for (index in optionsItems.indices) {
+                val option = optionsItems[index]
+                println(pos)
+                println(option)
+                if (index == pos) {
+                    option.background = selectedColor.toDrawable()
+                    option.setTypeface(null, Typeface.BOLD)
+                } else {
+                    option.background = unselectedColor.toDrawable()
+                    option.setTypeface(null, Typeface.NORMAL)
+                }
+            }
+        } else {
+            val optionsItems = arrayOf(
+                binding.cenidoButton,
+                binding.regularButton
+            )
+            for (index in optionsItems.indices) {
+                val option = optionsItems[index]
+                println(pos)
+                println(option)
+                if (index == pos) {
+                    option.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+                    option.setTypeface(null, Typeface.BOLD)
+                } else {
+                    option.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
+                    option.setTypeface(null, Typeface.NORMAL)
+                }
             }
         }
     }

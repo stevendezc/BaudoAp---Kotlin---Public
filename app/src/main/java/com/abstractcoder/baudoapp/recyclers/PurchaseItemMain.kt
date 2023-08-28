@@ -9,6 +9,7 @@ data class PurchaseItemMain(
     val thumbnail: String? = "",
     val price: String? = "",
     val quantity: Int? = 0,
+    val subtype: String? = "",
     val size: String? = "",
 ): Parcelable {
     constructor(parcel: Parcel) : this(
