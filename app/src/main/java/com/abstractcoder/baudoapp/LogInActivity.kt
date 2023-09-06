@@ -73,7 +73,7 @@ class LogInActivity : AppCompatActivity() {
         title = "Autenticacion"
         val authInstance = FirebaseAuth.getInstance()
 
-        binding.googleButton.setOnClickListener {
+        /*binding.googleButton.setOnClickListener {
             // Config
             val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -83,7 +83,7 @@ class LogInActivity : AppCompatActivity() {
             val googleClient = GoogleSignIn.getClient(this, googleConf)
             googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
-        }
+        }*/
 
         binding.logInButton.setOnClickListener {
             if (binding.emailEditText.text.isNotEmpty() && binding.passwordEditText.text.isNotEmpty()) {
