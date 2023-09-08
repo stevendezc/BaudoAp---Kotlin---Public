@@ -1,9 +1,9 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
-import com.abstractcoder.baudoapp.utils.wompi.TransactionResponse
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.utils.wompi.TransactionResponse
 
 data class ContactInfo(
     val contact_email: String? = "",

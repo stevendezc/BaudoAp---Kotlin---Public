@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.content.Context
 import android.graphics.Color

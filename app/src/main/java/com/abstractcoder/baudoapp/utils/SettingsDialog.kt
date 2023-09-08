@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Dialog
 import android.content.Intent
@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.abstractcoder.baudoapp.FixedVideoActivity
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
-import com.abstractcoder.baudoapp.databinding.SettingsDialogBinding
+import com.pereira.baudoapp.FixedVideoActivity
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.ActivityUserBinding
+import com.pereira.baudoapp.databinding.SettingsDialogBinding
 
 class SettingsDialog(
     private val onSubmitClickListener: () -> Unit,

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import android.content.Intent
@@ -11,10 +11,10 @@ import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Observer
-import com.abstractcoder.baudoapp.databinding.ActivityFullSizeVideoBinding
-import com.abstractcoder.baudoapp.recyclers.VideoPostMain
-import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.ReactionHandler
+import com.pereira.baudoapp.databinding.ActivityFullSizeVideoBinding
+import com.pereira.baudoapp.recyclers.VideoPostMain
+import com.pereira.baudoapp.utils.Firestore
+import com.pereira.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

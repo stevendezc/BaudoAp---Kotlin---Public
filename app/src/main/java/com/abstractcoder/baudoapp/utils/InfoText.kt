@@ -1,7 +1,7 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.content.Context
-import com.abstractcoder.baudoapp.R
+import com.pereira.baudoapp.R
 
 class InfoText() {
     var title: String = ""

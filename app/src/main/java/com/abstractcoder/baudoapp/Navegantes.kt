@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 data class NavegantesLinks(
     val libre: String? = "",

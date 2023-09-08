@@ -1,9 +1,9 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.abstractcoder.baudoapp.databinding.ActivitySplashBinding
+import com.pereira.baudoapp.databinding.ActivitySplashBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class SplashActivity : AppCompatActivity() {

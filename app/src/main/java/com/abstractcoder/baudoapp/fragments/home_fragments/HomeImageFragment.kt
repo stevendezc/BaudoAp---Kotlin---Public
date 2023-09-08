@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments.home_fragments
+package com.pereira.baudoapp.fragments.home_fragments
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -12,11 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.databinding.FragmentHomeImageBinding
-import com.abstractcoder.baudoapp.innerImageContentActivity
-import com.abstractcoder.baudoapp.recyclers.ImagePostAdapter
-import com.abstractcoder.baudoapp.recyclers.ImagePostMain
+import com.pereira.baudoapp.PostData
+import com.pereira.baudoapp.databinding.FragmentHomeImageBinding
+import com.pereira.baudoapp.innerImageContentActivity
+import com.pereira.baudoapp.recyclers.ImagePostAdapter
+import com.pereira.baudoapp.recyclers.ImagePostMain
 
 class HomeImageFragment : Fragment() {
 

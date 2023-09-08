@@ -1,7 +1,7 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
-import com.abstractcoder.baudoapp.FirebaseUser
-import com.abstractcoder.baudoapp.PostData
+import com.pereira.baudoapp.FirebaseUser
+import com.pereira.baudoapp.PostData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -1,6 +1,6 @@
-package com.abstractcoder.baudoapp.utils.API
+package com.pereira.baudoapp.utils.API
 
-import com.abstractcoder.baudoapp.utils.wompi.*
+import com.pereira.baudoapp.utils.wompi.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response

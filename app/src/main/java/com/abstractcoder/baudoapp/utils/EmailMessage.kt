@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 data class EmailMessage(
     var subject: String?,

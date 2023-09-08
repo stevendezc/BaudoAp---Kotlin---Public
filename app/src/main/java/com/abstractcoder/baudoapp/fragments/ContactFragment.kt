@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.abstractcoder.baudoapp.FragmentButtonClickListener
-import com.abstractcoder.baudoapp.databinding.FragmentContactBinding
-import com.abstractcoder.baudoapp.utils.EmailMessage
+import com.pereira.baudoapp.FragmentButtonClickListener
+import com.pereira.baudoapp.databinding.FragmentContactBinding
+import com.pereira.baudoapp.utils.EmailMessage
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Instant

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.abstractcoder.baudoapp.databinding.ActivityInnerStoreItemContentBinding
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
-import com.abstractcoder.baudoapp.recyclers.StoreItemGalleryAdapter
-import com.abstractcoder.baudoapp.recyclers.StoreItemMain
-import com.abstractcoder.baudoapp.utils.DialogListener
-import com.abstractcoder.baudoapp.utils.StoreDialog
+import com.pereira.baudoapp.databinding.ActivityInnerStoreItemContentBinding
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.recyclers.StoreItemGalleryAdapter
+import com.pereira.baudoapp.recyclers.StoreItemMain
+import com.pereira.baudoapp.utils.DialogListener
+import com.pereira.baudoapp.utils.StoreDialog
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 

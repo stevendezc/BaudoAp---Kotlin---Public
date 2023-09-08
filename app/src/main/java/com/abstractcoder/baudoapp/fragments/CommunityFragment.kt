@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.ContentValues
 import android.content.Context
@@ -20,12 +20,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.CommunityData
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.FragmentCommunityBinding
-import com.abstractcoder.baudoapp.recyclers.CommunityAdapter
-import com.abstractcoder.baudoapp.recyclers.CommunityMain
-import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.pereira.baudoapp.CommunityData
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.FragmentCommunityBinding
+import com.pereira.baudoapp.recyclers.CommunityAdapter
+import com.pereira.baudoapp.recyclers.CommunityMain
+import com.pereira.baudoapp.utils.InfoDialog
 import com.google.firebase.firestore.FirebaseFirestore
 
 class CommunityFragment : Fragment() {

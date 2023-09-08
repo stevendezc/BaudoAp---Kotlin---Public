@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.graphics.Rect
 import android.view.View

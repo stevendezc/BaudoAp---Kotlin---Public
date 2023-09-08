@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.Context
 import android.net.Uri
@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.NavegantesLinks
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.FragmentNavegantesBinding
-import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.InfoDialog
-import com.abstractcoder.baudoapp.utils.JsonFile
+import com.pereira.baudoapp.NavegantesLinks
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.FragmentNavegantesBinding
+import com.pereira.baudoapp.recyclers.*
+import com.pereira.baudoapp.utils.InfoDialog
+import com.pereira.baudoapp.utils.JsonFile
 import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject
 import java.io.IOException

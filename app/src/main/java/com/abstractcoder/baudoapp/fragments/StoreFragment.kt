@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.ContentValues
 import android.content.Context
@@ -17,14 +17,14 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.StoreCheckOutActivity
-import com.abstractcoder.baudoapp.databinding.FragmentStoreBinding
-import com.abstractcoder.baudoapp.innerStoreItemContentActivity
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
-import com.abstractcoder.baudoapp.recyclers.StoreItemMain
-import com.abstractcoder.baudoapp.recyclers.StoreItemAdapter
-import com.abstractcoder.baudoapp.utils.Firestore
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.StoreCheckOutActivity
+import com.pereira.baudoapp.databinding.FragmentStoreBinding
+import com.pereira.baudoapp.innerStoreItemContentActivity
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.recyclers.StoreItemMain
+import com.pereira.baudoapp.recyclers.StoreItemAdapter
+import com.pereira.baudoapp.utils.Firestore
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 

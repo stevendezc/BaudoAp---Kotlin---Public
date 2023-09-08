@@ -1,11 +1,11 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import com.abstractcoder.baudoapp.databinding.ActivityResizedImageBinding
+import com.pereira.baudoapp.databinding.ActivityResizedImageBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException

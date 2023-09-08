@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils.wompi
+package com.pereira.baudoapp.utils.wompi
 
 object WompiKeys {
     const val TEST_PUBKEY = "pub_test_16jNk5Ea0ME5n2j1RLnOo28t0f1Fia0m"

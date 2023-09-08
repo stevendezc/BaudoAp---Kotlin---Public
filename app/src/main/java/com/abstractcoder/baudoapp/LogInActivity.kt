@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.abstractcoder.baudoapp.databinding.ActivityLogInBinding
+import com.pereira.baudoapp.databinding.ActivityLogInBinding
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException

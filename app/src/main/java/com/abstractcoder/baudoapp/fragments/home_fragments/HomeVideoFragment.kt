@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments.home_fragments
+package com.pereira.baudoapp.fragments.home_fragments
 
 import android.content.Context
 import android.content.Intent
@@ -12,11 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.FullSizeVideoActivity
-import com.abstractcoder.baudoapp.PostData
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.FragmentHomeVideoBinding
-import com.abstractcoder.baudoapp.recyclers.*
+import com.pereira.baudoapp.FullSizeVideoActivity
+import com.pereira.baudoapp.PostData
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.FragmentHomeVideoBinding
+import com.pereira.baudoapp.recyclers.*
 
 class HomeVideoFragment : Fragment() {
 

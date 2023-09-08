@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.Commentary
-import com.abstractcoder.baudoapp.FirebaseUser
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.CommentListItemBinding
-import com.abstractcoder.baudoapp.utils.CommentaryDialog
-import com.abstractcoder.baudoapp.utils.Firestore
+import com.pereira.baudoapp.Commentary
+import com.pereira.baudoapp.FirebaseUser
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.CommentListItemBinding
+import com.pereira.baudoapp.utils.CommentaryDialog
+import com.pereira.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 

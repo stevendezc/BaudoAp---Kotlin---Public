@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.R
 import android.content.Context
@@ -10,13 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.abstractcoder.baudoapp.OnFragmentInteractionListener
-import com.abstractcoder.baudoapp.databinding.FragmentCheckoutContactBinding
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
-import com.abstractcoder.baudoapp.utils.CheckoutData
-import com.abstractcoder.baudoapp.utils.ContactInfo
-import com.abstractcoder.baudoapp.utils.CustomArrayAdapter
-import com.abstractcoder.baudoapp.utils.JsonFile
+import com.pereira.baudoapp.OnFragmentInteractionListener
+import com.pereira.baudoapp.databinding.FragmentCheckoutContactBinding
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.utils.CheckoutData
+import com.pereira.baudoapp.utils.ContactInfo
+import com.pereira.baudoapp.utils.CustomArrayAdapter
+import com.pereira.baudoapp.utils.JsonFile
 import org.json.JSONArray
 import org.json.JSONObject
 

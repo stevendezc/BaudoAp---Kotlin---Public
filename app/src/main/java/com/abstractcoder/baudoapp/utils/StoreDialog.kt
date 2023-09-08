@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Dialog
 import android.content.Context
@@ -10,10 +10,10 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.StoreCheckOutActivity
-import com.abstractcoder.baudoapp.databinding.StoreSingleItemDialogBinding
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.StoreCheckOutActivity
+import com.pereira.baudoapp.databinding.StoreSingleItemDialogBinding
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import java.text.DecimalFormat

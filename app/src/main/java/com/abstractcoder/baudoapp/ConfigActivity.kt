@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import android.content.Intent
@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import com.abstractcoder.baudoapp.databinding.ActivityConfigBinding
-import com.abstractcoder.baudoapp.fragments.ContactFragment
-import com.abstractcoder.baudoapp.fragments.FaqFragment
-import com.abstractcoder.baudoapp.fragments.PrivacyFragment
+import com.pereira.baudoapp.databinding.ActivityConfigBinding
+import com.pereira.baudoapp.fragments.ContactFragment
+import com.pereira.baudoapp.fragments.FaqFragment
+import com.pereira.baudoapp.fragments.PrivacyFragment
 import com.google.firebase.auth.FirebaseAuth
 
 interface FragmentButtonClickListener {

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.content.ContentValues
 import android.util.Log
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.ImageListItemBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.ImageListItemBinding
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*

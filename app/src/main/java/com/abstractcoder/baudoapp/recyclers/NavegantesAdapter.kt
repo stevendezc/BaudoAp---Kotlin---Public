@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.animation.LayoutTransition
 import android.content.Intent
@@ -15,9 +15,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.BrowserActivity
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.NavegantesListItemBinding
+import com.pereira.baudoapp.BrowserActivity
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.NavegantesListItemBinding
 import kotlin.collections.ArrayList
 
 class NavegantesAdapter(private val resources: Resources, private val navegantesList: ArrayList<NavegantesMain>) : RecyclerView.Adapter<NavegantesAdapter.NavegantesHolder>() {

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +8,10 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.databinding.ActivityInnerVideoContentBinding
-import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
-import com.abstractcoder.baudoapp.recyclers.VideoPostMain
-import com.abstractcoder.baudoapp.utils.Firestore
+import com.pereira.baudoapp.databinding.ActivityInnerVideoContentBinding
+import com.pereira.baudoapp.recyclers.CommentaryAdapter
+import com.pereira.baudoapp.recyclers.VideoPostMain
+import com.pereira.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue

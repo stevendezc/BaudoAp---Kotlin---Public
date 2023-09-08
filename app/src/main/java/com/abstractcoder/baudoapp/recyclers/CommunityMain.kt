@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.net.Uri
 import android.os.Parcel

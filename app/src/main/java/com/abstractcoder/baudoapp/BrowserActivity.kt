@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.app.Activity
 import android.content.Context
@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.abstractcoder.baudoapp.databinding.ActivityBrowserBinding
-import com.abstractcoder.baudoapp.utils.CheckoutData
-import com.abstractcoder.baudoapp.utils.PaymentDialog
+import com.pereira.baudoapp.databinding.ActivityBrowserBinding
+import com.pereira.baudoapp.utils.CheckoutData
+import com.pereira.baudoapp.utils.PaymentDialog
 import com.google.gson.Gson
 
 class BrowserActivity : AppCompatActivity() {

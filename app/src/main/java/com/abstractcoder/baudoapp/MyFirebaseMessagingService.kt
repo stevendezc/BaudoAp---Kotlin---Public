@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import com.google.firebase.messaging.FirebaseMessagingService
 

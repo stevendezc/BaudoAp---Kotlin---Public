@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -7,8 +7,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.abstractcoder.baudoapp.LogInActivity
-import com.abstractcoder.baudoapp.R
+import com.pereira.baudoapp.LogInActivity
+import com.pereira.baudoapp.R
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Activity
 import android.app.Dialog
@@ -14,9 +14,9 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.abstractcoder.baudoapp.FirebaseUser
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.UserImageDialogBinding
+import com.pereira.baudoapp.FirebaseUser
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.UserImageDialogBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore

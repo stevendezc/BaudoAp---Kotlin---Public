@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.Manifest
 import android.content.Context
@@ -15,10 +15,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.abstractcoder.baudoapp.databinding.ActivityHomeBinding
-import com.abstractcoder.baudoapp.fragments.*
-import com.abstractcoder.baudoapp.utils.Connection
-import com.abstractcoder.baudoapp.utils.Firestore
+import com.pereira.baudoapp.databinding.ActivityHomeBinding
+import com.pereira.baudoapp.fragments.*
+import com.pereira.baudoapp.utils.Connection
+import com.pereira.baudoapp.utils.Firestore
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

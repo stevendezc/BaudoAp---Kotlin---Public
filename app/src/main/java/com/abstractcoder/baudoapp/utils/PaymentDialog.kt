@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Activity
 import android.app.Dialog
@@ -18,14 +18,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.BrowserActivity
-import com.abstractcoder.baudoapp.OnFragmentInteractionListener
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.PaymentDialogBinding
-import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.API.PostsService
-import com.abstractcoder.baudoapp.utils.API.PostsServiceImpl
-import com.abstractcoder.baudoapp.utils.wompi.*
+import com.pereira.baudoapp.BrowserActivity
+import com.pereira.baudoapp.OnFragmentInteractionListener
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.PaymentDialogBinding
+import com.pereira.baudoapp.recyclers.*
+import com.pereira.baudoapp.utils.API.PostsService
+import com.pereira.baudoapp.utils.API.PostsServiceImpl
+import com.pereira.baudoapp.utils.wompi.*
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope

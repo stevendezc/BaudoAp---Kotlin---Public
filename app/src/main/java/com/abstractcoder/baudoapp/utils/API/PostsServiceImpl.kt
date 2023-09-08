@@ -1,6 +1,6 @@
-package com.abstractcoder.baudoapp.utils.API
+package com.pereira.baudoapp.utils.API
 
-import com.abstractcoder.baudoapp.utils.wompi.HttpRoutes
+import com.pereira.baudoapp.utils.wompi.HttpRoutes
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
 import android.widget.Toast
-import com.abstractcoder.baudoapp.databinding.ActivityFixedVideoBinding
+import com.pereira.baudoapp.databinding.ActivityFixedVideoBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.ValidationListItemBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.ValidationListItemBinding
 
 
 class ValidationResultAdapter(private val context: Context, private val validationResults: ArrayList<ValidationResultMain>, private val purchaseItems: ArrayList<PurchaseItemMain>): RecyclerView.Adapter<ValidationResultAdapter.ValidationHolder>() {

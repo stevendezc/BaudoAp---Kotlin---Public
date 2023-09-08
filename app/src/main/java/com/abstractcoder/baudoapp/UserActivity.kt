@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -10,12 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.databinding.ActivityUserBinding
-import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.InfoDialog
-import com.abstractcoder.baudoapp.utils.ItemSpacingDecoration
-import com.abstractcoder.baudoapp.utils.UserImageDialog
+import com.pereira.baudoapp.databinding.ActivityUserBinding
+import com.pereira.baudoapp.recyclers.*
+import com.pereira.baudoapp.utils.Firestore
+import com.pereira.baudoapp.utils.InfoDialog
+import com.pereira.baudoapp.utils.ItemSpacingDecoration
+import com.pereira.baudoapp.utils.UserImageDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject

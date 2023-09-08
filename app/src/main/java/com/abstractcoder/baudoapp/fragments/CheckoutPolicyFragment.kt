@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.Context
 import android.os.Build
@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.abstractcoder.baudoapp.OnFragmentInteractionListener
-import com.abstractcoder.baudoapp.databinding.FragmentCheckoutPolicyBinding
-import com.abstractcoder.baudoapp.utils.CheckoutData
-import com.abstractcoder.baudoapp.utils.JsonFile
+import com.pereira.baudoapp.OnFragmentInteractionListener
+import com.pereira.baudoapp.databinding.FragmentCheckoutPolicyBinding
+import com.pereira.baudoapp.utils.CheckoutData
+import com.pereira.baudoapp.utils.JsonFile
 import org.json.JSONObject
 
 class CheckoutPolicyFragment : Fragment() {

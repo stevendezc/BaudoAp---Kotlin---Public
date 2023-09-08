@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.ContentValues
 import android.content.Context
@@ -12,12 +12,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.FragmentActivity
-import com.abstractcoder.baudoapp.*
-import com.abstractcoder.baudoapp.databinding.FragmentHomeBinding
-import com.abstractcoder.baudoapp.fragments.home_fragments.HomeImageFragment
-import com.abstractcoder.baudoapp.fragments.home_fragments.HomePodcastFragment
-import com.abstractcoder.baudoapp.fragments.home_fragments.HomeVideoFragment
-import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.pereira.baudoapp.*
+import com.pereira.baudoapp.databinding.FragmentHomeBinding
+import com.pereira.baudoapp.fragments.home_fragments.HomeImageFragment
+import com.pereira.baudoapp.fragments.home_fragments.HomePodcastFragment
+import com.pereira.baudoapp.fragments.home_fragments.HomeVideoFragment
+import com.pereira.baudoapp.utils.InfoDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 

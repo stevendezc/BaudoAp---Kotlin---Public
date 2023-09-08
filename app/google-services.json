@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1055886525857:android:20652b0693b09399ef37e0",
         "android_client_info": {
-          "package_name": "com.abstractcoder.baudoapp"
+          "package_name": "com.pereira.baudoapp"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "1055886525857-1q5aubqidd1or7v087lirgld6i3kd6md.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.abstractcoder.baudoapp",
+            "package_name": "com.pereira.baudoapp",
             "certificate_hash": "316069c7466d052b6f1d4ca7494f5ef38ec5c7f9"
           }
         },

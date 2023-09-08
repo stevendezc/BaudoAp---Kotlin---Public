@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.abstractcoder.baudoapp.FragmentButtonClickListener
-import com.abstractcoder.baudoapp.databinding.FragmentFaqBinding
+import com.pereira.baudoapp.FragmentButtonClickListener
+import com.pereira.baudoapp.databinding.FragmentFaqBinding
 
 class FaqFragment : Fragment() {
     private var _binding: FragmentFaqBinding? = null

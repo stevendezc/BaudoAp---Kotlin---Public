@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments.home_fragments
+package com.pereira.baudoapp.fragments.home_fragments
 
 import android.content.ContentValues
 import android.content.Context
@@ -13,10 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.*
-import com.abstractcoder.baudoapp.databinding.FragmentHomePodcastBinding
-import com.abstractcoder.baudoapp.recyclers.PodcastPostAdapter
-import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
+import com.pereira.baudoapp.*
+import com.pereira.baudoapp.databinding.FragmentHomePodcastBinding
+import com.pereira.baudoapp.recyclers.PodcastPostAdapter
+import com.pereira.baudoapp.recyclers.PodcastPostMain
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomePodcastFragment : Fragment() {

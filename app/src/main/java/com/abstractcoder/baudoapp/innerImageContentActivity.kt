@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import android.content.Intent
@@ -14,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.databinding.ActivityInnerImageContentBinding
-import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
-import com.abstractcoder.baudoapp.recyclers.ImagePostMain
-import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.ReactionHandler
+import com.pereira.baudoapp.databinding.ActivityInnerImageContentBinding
+import com.pereira.baudoapp.recyclers.CommentaryAdapter
+import com.pereira.baudoapp.recyclers.ImagePostMain
+import com.pereira.baudoapp.utils.Firestore
+import com.pereira.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue

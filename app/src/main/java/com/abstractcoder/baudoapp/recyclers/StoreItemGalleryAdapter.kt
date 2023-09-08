@@ -1,11 +1,11 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.SingleImageListItemBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.SingleImageListItemBinding
 import com.bumptech.glide.Glide
 
 class StoreItemGalleryAdapter(private val imageList: ArrayList<String>) : RecyclerView.Adapter<StoreItemGalleryAdapter.StoreItemGalleryHolder>() {

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.content.ContentValues
 import android.content.SharedPreferences
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.ShoppingCartListItemBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.ShoppingCartListItemBinding
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import java.text.DecimalFormat

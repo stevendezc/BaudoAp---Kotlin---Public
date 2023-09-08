@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Dialog
 import android.content.Context
@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.DialogFragment
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.InfoDialogBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.InfoDialogBinding
 
 class InfoDialog(
     private val messageType: String

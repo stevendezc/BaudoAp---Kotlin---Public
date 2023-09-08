@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.ContentValues
 import android.content.Context
@@ -16,15 +16,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.databinding.ActivityStoreCheckOutBinding
-import com.abstractcoder.baudoapp.fragments.CheckoutContactFragment
-import com.abstractcoder.baudoapp.fragments.CheckoutPolicyFragment
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemAdapter
-import com.abstractcoder.baudoapp.recyclers.PurchaseItemMain
-import com.abstractcoder.baudoapp.utils.CheckoutData
-import com.abstractcoder.baudoapp.utils.EmailMessage
-import com.abstractcoder.baudoapp.utils.PaymentDialog
-import com.abstractcoder.baudoapp.utils.wompi.TransactionResponse
+import com.pereira.baudoapp.databinding.ActivityStoreCheckOutBinding
+import com.pereira.baudoapp.fragments.CheckoutContactFragment
+import com.pereira.baudoapp.fragments.CheckoutPolicyFragment
+import com.pereira.baudoapp.recyclers.PurchaseItemAdapter
+import com.pereira.baudoapp.recyclers.PurchaseItemMain
+import com.pereira.baudoapp.utils.CheckoutData
+import com.pereira.baudoapp.utils.EmailMessage
+import com.pereira.baudoapp.utils.PaymentDialog
+import com.pereira.baudoapp.utils.wompi.TransactionResponse
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore

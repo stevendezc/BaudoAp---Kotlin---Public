@@ -1,6 +1,6 @@
-package com.abstractcoder.baudoapp.utils.API
+package com.pereira.baudoapp.utils.API
 
-import com.abstractcoder.baudoapp.utils.wompi.WompiKeys
+import com.pereira.baudoapp.utils.wompi.WompiKeys
 import okhttp3.Interceptor
 import okhttp3.Response
 

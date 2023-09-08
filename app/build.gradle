@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.abstractcoder.baudoapp'
+    namespace 'com.pereira.baudoapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.abstractcoder.baudoapp"
+        applicationId "com.pereira.baudoapp"
         minSdk 21
         targetSdk 33
         versionCode 1

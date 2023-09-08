@@ -1,12 +1,12 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.abstractcoder.baudoapp.*
-import com.abstractcoder.baudoapp.recyclers.EventMain
-import com.abstractcoder.baudoapp.recyclers.StoreItemMain
+import com.pereira.baudoapp.*
+import com.pereira.baudoapp.recyclers.EventMain
+import com.pereira.baudoapp.recyclers.StoreItemMain
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ListenerRegistration

@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.app.Activity
 import android.content.ContentResolver
@@ -13,8 +13,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.abstractcoder.baudoapp.databinding.ActivitySignUpBinding
-import com.abstractcoder.baudoapp.fragments.PrivacyFragment
+import com.pereira.baudoapp.databinding.ActivitySignUpBinding
+import com.pereira.baudoapp.fragments.PrivacyFragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

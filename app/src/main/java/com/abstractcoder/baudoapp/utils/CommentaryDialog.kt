@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils
+package com.pereira.baudoapp.utils
 
 import android.app.Dialog
 import android.content.ClipData
@@ -12,8 +12,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.CommentDialogBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.CommentDialogBinding
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 

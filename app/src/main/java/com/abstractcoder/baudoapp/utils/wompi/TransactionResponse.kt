@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils.wompi
+package com.pereira.baudoapp.utils.wompi
 
 data class TransactionResponse(
     val data: Data,

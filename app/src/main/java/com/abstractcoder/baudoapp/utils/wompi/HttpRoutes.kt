@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.utils.wompi
+package com.pereira.baudoapp.utils.wompi
 
 object HttpRoutes {
     const val BASE_URL = "https://sandbox.wompi.co/v1/"

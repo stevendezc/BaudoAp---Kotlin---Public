@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.Manifest
 import android.app.AlarmManager
@@ -18,10 +18,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.BrowserActivity
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.EventListItemBinding
-import com.abstractcoder.baudoapp.utils.NotificationReceiver
+import com.pereira.baudoapp.BrowserActivity
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.EventListItemBinding
+import com.pereira.baudoapp.utils.NotificationReceiver
 import com.google.android.material.timepicker.MaterialTimePicker
 import java.text.SimpleDateFormat
 import java.util.*

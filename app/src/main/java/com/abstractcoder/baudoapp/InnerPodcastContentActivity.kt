@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp
+package com.pereira.baudoapp
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -12,11 +12,11 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.databinding.ActivityInnerPodcastContentBinding
-import com.abstractcoder.baudoapp.recyclers.CommentaryAdapter
-import com.abstractcoder.baudoapp.recyclers.PodcastPostMain
-import com.abstractcoder.baudoapp.utils.Firestore
-import com.abstractcoder.baudoapp.utils.ReactionHandler
+import com.pereira.baudoapp.databinding.ActivityInnerPodcastContentBinding
+import com.pereira.baudoapp.recyclers.CommentaryAdapter
+import com.pereira.baudoapp.recyclers.PodcastPostMain
+import com.pereira.baudoapp.utils.Firestore
+import com.pereira.baudoapp.utils.ReactionHandler
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.google.firebase.Timestamp

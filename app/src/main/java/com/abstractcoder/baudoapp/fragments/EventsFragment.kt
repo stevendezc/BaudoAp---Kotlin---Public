@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.fragments
+package com.pereira.baudoapp.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,10 +14,10 @@ import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.FragmentEventsBinding
-import com.abstractcoder.baudoapp.recyclers.*
-import com.abstractcoder.baudoapp.utils.InfoDialog
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.FragmentEventsBinding
+import com.pereira.baudoapp.recyclers.*
+import com.pereira.baudoapp.utils.InfoDialog
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalDate

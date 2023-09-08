@@ -1,4 +1,4 @@
-package com.abstractcoder.baudoapp.recyclers
+package com.pereira.baudoapp.recyclers
 
 import android.content.ActivityNotFoundException
 import android.content.ContentValues
@@ -14,8 +14,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.abstractcoder.baudoapp.R
-import com.abstractcoder.baudoapp.databinding.CommunityListItemBinding
+import com.pereira.baudoapp.R
+import com.pereira.baudoapp.databinding.CommunityListItemBinding
 import com.bumptech.glide.Glide
 
 class CommunityAdapter(private val communityList: ArrayList<CommunityMain>) : RecyclerView.Adapter<CommunityAdapter.CommunityHolder>() {
