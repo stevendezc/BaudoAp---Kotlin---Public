@@ -29,9 +29,11 @@ class PasswordRecoveryActivity : AppCompatActivity() {
         }
 
         binding.resetButton.setOnClickListener {
-            val email = binding.resetEmailEditText.text.toString()
-            if (email != null) {
-                sendPassResetMail(email)
+            val email = binding.resetEmailEditText.text
+            if (email.isNullOrEmpty()) {
+                showAlert(Exception("No se ha ingresado un email para la recuperación"))
+            } else {
+                sendPassResetMail(email.toString())
             }
         }
     }
