@@ -48,18 +48,10 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/shareButton"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:src="@drawable/share" />
-
-                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/facebookButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     tools:srcCompat="@drawable/facebook_link_icon"
                     android:src="@drawable/facebook_link_icon"/>
 
@@ -67,7 +59,7 @@
                     android:id="@+id/instagramButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     tools:srcCompat="@drawable/instagram_link_icon"
                     android:src="@drawable/instagram_link_icon"/>
 
@@ -75,7 +67,7 @@
                     android:id="@+id/whatsappButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     tools:srcCompat="@drawable/whatsapp_link_icon"
                     android:src="@drawable/whatsapp_link_icon"/>
 
@@ -83,7 +75,7 @@
                     android:id="@+id/twitterButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/twitter_link_icon"
                     android:visibility="gone"
                     tools:srcCompat="@drawable/twitter_link_icon" />
@@ -127,20 +119,45 @@
                 android:textColor="@color/white"
                 android:textSize="11dp" />
 
-            <TextView
-                android:id="@+id/community_location"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:ellipsize="end"
-                android:fontFamily="@font/sofia"
-                android:maxLines="1"
-                android:paddingStart="10dp"
-                android:paddingEnd="20dp"
-                android:text="Titulo Comunidad"
-                android:textColor="#00CFFF"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/community_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sofia"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="20dp"
+                    android:text="Titulo Comunidad"
+                    android:textAlignment="center"
+                    android:textColor="#00CFFF"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/white_round_border"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/shareButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/upload"
+                        android:tint="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -96,12 +96,12 @@ class CommunityFragment : Fragment() {
     }
 
     private fun resetCommunityFilter() {
-        binding.buttonProductivos.setBackgroundResource(R.drawable.productivos_button)
-        binding.buttonCultura.setBackgroundResource(R.drawable.cultura_button)
-        binding.buttonTurismo.setBackgroundResource(R.drawable.turismo_button)
-        binding.buttonProductivos.backgroundTintList = null
-        binding.buttonCultura.backgroundTintList = null
-        binding.buttonTurismo.backgroundTintList = null
+        //binding.buttonProductivos.setBackgroundResource(R.drawable.productivos_button)
+        //binding.buttonCultura.setBackgroundResource(R.drawable.cultura_button)
+        //binding.buttonTurismo.setBackgroundResource(R.drawable.turismo_button)
+        binding.buttonProductivos.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
+        binding.buttonCultura.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
+        binding.buttonTurismo.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
         val buttonArrayTexts = arrayListOf<TextView>(
             binding.buttonProductivosText,
             binding.buttonCulturaText,

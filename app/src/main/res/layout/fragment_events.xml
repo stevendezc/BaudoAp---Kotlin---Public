@@ -48,7 +48,7 @@
                         android:layout_gravity="center|right"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/info"
-                        app:tint="@color/white" />
+                        app:tint="@color/baudo_yellow" />
                 </FrameLayout>
 
                 <TextView
