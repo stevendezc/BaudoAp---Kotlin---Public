@@ -46,7 +46,7 @@ class HomeVideoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        layoutManager = GridLayoutManager(context, 3)
+        layoutManager = GridLayoutManager(context, 2)
 
         val sharedPref = this.activity?.getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         isOnline = sharedPref?.getBoolean("online", false)!!

@@ -94,21 +94,21 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
 
         binding.estrenButton.setOnClickListener {
             binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
-            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
-            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
+            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
             switchProductsFilter(productsArrayList, "estren")
         }
 
         binding.editorialButton.setOnClickListener {
-            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
+            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
             binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
-            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
+            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
             switchProductsFilter(productsArrayList, "editorial")
         }
 
         binding.cositasButton.setOnClickListener {
-            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
-            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray_85))
+            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
             binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
             switchProductsFilter(productsArrayList, "cositas")
         }

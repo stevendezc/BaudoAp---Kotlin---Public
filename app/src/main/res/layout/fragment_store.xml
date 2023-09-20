@@ -29,13 +29,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/white_round_bg"
-                android:backgroundTint="#FCCA2E"
+                android:backgroundTint="@color/baudo_yellow"
                 android:fontFamily="@font/sofia"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="El estrén"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,13 +46,13 @@
                 android:layout_marginEnd="5dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/white_round_bg"
-                android:backgroundTint="#D9D9D9"
+                android:backgroundTint="@color/baudo_grey2"
                 android:fontFamily="@font/sofia"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Editorial &amp; impresos"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <TextView
@@ -61,13 +61,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/white_round_bg"
-                android:backgroundTint="#D9D9D9"
+                android:backgroundTint="@color/baudo_grey2"
                 android:fontFamily="@font/sofia"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Cositas"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
 

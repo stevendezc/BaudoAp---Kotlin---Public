@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/video_list_item_media"
-        android:layout_width="118dp"
-        android:layout_height="250dp"
+        android:layout_width="180dp"
+        android:layout_height="350dp"
         android:paddingBottom="10dp"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/roundVideo"
