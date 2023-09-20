@@ -126,25 +126,16 @@ class EventsFragment : Fragment() {
         getCurrentDateValues()
 
         binding.currentYear.textSize = 18f
-        binding.currentYear.setTextColor(resources.getColor(R.color.baudo_yellow))
+        binding.currentYear.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_yellow))
         binding.currentYear.setOnClickListener {
-            binding.currentYear.textSize = 18f
-            binding.currentYear.setTypeface(null, Typeface.BOLD)
-            binding.currentYear.setTextColor(resources.getColor(R.color.baudo_yellow))
-            binding.incomingYear.textSize = 15f
-            binding.incomingYear.setTypeface(null, Typeface.NORMAL)
-            binding.incomingYear.setTextColor(resources.getColor(R.color.white))
+            binding.currentYear.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_yellow))
+            binding.incomingYear.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
             yearFilter = currentYear
             applyFilters()
         }
-        binding.incomingYear.textSize = 15f
         binding.incomingYear.setOnClickListener {
-            binding.incomingYear.textSize = 18f
-            binding.incomingYear.setTypeface(null, Typeface.BOLD)
-            binding.incomingYear.setTextColor(resources.getColor(R.color.baudo_yellow))
-            binding.currentYear.textSize = 15f
-            binding.currentYear.setTypeface(null, Typeface.NORMAL)
-            binding.currentYear.setTextColor(resources.getColor(R.color.white))
+            binding.incomingYear.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_yellow))
+            binding.currentYear.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
             yearFilter = currentYear + 1
             applyFilters()
         }
@@ -205,7 +196,7 @@ class EventsFragment : Fragment() {
 
     private fun resetMonthFilter() {
         for (button in monthButtonArray) {
-            button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_blue))
+            button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.baudo_grey2))
         }
     }
 
