@@ -32,6 +32,7 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
 
     private var _binding: FragmentStoreBinding? = null
     private val binding get() = _binding!!
+    private var activeFilter = 0
 
     private lateinit var layoutManager: StaggeredGridLayoutManager
     private lateinit var storeItemAdapter: StoreItemAdapter
@@ -93,24 +94,54 @@ class StoreFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeList
         switchProductsFilter(productsArrayList, "")
 
         binding.estrenButton.setOnClickListener {
-            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
-            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            switchProductsFilter(productsArrayList, "estren")
+            if (activeFilter != 1) {
+                activeFilter = 1
+                binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
+                binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                switchProductsFilter(productsArrayList, "estren")
+            } else {
+                activeFilter = 0
+                binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                switchProductsFilter(productsArrayList, "")
+            }
         }
 
         binding.editorialButton.setOnClickListener {
-            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
-            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            switchProductsFilter(productsArrayList, "editorial")
+            if (activeFilter != 2) {
+                activeFilter = 2
+                binding.estrenButton.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.editorialButton.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
+                binding.cositasButton.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                switchProductsFilter(productsArrayList, "editorial")
+            } else {
+                activeFilter = 0
+                binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                switchProductsFilter(productsArrayList, "")
+            }
         }
 
         binding.cositasButton.setOnClickListener {
-            binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
-            binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
-            switchProductsFilter(productsArrayList, "cositas")
+            if (activeFilter != 3) {
+                activeFilter = 3
+                binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_yellow))
+                switchProductsFilter(productsArrayList, "cositas")
+            } else {
+                activeFilter = 0
+                binding.estrenButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.editorialButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                binding.cositasButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.baudo_grey2))
+                switchProductsFilter(productsArrayList, "")
+            }
         }
 
         binding.shoppingCartButton.setOnClickListener {

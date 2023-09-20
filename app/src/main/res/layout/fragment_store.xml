@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/white_round_bg"
-                android:backgroundTint="@color/baudo_yellow"
+                android:backgroundTint="@color/baudo_grey2"
                 android:fontFamily="@font/sofia"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
