@@ -4,7 +4,6 @@ import android.animation.LayoutTransition
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.transition.AutoTransition
 import android.transition.TransitionManager
@@ -12,8 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.pereira.baudoapp.BrowserActivity
 import com.pereira.baudoapp.R
@@ -39,37 +36,12 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
     override fun onBindViewHolder(holder: NavegantesHolder, position: Int) {
         val currentItem = navegantesList[position]
 
-        val bitmap = BitmapFactory.decodeResource(resources, currentItem.image!!) // Replace with your JPG image resource
-        val roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
-        roundedBitmapDrawable.cornerRadius = resources.getDimension(R.dimen.item_spacing) // Set the desired corner radius
-        holder.imageContainer.background = roundedBitmapDrawable
-
-        holder.title.text = currentItem.title
-        if (currentItem.has_input == true) {
-            holder.noInputButtonContainer.visibility = LinearLayout.GONE
-            holder.navegantesSubtitle.text = "Apoya nuestro trabajo y sé parte de nuestros financiadores."
-        } else {
-            holder.inputButtonContainer.visibility = LinearLayout.GONE
-        }
-        holder.monthButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
-        holder.yearButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
-        holder.paymentSubmit.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
-
-        holder.monthButton.setOnClickListener { openLink(holder, currentItem.link_1!!) }
-        holder.yearButton.setOnClickListener { openLink(holder, currentItem.link_2!!) }
-        holder.paymentSubmit.setOnClickListener { openLink(holder, currentItem.link_1!!) }
-
-        holder.monthlyPrice.text = currentItem.monthly_price
-        holder.yearlyPrice.text = currentItem.yearly_price
-        holder.info1.text = currentItem.info_1
-        if (currentItem.info_2 != "") {
-            holder.info2.visibility = TextView.VISIBLE
-            holder.info2.text = currentItem.info_2
-        }
-        if (currentItem.info_3 != "") {
-            holder.info3.visibility = TextView.VISIBLE
-            holder.info3.text = currentItem.info_3
-        }
+        holder.Button.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentItem.btn_color))
+        holder.Button.setOnClickListener { openLink(holder, currentItem.link!!) }
+        holder.Title.text = currentItem.title
+        holder.Price.text = currentItem.price
+        holder.supportText.text = currentItem.support_text
+        holder.extraInfo.text = currentItem.extra_info
 
         holder.navegantesInfoContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
@@ -88,21 +60,13 @@ class NavegantesAdapter(private val resources: Resources, private val navegantes
 
         val binding = NavegantesListItemBinding.bind(itemView)
 
-        val imageContainer = binding.imageContainer
-        val title = binding.navegantesTitle
-        val noInputButtonContainer = binding.noInputButtons
-        val monthButton = binding.monthButton
-        val monthlyPrice = binding.monthlyPrice
-        val yearButton = binding.yearButton
-        val yearlyPrice = binding.yearlyPrice
-        val inputButtonContainer = binding.inputButtons
-        val navegantesSubtitle = binding.navegantesSubtitle
+        val Button = binding.navegantesPaymentbutton
+        val Title = binding.navegantesTitle
+        val Price = binding.navegantesPrice
+        val supportText = binding.navegantesSupportText
+        val extraInfo = binding.navegantesExtraInfo
         val navegantesMoreinfo = binding.navegantesMoreinfo
         val navegantesInfoContainer = binding.navegantesInfoContainer
-        val paymentSubmit = binding.librePaymentSubmit
-        val info1 = binding.info1
-        val info2 = binding.info2
-        val info3 = binding.info3
 
     }
 }

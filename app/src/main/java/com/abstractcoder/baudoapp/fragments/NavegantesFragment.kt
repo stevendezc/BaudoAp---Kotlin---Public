@@ -71,26 +71,18 @@ class NavegantesFragment : Fragment() {
                 val jsonData = JsonFile().readJsonFile(requireContext(), "navegantes_info.json")
                 val parsedJsonData = JSONObject(jsonData)
                 for (key in parsedJsonData.keys()) {
-                    val mesKey = "${key}_mes"
-                    val anualKey = "${key}_anual"
-                    val mesLink = navegantesLinks[mesKey]
-                    val anualLink = navegantesLinks[anualKey]
                     var eventObject = parsedJsonData.get(key) as JSONObject
-                    var eventDrawable = getEventDrawables(eventObject.get("type") as Int)
+                    val lowercaseTitle = eventObject.get("title").toString().lowercase()
+                    val titleKey = lowercaseTitle.replace(" ", "_")
                     println("eventObject type: ${eventObject::class.java}")
                     println("eventObject: $eventObject")
                     val navegantesItem = NavegantesMain(
                         eventObject.get("title").toString(),
-                        eventObject.get("monthly_price").toString(),
-                        eventObject.get("yearly_price").toString(),
-                        eventObject.get("has_input") as Boolean,
-                        eventDrawable,
-                        if (key != "libre") mesLink else  navegantesLinks["libre"],
-                        if (key != "libre") anualLink else "",
+                        eventObject.get("price").toString(),
+                        navegantesLinks[titleKey],
                         eventObject.get("btn_color").toString(),
-                        eventObject.get("info_1").toString(),
-                        eventObject.get("info_2").toString(),
-                        eventObject.get("info_3").toString(),
+                        eventObject.get("support_text").toString(),
+                        eventObject.get("extra_info").toString(),
                     )
                     navegantesMainList.add(navegantesItem)
                 }

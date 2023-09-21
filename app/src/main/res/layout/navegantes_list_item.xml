@@ -22,24 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/round_card"
-            android:backgroundTint="#A8A8A8"
+            android:backgroundTint="@color/baudo_grey"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="30dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="20dp">
-
-            <TextView
-                android:id="@+id/navegantes_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/sofia"
-                android:paddingLeft="15dp"
-                android:text="Title"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+            android:padding="10dp">
 
             <LinearLayout
                 android:id="@+id/no_input_buttons"
@@ -48,148 +33,44 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/month_button"
+                    android:id="@+id/navegantesPaymentbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_round_bg"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp">
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
 
                     <TextView
+                        android:id="@+id/navegantesTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sofia"
                         android:text="@string/navegantes_monthly_payment_title"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="11dp"
+                        android:textSize="12dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_monthly_payment_time"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/monthly_price"
+                        android:id="@+id/navegantesPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sofia"
                         android:text="price"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/year_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_round_bg"
-                    android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_yearly_payment_title"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="11dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_yearly_payment_time"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:id="@+id/yearly_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="price"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="10dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/input_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/libre_payment_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_round_bg"
-                    android:orientation="vertical"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_libre_payment_title"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="11dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_libre_payment_time"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="8dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sofia"
-                        android:text="@string/navegantes_libre_payment_extra"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="10dp" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/navegantes_subtitle"
+            android:id="@+id/navegantesSupportText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -208,61 +89,34 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/white_round_bg"
+            android:backgroundTint="@color/baudo_grey"
             android:fontFamily="@font/sofia"
+            android:padding="5dp"
             android:text="@string/navegantes_moreinfo_text"
             android:textAlignment="center"
-            android:textColor="@color/baudo_yellow" />
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:id="@+id/navegantes_info_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
+            android:animateLayoutChanges="true"
             android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/info_1"
+                android:id="@+id/navegantesExtraInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/sofia"
                 android:text="info 1"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
+                android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/info_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/sofia"
-                android:text="info 2"
-                android:textColor="@color/white"
-                android:textSize="10dp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/info_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/sofia"
-                android:text="info 3"
-                android:textColor="@color/white"
-                android:textSize="10dp"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sofia"
-                android:text="@string/navegantes_terms_text"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 

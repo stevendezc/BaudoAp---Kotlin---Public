@@ -1,46 +1,23 @@
 {
-  "rio": {
-    "title": "Navega el río",
-    "monthly_price": "$30.000",
-    "yearly_price": "$320.000",
-    "has_input": false,
-    "type": 0,
-    "btn_color": "#6396BD",
-    "info_1": "*Recibe nuestro newsletter + la serigrafía que más te guste de nuestra tienda +\nuna pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
-    "info_2": "*Cuando cumplas seis meses de pago o hagas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda.",
-    "info_3": ""
+  "mensual": {
+    "title": "Aporte mensual",
+    "price": "$15.000",
+    "btn_color": "#6296bd",
+    "support_text": "Beneficios:\n\n- Recibe nuestro paquete de stickers y diseños digitales para tu celular y fondos de pantalla para tu computador con nuestras ilustraciones.",
+    "extra_info": "- Recibe la información de nuestras coberturas de periodismo independiente antes que cualquier persona. Las historias que cubrimos son sobre medio ambiente, género e inclusión y memoria, paz y conflicto.\n\n- Recibe una guía imperdible con recomendaciones prácticas para ser responsable día a día con el medio ambiente.\n\n* Duración de beneficios 1 año, con débito automático y posibilidad de renovación.\n\nGracias a ti la información valiosa e independiente seguirá circulando."
   },
-  "riachuelo": {
-    "title": "Navega el riachuelo",
-    "monthly_price": "$20.000",
-    "yearly_price": "$200.000",
-    "has_input": false,
-    "type": 1,
-    "btn_color": "#FFFFFF",
-    "info_1": "*Recibe nuestro newsletter + una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil  y participa de espacios exclusivos de nuestra agencia (conversación interna con nuestro equipo de trabajo, charlas, consejos editoriales y otros)",
-    "info_2": "*Cuando cumplas seis meses de pago o si realizas el pago anual recibirás el 15% de descuento en cualquier artículo de nuestra tienda.",
-    "info_3": ""
-  },
-  "quebrada": {
-    "title": "Navega la quebrada",
-    "monthly_price": "$10.000",
-    "yearly_price": "$100.000",
-    "has_input": false,
-    "type": 2,
-    "btn_color": "#FCCA2E",
-    "info_1": "*Recibe nuestro newsletter + una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil y participa de espacios exclusivos de nuestra agencia (como conversaciones internas con nuestro equipo de trabajo, charlas, consejos editoriales y otros).",
-    "info_2": "",
-    "info_3": ""
+  "anual": {
+    "title": "Aporte anual",
+    "price": "$150.000",
+    "btn_color": "#ff7a01",
+    "support_text": "Beneficios:\n\n- Recibe nuestro paquete de stickers y diseños digitales para tu celular y fondos de pantalla para tu computador con nuestras ilustraciones.",
+    "extra_info": "- Recibe la información de nuestras coberturas de periodismo independiente antes que cualquier persona. Las historias que cubrimos son sobre medio ambiente, género e inclusión y memoria, paz y conflicto.\n\n- Recibe una guía imperdible con recomendaciones prácticas para ser responsable día a día con el medio ambiente.\n\n- Accede a un descuento exclusivo del 15% en fotolibros de nuestra tienda.\n\n- Accede a nuestros eventos virtuales de manera gratuita, te avisaremos antes para que estés en primera fila.\n\n-Recibirás una invitación a un café virtual con el equipo de BaudóAp.\n\nSi quieres que tu aporte sea certificado por nuestra fundación envía tu comprobante a baudo.ap@gmail.com.\n\n* Duración de beneficios 1 año con renovación automática y posibilidad de cancelación.\n\nGracias a ti la información valiosa e independiente seguirá circulando."
   },
   "libre": {
-    "title": "Navega libre",
-    "monthly_price": "",
-    "yearly_price": "",
-    "has_input": true,
-    "type": 3,
-    "btn_color": "#75B078",
-    "info_1": "Pago único de monto libre",
-    "info_2": "*Recibirás una pieza digital de una ilustración baudoseña que podrás utilizar como fondo de pantalla para tu computador o dispositivo móvil.",
-    "info_3": ""
+    "title": "Aporte libre",
+    "price": "Aporte único de monto libre",
+    "btn_color": "#75b078",
+    "support_text": "Beneficios:\n\nNo tienes ninguna restricción. Puedes donar lo que quierasx y tendrás la seguridad de aportar a que BaudoAP siga siendo independiente y que más gente como tú conozca a profundidad y de forma innovadora los temas de derechos humanos en Colombia y América Latina.",
+    "extra_info": "Si quieres que tu aporte sea certificado por nuestra fundación envia tu comprobante a baudo.ap@gmail.com"
   }
 }

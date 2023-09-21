@@ -5,23 +5,13 @@ import android.os.Parcelable
 
 data class NavegantesMain(
     var title: String? = "",
-    var monthly_price: String? = "",
-    var yearly_price: String? = "",
-    var has_input: Boolean? = false,
-    var image: Int? = 0,
-    var link_1: String? = "",
-    var link_2: String? = "",
+    var price: String? = "",
+    var link: String? = "",
     var btn_color: String? = "#FFFFFF",
-    var info_1: String? = "",
-    var info_2: String? = "",
-    var info_3: String? = ""
+    var support_text: String? = "",
+    var extra_info: String? = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -33,16 +23,11 @@ data class NavegantesMain(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
-        parcel.writeString(monthly_price)
-        parcel.writeString(yearly_price)
-        parcel.writeValue(has_input)
-        parcel.writeValue(image)
-        parcel.writeString(link_1)
-        parcel.writeString(link_2)
+        parcel.writeString(price)
+        parcel.writeString(link)
         parcel.writeString(btn_color)
-        parcel.writeString(info_1)
-        parcel.writeString(info_2)
-        parcel.writeString(info_3)
+        parcel.writeString(support_text)
+        parcel.writeString(extra_info)
     }
 
     override fun describeContents(): Int {

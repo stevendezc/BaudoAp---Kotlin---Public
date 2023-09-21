@@ -1,23 +1,15 @@
 package com.pereira.baudoapp
 
 data class NavegantesLinks(
-    val libre: String? = "",
-    val quebrada_anual: String? = "",
-    val quebrada_mes: String? = "",
-    val riachuelo_anual: String? = "",
-    val riachuelo_mes: String? = "",
-    val rio_anual: String? = "",
-    val rio_mes: String? = "",
+    val aporte_anual: String? = "",
+    val aporte_libre: String? = "",
+    val aporte_mensual: String? = "",
 ) {
     operator fun get(propertyName: String): String? {
         return when (propertyName) {
-            "libre" -> libre
-            "quebrada_anual" -> quebrada_anual
-            "quebrada_mes" -> quebrada_mes
-            "riachuelo_anual" -> riachuelo_anual
-            "riachuelo_mes" -> riachuelo_mes
-            "rio_anual" -> rio_anual
-            "rio_mes" -> rio_mes
+            "aporte_anual" -> aporte_anual
+            "aporte_libre" -> aporte_libre
+            "aporte_mensual" -> aporte_mensual
             else -> null
         }
     }
