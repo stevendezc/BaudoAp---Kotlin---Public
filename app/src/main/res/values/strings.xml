@@ -33,6 +33,9 @@
     <string name="home_image">Imagen</string>
     <string name="home_video">Video</string>
     <string name="home_podcast">Podcast</string>
+    <!-- STORE FRAGMENT Strings -->
+    <string name="store_advice_title">Aviso importante</string>
+    <string name="store_advice_content">Envíos disponibles solo en Colombia, para envios internacionales porfavor contáctenos</string>
     <!-- USER UI Strings -->
     <string name="user_interests">Lo que te interesa</string>
     <string name="user_saved_content">Contenidos guardados</string>

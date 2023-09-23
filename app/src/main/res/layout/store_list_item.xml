@@ -20,20 +20,21 @@
 
         <TextView
             android:id="@+id/storeItemTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="5dp"
             android:layout_weight="0.75"
-            android:layout_gravity="bottom"
             android:background="@drawable/white_round_bg"
-            android:backgroundTint="#D9D9D9"
+            android:backgroundTint="#1A000000"
+            android:fontFamily="@font/sofia"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:layout_marginEnd="50dp"
-            android:fontFamily="@font/sofia"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </FrameLayout>
 
 </androidx.cardview.widget.CardView>
