@@ -48,13 +48,58 @@
                 android:id="@+id/shopping_cart_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingStart="20dp"
                 android:fontFamily="@font/sofia"
+                android:layout_marginBottom="10dp"
                 android:text="Tu Carrito"
+                android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/storeAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_card"
+                android:backgroundTint="@color/baudo_yellow"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sofia"
+                    android:text="Aviso importante"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sofia"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/store_advice_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_card"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/sofia"
+                    android:padding="10dp"
+                    android:text="baudoagenciap@gmail.com"
+                    android:textColor="@color/baudo_yellow" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shopping_cart_list_recycler"
