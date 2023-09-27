@@ -160,7 +160,7 @@ class PaymentDialog(
     private fun initializePayment() {
         binding.loadingText.text = "Realizando Transaccion"
 
-        val pubkey = WompiKeys.TEST_PUBKEY
+        val pubkey = WompiKeys.PRD_PUBKEY
         val currency = "COP"
         val amount = (paymentData.subtotal).toString() + "00"
         val reference = generateRandomAlphaNumericString(32)
