@@ -74,8 +74,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/userImage"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:scaleType="centerCrop"
