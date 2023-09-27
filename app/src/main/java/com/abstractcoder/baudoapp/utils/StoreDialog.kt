@@ -134,6 +134,7 @@ class StoreDialog(
                     group.first().thumbnail,
                     group.first().price,
                     totalQuantity,
+                    group.first().subtype,
                     size)
             }
         println("reducedItems: $reducedItems")

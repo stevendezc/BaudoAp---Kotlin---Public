@@ -23,7 +23,7 @@ class ValidationResultAdapter(private val context: Context, private val validati
         val currentItem = purchaseItems[position]
         val currentItemValidation = validationResults[position]
         if (currentItem != null) {
-            holder.itemName.text = "${currentItem.name} ${currentItem.size} X${currentItem.quantity}"
+            holder.itemName.text = "${currentItem.name} ${currentItem.subtype} ${currentItem.size} X${currentItem.quantity}"
             if (currentItemValidation.item_in_stock == true) {
                 holder.itemStatusIcon.setImageResource(R.drawable.podcast_check)
                 holder.itemStatusIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
