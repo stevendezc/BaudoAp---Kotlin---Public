@@ -8,11 +8,14 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toDrawable
 import com.pereira.baudoapp.databinding.ActivitySignUpBinding
 import com.pereira.baudoapp.fragments.PrivacyFragment
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -27,18 +30,15 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var binding: ActivitySignUpBinding
+    var visiblePassword = false
 
     val storageReference = FirebaseStorage.getInstance().reference
     private var userImageUri: Uri? = null
 
     private val PASSWORD_PATTERN: Pattern =
         Pattern.compile("^" +
-                "(?=.*[A-Z])" +         // at least 1 uppercase letter
-                "(?=.*[!@#\$&*])" +     // at least 1 special character
-                "(?=.*[0-9])" +         // at least 1 numeric character
-                "(?=.*[a-z])" +         // at least 1 lowercase letter
                 "(?=\\S+$)" +           // no whitespaces
-                ".{8,}" +                // min length of 8 characters
+                ".{6,}" +                // min length of 6 characters
                 "\$")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +79,17 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
             binding.policiesFragmentWrapper.visibility = FrameLayout.VISIBLE
             binding.backButton.visibility = LinearLayout.GONE
             binding.registerForm.visibility = LinearLayout.GONE
+        }
+
+        binding.showHideButton.setOnClickListener {
+            visiblePassword = !visiblePassword
+            if (visiblePassword) {
+                binding.showHideButton.setImageResource(R.drawable.no_eye)
+                binding.registerPasswordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else {
+                binding.showHideButton.setImageResource(R.drawable.eye)
+                binding.registerPasswordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
         }
 
         binding.signUpButton.setOnClickListener {
@@ -151,8 +162,7 @@ class SignUpActivity : AppCompatActivity(), FragmentButtonClickListener {
             validForm = false
         }
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            binding.registerPasswordEditText.error = "La contraseña debe tener al menos 8 caracteres," +
-                    "1 letra mayuscula, 1 numero y un simbolo ! @ # $ & *"
+            binding.registerPasswordEditText.error = "La contraseña debe tener al menos 6 caracteres,"
             validForm = false
         }
         return validForm

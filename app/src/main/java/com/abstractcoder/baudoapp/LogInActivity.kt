@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -32,6 +34,7 @@ class LogInActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var binding: ActivityLogInBinding
 
+    var visiblePassword = false
     val userCollectionRef = db.collection("users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +87,17 @@ class LogInActivity : AppCompatActivity() {
             googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }*/
+
+        binding.showHideButton.setOnClickListener {
+            visiblePassword = !visiblePassword
+            if (visiblePassword) {
+                binding.showHideButton.setImageResource(R.drawable.no_eye)
+                binding.passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else {
+                binding.showHideButton.setImageResource(R.drawable.eye)
+                binding.passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+        }
 
         binding.logInButton.setOnClickListener {
             if (binding.emailEditText.text.isNotEmpty() && binding.passwordEditText.text.isNotEmpty()) {
