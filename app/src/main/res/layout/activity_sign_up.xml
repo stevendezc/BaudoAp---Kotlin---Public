@@ -50,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
                 <ImageView
                     android:id="@+id/registerUpperLogo"
@@ -65,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Ingresa tus datos para registrarte"
                     android:fontFamily="@font/sofia"
+                    android:text="Ingresa tus datos para registrarte"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -86,8 +87,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:paddingStart="15dp"
                     android:fontFamily="@font/sofia"
+                    android:paddingStart="15dp"
                     android:text="@string/name"
                     android:textColor="@color/black"
                     android:textSize="16dp"
@@ -99,19 +100,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/round_input"
-                    android:padding="12dp"
                     android:ems="10"
                     android:fontFamily="@font/sofia"
-                    android:inputType="textPersonName"
                     android:hint="@string/name"
-                    android:textColorHint="#33000000"/>
+                    android:inputType="textPersonName"
+                    android:padding="12dp"
+                    android:textColorHint="#33000000" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:paddingStart="15dp"
                     android:fontFamily="@font/sofia"
+                    android:paddingStart="15dp"
                     android:text="@string/email"
                     android:textColor="@color/black"
                     android:textSize="16dp"
@@ -123,20 +124,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/round_input"
-                    android:padding="12dp"
                     android:ems="10"
                     android:fontFamily="@font/sofia"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
-                    android:textColorHint="#33000000"/>
+                    android:padding="12dp"
+                    android:textColorHint="#33000000" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:paddingStart="15dp"
                     android:fontFamily="@font/sofia"
+                    android:paddingStart="15dp"
                     android:text="@string/password"
                     android:textColor="@color/black"
                     android:textSize="16dp"
@@ -145,17 +146,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/round_input"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/registerPasswordEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/fui_transparent"
                         android:layout_weight="0.8"
+                        android:background="@color/fui_transparent"
                         android:ems="10"
                         android:fontFamily="@font/sofia"
                         android:hint="@string/password_hint"
@@ -214,10 +215,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
                     android:background="@drawable/textview_border"
                     android:fontFamily="@font/sofia"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/sign_up1"
                     android:textAllCaps="false"
                     android:textSize="18dp"
