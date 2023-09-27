@@ -183,6 +183,7 @@ class PaymentDialog(
             customer-data%3Alegal-id=$customerDocument&
             customer-data%3Alegal-id-type=$customerDocumentType
         """.trimIndent()
+        println("wompi_url: $wompi_url")
 
         var browserIntent = Intent(context, BrowserActivity::class.java).apply {
             putExtra("incoming_url", wompi_url)
