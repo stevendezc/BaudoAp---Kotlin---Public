@@ -178,7 +178,8 @@
 
                             <TextView
                                 android:id="@+id/xs_badge"
-                                android:layout_width="28dp"
+                                android:minWidth="28dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:background="#D9D9D9"
@@ -190,7 +191,8 @@
 
                             <TextView
                                 android:id="@+id/s_badge"
-                                android:layout_width="28dp"
+                                android:minWidth="28dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:background="#D9D9D9"
@@ -202,7 +204,8 @@
 
                             <TextView
                                 android:id="@+id/m_badge"
-                                android:layout_width="28dp"
+                                android:minWidth="28dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:background="#D9D9D9"
@@ -214,7 +217,8 @@
 
                             <TextView
                                 android:id="@+id/l_badge"
-                                android:layout_width="28dp"
+                                android:minWidth="28dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:background="#D9D9D9"
@@ -226,7 +230,8 @@
 
                             <TextView
                                 android:id="@+id/xl_badge"
-                                android:layout_width="28dp"
+                                android:minWidth="28dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="#D9D9D9"
                                 android:fontFamily="@font/sofia"
